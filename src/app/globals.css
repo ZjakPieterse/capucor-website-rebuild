@@ -2,14 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
-
 /* ─── Capucor design tokens ─────────────────────────────────────────────── */
-/* Accent colour: two options — uncomment one, comment the other.           */
-/* Option A — Tailwind Emerald 500 (safe choice)                            */
-/*   light: #10b981   dark: #34d399                                         */
-/* Option B — Custom Teal-Emerald (recommended, more distinctive)           */
-/*   light: #0EA870   dark: #2ED889                                         */
 
 @theme inline {
   --color-background: var(--background);
@@ -43,42 +36,6 @@
 
 :root {
   /* Surfaces */
-  --background:       oklch(0.985 0.002 247);   /* #fafafa */
-  --foreground:       oklch(0.129 0.042 264);   /* #020617 slate-950 */
-  --card:             oklch(1 0 0);             /* #ffffff */
-  --card-foreground:  oklch(0.129 0.042 264);
-  --popover:          oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264);
-
-  /* Neutrals */
-  --secondary:        oklch(0.961 0.003 264);   /* #f4f4f6 raised surface */
-  --secondary-foreground: oklch(0.129 0.042 264);
-  --muted:            oklch(0.961 0.003 264);   /* #f4f4f6 */
-  --muted-foreground: oklch(0.554 0.046 257);   /* #64748b slate-500 */
-  --border:           oklch(0.899 0.013 255);   /* #e2e8f0 slate-200 */
-  --input:            oklch(0.899 0.013 255);
-  --ring:             oklch(0.682 0.182 158);   /* accent colour */
-
-  /* Accent — Option B (custom teal-emerald). Swap to Option A values to change. */
-  --primary:          oklch(0.682 0.182 158);   /* #0EA870 Option B */
-  --primary-foreground: oklch(1 0 0);           /* white text on accent */
-  --accent:           oklch(0.961 0.003 264);   /* hover tint */
-  --accent-foreground: oklch(0.129 0.042 264);
-
-  /* Option A (uncomment + comment Option B above to use):
-  --primary:          oklch(0.696 0.17 162);    #10b981 emerald-500
-  */
-
-  /* Semantic */
-  --destructive:      oklch(0.577 0.245 27);    /* #ef4444 red-500 */
-  --success:          oklch(0.723 0.191 142);   /* #22c55e green-500 */
-  --warning:          oklch(0.769 0.188 70);    /* #f59e0b amber-500 */
-
-  --radius: 0.75rem;
-}
-
-.dark {
-  /* Surfaces */
   --background:       oklch(0.129 0.042 264);   /* #020617 slate-950 */
   --foreground:       oklch(0.984 0.003 247);   /* #f8fafc slate-50 */
   --card:             oklch(0.208 0.042 264);   /* #0f172a slate-900 */
@@ -93,22 +50,20 @@
   --muted-foreground: oklch(0.704 0.04 256);    /* #94a3b8 slate-400 */
   --border:           oklch(0.279 0.041 264);   /* #1e293b */
   --input:            oklch(1 0 0 / 12%);
-  --ring:             oklch(0.812 0.182 158);   /* dark accent */
+  --ring:             oklch(0.812 0.182 158);
 
-  /* Accent — Option B dark */
+  /* Accent — Option B */
   --primary:          oklch(0.812 0.182 158);   /* #2ED889 */
-  --primary-foreground: oklch(0.129 0.042 264); /* dark text on light accent */
+  --primary-foreground: oklch(0.129 0.042 264);
   --accent:           oklch(0.279 0.041 264);
   --accent-foreground: oklch(0.984 0.003 247);
-
-  /* Option A dark (uncomment to use):
-  --primary:          oklch(0.796 0.17 162);    #34d399 emerald-400
-  */
 
   /* Semantic */
   --destructive:      oklch(0.704 0.191 22);
   --success:          oklch(0.723 0.191 142);
   --warning:          oklch(0.769 0.188 70);
+
+  --radius: 0.75rem;
 }
 
 @layer base {
@@ -125,13 +80,8 @@
 
 /* ─── Brand accent tokens ─────────────────────────────────────────────────── */
 :root {
-  --brand-navy: #1a2d6e;
-  --brand-cyan: #00b3d9;
-}
-
-.dark {
-  --brand-navy: #7ba8f5;   /* lighter on dark bg */
-  --brand-cyan: #22d3ee;   /* lighter cyan on dark bg */
+  --brand-navy: #7ba8f5;
+  --brand-cyan: #22d3ee;
 }
 
 /* ─── Marquee carousel ────────────────────────────────────────────────────── */

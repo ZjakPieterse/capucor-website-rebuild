@@ -26,7 +26,7 @@ export default function PrivacyPage() {
 
       {/* [EDITABLE] — replace all placeholder sections below with legally reviewed copy before launch */}
 
-      <section className="prose prose-slate dark:prose-invert max-w-none space-y-10">
+      <section className="prose prose-slate prose-invert max-w-none space-y-10">
         <div>
           <h2 className="text-xl font-semibold mb-3">Who we are</h2>
           <p className="text-muted-foreground leading-relaxed">

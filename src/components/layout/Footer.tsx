@@ -50,18 +50,11 @@ export function Footer() {
           <div className="md:col-span-1 space-y-4">
             <Link href="/" className="hover:opacity-80 transition-opacity block">
               <Image
-                src="/brand/logo-default.png"
-                alt="Capucor Business Solutions"
-                height={28}
-                width={140}
-                className="h-7 w-auto dark:hidden"
-              />
-              <Image
                 src="/brand/logo-dark.png"
                 alt="Capucor Business Solutions"
                 height={28}
                 width={140}
-                className="h-7 w-auto hidden dark:block"
+                className="h-7 w-auto"
               />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
