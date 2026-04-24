@@ -1,0 +1,58 @@
+'use client';
+
+import { BookOpen, AlertCircle, Unplug, Clock } from 'lucide-react';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+
+const PROBLEMS = [
+  {
+    icon: BookOpen,
+    title: 'Messy, outdated books',
+    body: 'Your financials are weeks behind. When you need a number, no one can give you a straight answer.',
+  },
+  {
+    icon: AlertCircle,
+    title: 'Surprise tax bills',
+    body: "SARS deadlines arrive without warning and provisional tax catches you off guard every time.",
+  },
+  {
+    icon: Unplug,
+    title: 'Disconnected tools',
+    body: 'Spreadsheets, emails, a bank statement — all in different places, none of them talking to each other.',
+  },
+  {
+    icon: Clock,
+    title: 'No time for decisions',
+    body: 'You are too busy chasing invoices and doing admin to focus on actually growing the business.',
+  },
+];
+
+export function ProblemCards() {
+  return (
+    <section className="py-24 lg:py-32">
+      <div className="max-w-7xl mx-auto px-6">
+        <ScrollReveal>
+          <SectionHeading
+            eyebrow="The problem"
+            title="Sound familiar?"
+            subtitle="If any of these describe your current situation, you are not alone — and it does not have to stay this way."
+          />
+        </ScrollReveal>
+
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {PROBLEMS.map((problem, i) => (
+            <ScrollReveal key={problem.title} delay={i * 0.08}>
+              <div className="rounded-xl border border-border bg-card p-6 h-full">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10">
+                  <problem.icon className="h-5 w-5 text-destructive" />
+                </div>
+                <h3 className="text-base font-semibold mb-2">{problem.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{problem.body}</p>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

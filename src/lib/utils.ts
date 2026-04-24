@@ -1,0 +1,26 @@
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+// PLAN §12: comma-thousands separator, period-decimal (SA accounting convention).
+// en-ZA locale uses space/comma which differs from SA business practice, so we
+// use en-US number formatting. The MonoPrice component adds CSS nowrap to prevent
+// the "R" from splitting across lines — NBSP is a layout concern, not data.
+const zarFmt    = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+const zarFmtDec = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+export function formatZAR(amount: number): string {
+  const clean = Math.round(amount * 100) / 100;
+  const num = clean % 1 === 0 ? zarFmt.format(clean) : zarFmtDec.format(clean);
+  return 'R ' + num;
+}
+
+export function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}
