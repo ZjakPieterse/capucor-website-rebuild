@@ -221,7 +221,7 @@ function SuccessState({ onClose }: { onClose: () => void }) {
         <Button
           render={
             <a
-              href={siteConfig.links.calendly}
+              href={siteConfig.links.booking}
               target="_blank"
               rel="noopener noreferrer"
             />

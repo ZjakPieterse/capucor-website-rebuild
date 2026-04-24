@@ -79,7 +79,7 @@ export function ContactForm() {
               subtitle="Send us a message and we will be in touch within one business day."
             />
             <a
-              href={siteConfig.links.calendly}
+              href={siteConfig.links.booking}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline underline-offset-4"
@@ -203,7 +203,7 @@ function SuccessState() {
         nativeButton={false}
         render={
           <a
-            href={siteConfig.links.calendly}
+            href={siteConfig.links.booking}
             target="_blank"
             rel="noopener noreferrer"
           />

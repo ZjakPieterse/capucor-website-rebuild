@@ -9,7 +9,7 @@ export const siteConfig = {
     facebook: 'https://facebook.com/capucor',
     instagram: 'https://instagram.com/capucor',
     linkedin: 'https://linkedin.com/company/capucor',
-    calendly: process.env.NEXT_PUBLIC_CALENDLY_URL ?? '#',
+    booking: process.env.NEXT_PUBLIC_BOOKING_URL ?? '#',
   },
   nav: [
     { label: 'Home', href: '/' },

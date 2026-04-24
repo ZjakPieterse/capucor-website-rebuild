@@ -51,7 +51,7 @@ export function PricingUnavailable() {
         nativeButton={false}
         render={
           <a
-            href={siteConfig.links.calendly}
+            href={siteConfig.links.booking}
             target="_blank"
             rel="noopener noreferrer"
           />
