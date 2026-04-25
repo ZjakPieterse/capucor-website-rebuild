@@ -93,8 +93,14 @@ function smoothPath(pts: [number, number][]): string {
 // ── Slide sub-components ────────────────────────────────────────────────────────
 function ExpensesSlide() {
   const cx = 82, cy = 82, R = 68, ri = 46;
-  let cum = 0;
   const total = EXPENSE_ROWS.reduce((s, e) => s + e.pct, 0);
+  let acc = 0;
+  const arcs = EXPENSE_ROWS.map((e) => {
+    const sweep = (e.pct / total) * 360;
+    const a1 = acc + 1.2, a2 = acc + sweep - 1.2;
+    acc += sweep;
+    return { ...e, a1, a2 };
+  });
   return (
     <div className="flex items-center gap-4 py-1">
       <svg viewBox="0 0 164 164" width={164} height={164} style={{ flexShrink: 0 }}>
@@ -104,17 +110,12 @@ function ExpensesSlide() {
             <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
-        {EXPENSE_ROWS.map((e, i) => {
-          const sweep = (e.pct / total) * 360;
-          const a1 = cum + 1.2, a2 = cum + sweep - 1.2;
-          cum += sweep;
-          return (
-            <motion.path key={i} d={donutArc(cx, cy, R, ri, a1, a2)} fill={e.color}
-              filter={i < 2 ? 'url(#exp-g)' : undefined}
-              initial={{ opacity: 0 }} animate={{ opacity: 0.88 }}
-              transition={{ delay: i * 0.18, duration: 1.6 }} />
-          );
-        })}
+        {arcs.map((e, i) => (
+          <motion.path key={i} d={donutArc(cx, cy, R, ri, e.a1, e.a2)} fill={e.color}
+            filter={i < 2 ? 'url(#exp-g)' : undefined}
+            initial={{ opacity: 0 }} animate={{ opacity: 0.88 }}
+            transition={{ delay: i * 0.18, duration: 1.6 }} />
+        ))}
         <text x={cx} y={cy - 5} textAnchor="middle" fill="white" fontSize={13} fontWeight={800} fontFamily="monospace">R 102k</text>
         <text x={cx} y={cy + 11} textAnchor="middle" fill="rgba(255,255,255,.35)" fontSize={9}>TOTAL</text>
       </svg>
