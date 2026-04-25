@@ -22,11 +22,11 @@ const FULL_TREND = [
   { month: 'May 24', current: 171300, prior: 129600 },
   { month: 'Jun 24', current: 164800, prior: 148200 },
   { month: 'Jul 24', current: 188400, prior: 157400 },
-  { month: 'Aug 24', current: 176200, prior: 162400 },
+  { month: 'Aug 24', current: 193800, prior: 162400 },
   { month: 'Sep 24', current: 203600, prior: 155800 },
   { month: 'Oct 24', current: 192400, prior: 178600 },
   { month: 'Nov 24', current: 218900, prior: 184200 },
-  { month: 'Dec 24', current: 207300, prior: 196400 },
+  { month: 'Dec 24', current: 226400, prior: 196400 },
   { month: 'Jan 25', current: 231200, prior: 188600 },
   { month: 'Feb 25', current: 224800, prior: 206200 },
 ];
