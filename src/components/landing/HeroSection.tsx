@@ -32,9 +32,6 @@ const FULL_TREND = [
 ];
 
 // ── Utilities ───────────────────────────────────────────────────────────────────
-function fmtZAR(n: number) {
-  return 'R ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
 
 function smoothPath(pts: [number, number][]): string {
   if (!pts.length) return '';
@@ -107,7 +104,7 @@ function AnimatedRevenueChart() {
             <AnimatePresence mode="wait">
               <motion.div key={currentMonthData.current}
                 initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }} transition={{ duration: 0.15 }}>
-                {fmtZAR(currentMonthData.current)}
+                {(currentMonthData.current / 1000).toFixed(1)}k
               </motion.div>
             </AnimatePresence>
           </div>
@@ -120,7 +117,7 @@ function AnimatedRevenueChart() {
             <AnimatePresence mode="wait">
               <motion.div key={currentMonthData.prior}
                 initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }} transition={{ duration: 0.15 }}>
-                {fmtZAR(currentMonthData.prior)}
+                {(currentMonthData.prior / 1000).toFixed(1)}k
               </motion.div>
             </AnimatePresence>
           </div>
