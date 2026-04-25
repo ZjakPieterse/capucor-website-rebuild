@@ -52,10 +52,10 @@ export function TechStackShowcase() {
                   <span className="text-sm font-semibold text-primary">{tool.name}</span>
                 </div>
 
-                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
+                <p className="text-sm font-semibold uppercase tracking-wider text-foreground mb-2">
                   {tool.tagline}
                 </p>
-                <p className="text-sm text-foreground leading-relaxed">{tool.benefit}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{tool.benefit}</p>
               </div>
             </ScrollReveal>
           ))}
