@@ -402,10 +402,11 @@ function DashboardMockup() {
         </motion.div>
       </div>
 
-      {/* Chart viewport */}
-      <div style={{ minHeight: 224 }}>
+      {/* Chart viewport — fixed height prevents card resize between slides */}
+      <div style={{ height: 252, position: 'relative' }}>
         <AnimatePresence mode="wait">
           <motion.div key={slideIdx}
+            style={{ position: 'absolute', inset: 0 }}
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.38, ease: 'easeInOut' }}>
 
