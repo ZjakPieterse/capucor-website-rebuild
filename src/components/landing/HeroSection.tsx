@@ -94,13 +94,11 @@ function smoothPath(pts: [number, number][]): string {
 function ExpensesSlide() {
   const cx = 82, cy = 82, R = 68, ri = 46;
   const total = EXPENSE_ROWS.reduce((s, e) => s + e.pct, 0);
-  let acc = 0;
-  const arcs = EXPENSE_ROWS.map((e) => {
+  const arcs = EXPENSE_ROWS.reduce<Array<(typeof EXPENSE_ROWS)[0] & { a1: number; a2: number }>>((out, e) => {
+    const start = out.reduce((s, x) => s + (x.pct / total) * 360, 0);
     const sweep = (e.pct / total) * 360;
-    const a1 = acc + 1.2, a2 = acc + sweep - 1.2;
-    acc += sweep;
-    return { ...e, a1, a2 };
-  });
+    return [...out, { ...e, a1: start + 1.2, a2: start + sweep - 1.2 }];
+  }, []);
   return (
     <div className="flex items-center gap-4 py-1">
       <svg viewBox="0 0 164 164" width={164} height={164} style={{ flexShrink: 0 }}>
