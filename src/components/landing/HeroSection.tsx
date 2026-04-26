@@ -199,7 +199,7 @@ function FinanceCommandCentre() {
           className="rounded-xl border border-border bg-background/40 p-3.5"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
-            Mgmt Report
+            Management Report
           </div>
           <div className="flex items-center gap-1.5">
             <Clock className="h-3.5 w-3.5 shrink-0" style={{ color: '#22d3ee' }} />
