@@ -6,14 +6,15 @@ import type { Service, Tier, Testimonial } from '@/types';
 import { HeroSection } from '@/components/landing/HeroSection';
 import { SocialProofStrip } from '@/components/landing/SocialProofStrip';
 import { ProblemCards } from '@/components/landing/ProblemCards';
+import { WhyCapucor } from '@/components/landing/WhyCapucor';
 import { ServicePillars } from '@/components/landing/ServicePillars';
 import { HowItWorks } from '@/components/landing/HowItWorks';
-import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
-import { WhyCapucor } from '@/components/landing/WhyCapucor';
-import { Testimonials } from '@/components/landing/Testimonials';
+import { CalculatorPreview } from '@/components/landing/CalculatorPreview';
 import { PackagesTeaser } from '@/components/landing/PackagesTeaser';
+import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
+import { Testimonials } from '@/components/landing/Testimonials';
 import { FaqAccordion } from '@/components/landing/FaqAccordion';
-import { ContactForm } from '@/components/landing/ContactForm';
+import { FinalCTA } from '@/components/landing/FinalCTA';
 
 export function generateMetadata(): Metadata {
   return {
@@ -97,17 +98,30 @@ export default async function HomePage() {
         }}
       />
 
+      {/* 1. Hero */}
       <HeroSection />
+      {/* 2. Trust strip */}
       <SocialProofStrip />
+      {/* 3. Problem */}
       <ProblemCards />
-      <ServicePillars />
-      <HowItWorks />
-      <TechStackShowcase />
+      {/* 4. Outcomes */}
       <WhyCapucor />
-      <Testimonials testimonials={testimonials} />
+      {/* 5. Services */}
+      <ServicePillars />
+      {/* 6. How the monthly finance system works */}
+      <HowItWorks />
+      {/* 7. Calculator preview */}
+      <CalculatorPreview />
+      {/* 8. Packages */}
       <PackagesTeaser services={services} tiers={tiers} />
+      {/* 9. Tech stack */}
+      <TechStackShowcase />
+      {/* 10. Social proof */}
+      <Testimonials testimonials={testimonials} />
+      {/* 11. FAQ */}
       <FaqAccordion />
-      <ContactForm />
+      {/* 12. Final CTA */}
+      <FinalCTA />
     </>
   );
 }

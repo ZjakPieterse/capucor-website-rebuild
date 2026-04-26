@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart2, BookMarked, Users } from 'lucide-react';
+import { BarChart2, BookMarked, Users, FileText, TrendingUp } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { cn } from '@/lib/utils';
@@ -9,7 +9,7 @@ const SERVICES = [
   {
     icon: BarChart2,
     title: 'Accounting',
-    pitch: 'Annual financials, tax returns, and SARS and CIPC compliance — done properly.',
+    pitch: 'Annual financials, tax returns, and SARS and CIPC compliance — done properly and on time.',
     bullets: [
       'Annual financial statements',
       'Income tax and provisional tax',
@@ -23,7 +23,7 @@ const SERVICES = [
     title: 'Bookkeeping',
     pitch: 'Real-time books, reconciled monthly and ready to make decisions from.',
     bullets: [
-      'Xero business software',
+      'Xero business software included',
       'Transaction processing and categorisation',
       'Monthly bank reconciliations',
       'Monthly management accounts',
@@ -34,12 +34,36 @@ const SERVICES = [
   {
     icon: Users,
     title: 'Payroll',
-    pitch: 'Accurate, compliant payroll for teams of any size.',
+    pitch: 'Accurate, compliant payroll for South African teams of any size.',
     bullets: [
       'Payroll processing and payslips',
-      'PAYE and UIF submission',
+      'PAYE and UIF submission via SimplePay',
       'COIDA compliance',
       'IRP5 certificates',
+    ],
+    href: '/pricing',
+  },
+  {
+    icon: FileText,
+    title: 'Tax',
+    pitch: 'Tax planning and structuring that keeps more money in your business — legally.',
+    bullets: [
+      'Annual tax planning and strategy',
+      'Income tax and provisional tax returns',
+      'VAT registration and submissions',
+      'SARS dispute resolution',
+    ],
+    href: '/pricing',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Advisory',
+    pitch: 'Practical financial advice when you need it — included in your subscription, not billed separately.',
+    bullets: [
+      'Cash-flow planning and forecasting',
+      'B-BBEE certificate and advisory',
+      'Business structuring guidance',
+      'Budget vs actuals reviews',
     ],
     href: '/pricing',
   },
@@ -52,8 +76,8 @@ export function ServicePillars() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="What we do"
-            title="One firm. Three disciplines."
-            subtitle="Annual financials, monthly books, and compliant payroll — on one fixed subscription."
+            title="Five disciplines. One subscription."
+            subtitle="Accounting, bookkeeping, payroll, tax, and advisory — covered end-to-end on a fixed monthly fee."
           />
         </ScrollReveal>
 

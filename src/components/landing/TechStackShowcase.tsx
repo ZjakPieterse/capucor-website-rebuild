@@ -20,13 +20,25 @@ const TOOLS = [
     name: 'Syft',
     tagline: 'Live dashboards',
     benefit:
-      'Financial clarity on demand. Revenue, expenses, and cash position in one place — no waiting for a report.',
+      'Financial clarity on demand. Revenue, expenses, and cash position in one place — no waiting for a scheduled report.',
   },
   {
     name: 'Karbon',
     tagline: 'Structured workflows',
     benefit:
-      'VAT deadlines, EMP201s, CIPC returns — every submission tracked and assigned. Nothing falls through the cracks.',
+      'VAT deadlines, EMP201s, CIPC returns — every submission tracked, assigned, and completed. Nothing falls through the cracks.',
+  },
+  {
+    name: 'SimplePay',
+    tagline: 'Compliant payroll',
+    benefit:
+      'Accurate payslips, PAYE and UIF submissions, and IRP5 certificates — processed on time, every pay run, with full SARS compliance.',
+  },
+  {
+    name: 'Draftworx',
+    tagline: 'Professional financials',
+    benefit:
+      'Annual financial statements drafted and reviewed to the standard required by SARS, your bank, and potential funders.',
   },
 ];
 
@@ -37,14 +49,14 @@ export function TechStackShowcase() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="Our tech stack"
-            title="The tools your finances deserve."
-            subtitle="South African SMEs are still running their books on spreadsheets. We moved past that years ago."
+            title="Best-in-class cloud tools, so your data is always accurate."
+            subtitle="We use purpose-built software at every step — so your numbers are accessible, secure, and ready when you need them."
           />
         </ScrollReveal>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {TOOLS.map((tool, i) => (
-            <ScrollReveal key={tool.name} delay={i * 0.08}>
+            <ScrollReveal key={tool.name} delay={i * 0.07}>
               <div className="rounded-xl border border-border bg-card p-6 h-full">
                 {/* Tool name badge */}
                 <div className="mb-4 inline-flex items-center rounded-lg border border-primary/30 bg-primary/8 px-3 py-1.5">

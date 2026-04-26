@@ -1,29 +1,29 @@
 'use client';
 
-import { CreditCard, BadgeCheck, Zap, MessageSquare } from 'lucide-react';
+import { BookCheck, CalendarCheck, BarChart2, Lightbulb } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
-const DIFFERENTIATORS = [
+const OUTCOMES = [
   {
-    icon: CreditCard,
-    title: 'Subscription pricing',
-    body: 'One fixed monthly fee. No hourly rates, no surprise invoices at year-end, no ambiguity. You know exactly what Capucor costs.',
+    icon: BookCheck,
+    title: 'Clean, current books',
+    body: 'Your Xero ledger is reconciled every month. Every transaction coded, every bank account matched. Ask us for any number at any time and you will get a straight answer.',
   },
   {
-    icon: BadgeCheck,
-    title: 'SAICA-aligned senior reviewers',
-    body: 'Every set of financials is reviewed by a qualified, experienced accountant. Not a junior. Not software.',
+    icon: CalendarCheck,
+    title: 'On-time compliance, every period',
+    body: 'VAT201s, EMP201s, provisional tax, and CIPC annual returns — filed on the correct dates, every cycle. No penalties, no last-minute scrambling.',
   },
   {
-    icon: Zap,
-    title: 'Tech-first onboarding in under 14 days',
-    body: 'We migrate your data, connect your tools, and have you fully operational faster than any traditional firm.',
+    icon: BarChart2,
+    title: 'Monthly management reports',
+    body: 'A concise management account pack delivered by the 15th of each month. Revenue, expenses, cash flow, and debtors — in one place, every time.',
   },
   {
-    icon: MessageSquare,
-    title: 'Advisory included, not extra',
-    body: 'B-BBEE certificates, cash-flow timing, tax structuring, supplier contract questions — that conversation is part of the service, not a billable extra.',
+    icon: Lightbulb,
+    title: 'Proactive advisory included',
+    body: 'Your accountant reviews your numbers and raises issues before they become problems. Tax structuring, cash-flow timing, B-BBEE certificates — included, not billable.',
   },
 ];
 
@@ -33,16 +33,16 @@ export function WhyCapucor() {
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="Why Capucor"
-            title="Built differently from day one."
-            subtitle="More than just compliance. We give you reliable numbers, practical advice, and a better way to run your business."
+            eyebrow="What you get"
+            title="Four outcomes, every month, without fail."
+            subtitle="Your subscription delivers concrete results — not ad-hoc work when you happen to call."
           />
         </ScrollReveal>
 
         <div className="mt-12 grid sm:grid-cols-2 gap-6">
-          {DIFFERENTIATORS.map((item, i) => (
+          {OUTCOMES.map((item, i) => (
             <ScrollReveal key={item.title} delay={i * 0.08}>
-              <div className="flex gap-5 rounded-xl border border-border bg-card p-6">
+              <div className="flex gap-5 rounded-xl border border-border bg-card p-6 h-full">
                 <div className="shrink-0 mt-0.5 h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                   <item.icon className="h-5 w-5 text-primary" />
                 </div>

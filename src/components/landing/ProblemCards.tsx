@@ -34,8 +34,8 @@ export function ProblemCards() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="The problem"
-            title="Sound familiar?"
-            subtitle="If any of these describe your current situation, you are not alone — and it does not have to stay this way."
+            title="Your business is moving faster than your finance function."
+            subtitle="Late submissions, unclear numbers, reactive accounting. While you focus on growth, the books fall behind — and by the time you notice, the damage is done."
           />
         </ScrollReveal>
 

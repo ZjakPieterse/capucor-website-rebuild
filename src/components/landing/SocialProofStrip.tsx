@@ -8,12 +8,18 @@ const STATS = [
   { label: 'SMEs served', value: 175, suffix: '+' },
 ];
 
+const BADGES = [
+  { label: 'SAICA member' },
+  { label: 'Xero partner' },
+  { label: 'POPIA compliant' },
+  { label: 'Fixed monthly pricing' },
+];
+
 export function SocialProofStrip() {
   return (
-    <section className="border-y border-border bg-muted/40 py-12">
+    <section className="border-y border-border bg-muted/40 py-10">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Stats row */}
-        <div className="flex flex-wrap items-center justify-center gap-8">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6">
           {STATS.map((stat, i) => (
             <div key={stat.label} className="flex items-center gap-8">
               <div className="text-center">
@@ -30,12 +36,17 @@ export function SocialProofStrip() {
 
           <Separator orientation="vertical" className="h-10 hidden sm:block" />
 
-          <div className="text-center">
-            <div className="text-3xl font-bold" style={{ color: 'var(--brand-cyan)' }}>SAICA</div>
-            <div className="text-sm text-muted-foreground mt-1">Accredited</div>
-          </div>
+          {BADGES.map((badge, i) => (
+            <div key={badge.label} className="flex items-center gap-8">
+              <div className="inline-flex items-center rounded-full border border-border bg-card px-4 py-1.5">
+                <span className="text-sm font-medium">{badge.label}</span>
+              </div>
+              {i < BADGES.length - 1 && (
+                <Separator orientation="vertical" className="h-6 hidden lg:block" />
+              )}
+            </div>
+          ))}
         </div>
-
       </div>
     </section>
   );

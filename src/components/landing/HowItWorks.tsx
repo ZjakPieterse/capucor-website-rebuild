@@ -1,37 +1,44 @@
 'use client';
 
-import { Phone, Calculator, Laptop, RefreshCw } from 'lucide-react';
+import { Inbox, Cog, Eye, BarChart2, MessageSquare } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
 const STEPS = [
   {
-    icon: Phone,
+    icon: Inbox,
     number: '1',
-    label: '01',
-    title: 'Discovery Call',
-    body: 'A 30-minute call to understand your business, current setup, and what good looks like for your finances.',
+    label: 'CAPTURE',
+    title: 'Capture',
+    body: 'Documents, receipts, and bank feeds are pulled in automatically via Xero and Dext. No chasing suppliers for invoices, no manual uploads.',
   },
   {
-    icon: Calculator,
+    icon: Cog,
     number: '2',
-    label: '02',
-    title: 'Scoping & Pricing',
-    body: 'We scope exactly which services you need, confirm your bracket, and lock in a fixed monthly fee — no ambiguity.',
+    label: 'PROCESS',
+    title: 'Process',
+    body: 'Transactions are coded, categorised, and reconciled against your bank feeds. Payroll, VAT registers, and debtors are kept current throughout the month.',
   },
   {
-    icon: Laptop,
+    icon: Eye,
     number: '3',
-    label: '03',
-    title: 'Tech Stack Onboarding',
-    body: 'We migrate your data into Xero and connect your tools. Most clients are fully onboarded within 14 days.',
+    label: 'REVIEW',
+    title: 'Review',
+    body: 'A senior accountant reviews your books each month and flags anything unusual — missed deductions, cost overruns, or transactions that need your attention.',
   },
   {
-    icon: RefreshCw,
+    icon: BarChart2,
     number: '4',
-    label: '04',
-    title: 'Monthly Cadence + Advisory',
-    body: 'EMP201s, VAT201s, provisional tax — filed on the correct dates, every period. Monthly management accounts delivered by the 15th. Your accountant is accessible, not absent.',
+    label: 'REPORT',
+    title: 'Report',
+    body: 'Monthly management accounts are delivered by the 15th. Revenue, expenses, cash flow, and debtors — clear and actionable, every month.',
+  },
+  {
+    icon: MessageSquare,
+    number: '5',
+    label: 'ADVISE',
+    title: 'Advise',
+    body: 'Your accountant raises issues before they become problems — tax structuring, cash-flow timing, B-BBEE certificates. Included in your subscription, not an extra call-out.',
   },
 ];
 
@@ -41,8 +48,9 @@ export function HowItWorks() {
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="How it works"
-            title="From first call to monthly cadence in under 14 days."
+            eyebrow="How the monthly finance system works"
+            title="A system, not ad-hoc work."
+            subtitle="Every month runs the same five-step cycle — so your numbers are always current, your filings are always on time, and your accountant is always ahead."
           />
         </ScrollReveal>
 
@@ -52,10 +60,10 @@ export function HowItWorks() {
               left: calc(50%+32px) = right edge of the icon (centered in column).
               right: calc(-50%+32px) = extends past the column boundary by exactly
               col_width/2 - 32px, landing at the left edge of the next icon. */}
-          <div className="grid grid-cols-4 gap-0">
+          <div className="grid grid-cols-5 gap-0">
             {STEPS.map((step, i) => (
-              <ScrollReveal key={step.label} delay={i * 0.12}>
-                <div className="relative flex flex-col items-center text-center px-4">
+              <ScrollReveal key={step.label} delay={i * 0.1}>
+                <div className="relative flex flex-col items-center text-center px-3">
                   {i < STEPS.length - 1 && (
                     <div
                       aria-hidden
@@ -71,9 +79,7 @@ export function HowItWorks() {
 
                   {/* Icon */}
                   <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40">
-                    <span className="text-xl font-bold text-primary leading-none">
-                      {step.number}
-                    </span>
+                    <step.icon className="h-6 w-6 text-primary" />
                   </div>
 
                   {/* Content */}
@@ -111,9 +117,7 @@ export function HowItWorks() {
 
                   {/* Node */}
                   <div className="relative z-10 shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40 ring-4 ring-background">
-                    <span className="text-base font-bold text-primary leading-none">
-                      {step.number}
-                    </span>
+                    <step.icon className="h-5 w-5 text-primary" />
                   </div>
 
                   {/* Content */}
