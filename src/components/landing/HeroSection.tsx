@@ -67,8 +67,8 @@ function FinanceCommandCentre() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="text-sm font-bold tracking-tight">Finance Overview</div>
-          <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,.32)' }}>
-            April 2026
+          <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,.32)' }} suppressHydrationWarning>
+            {MONTH_FULL[new Date().getMonth()]} {new Date().getFullYear()}
           </div>
         </div>
         <div
