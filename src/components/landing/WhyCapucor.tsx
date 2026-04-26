@@ -42,7 +42,7 @@ export function WhyCapucor() {
         <div className="mt-12 grid sm:grid-cols-2 gap-6">
           {OUTCOMES.map((item, i) => (
             <ScrollReveal key={item.title} delay={i * 0.08}>
-              <div className="flex gap-5 rounded-xl border border-border bg-card p-6 h-full transition-all duration-[250ms] hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg hover:border-primary">
+              <div className="feature-card flex gap-5 rounded-xl border border-border bg-card p-6 h-full">
                 <div className="shrink-0 mt-0.5 h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                   <item.icon className="h-5 w-5 text-primary" />
                 </div>

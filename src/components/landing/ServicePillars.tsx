@@ -3,7 +3,6 @@
 import { BarChart2, BookMarked, Users, FileText, TrendingUp } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { cn } from '@/lib/utils';
 
 const SERVICES = [
   {
@@ -85,20 +84,10 @@ export function ServicePillars() {
           {SERVICES.map((svc, i) => (
             <ScrollReveal key={svc.title} delay={i * 0.1}>
               <div
-                className={cn(
-                  'group rounded-xl border border-border bg-card p-8 h-full transition-all duration-[250ms]',
-                  'hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg hover:border-primary'
-                )}
+                className="feature-card group rounded-xl border border-border bg-card p-8 h-full"
               >
-                <div
-                  className={cn(
-                    'mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg',
-                    svc.featured ? 'bg-primary/15' : 'bg-muted'
-                  )}
-                >
-                  <svc.icon
-                    className={cn('h-5 w-5', svc.featured ? 'text-primary' : 'text-foreground')}
-                  />
+                <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-muted">
+                  <svc.icon className="h-5 w-5 text-foreground" />
                 </div>
 
                 <h3 className="text-xl font-semibold mb-2">{svc.title}</h3>
