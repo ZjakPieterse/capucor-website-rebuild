@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { ArrowRight, Calendar, TrendingDown, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
@@ -8,6 +9,43 @@ import { siteConfig } from '@/config/site';
 
 // ── Partners ─────────────────────────────────────────────────────────────────────
 const TOOLS = ['Xero', 'Dext', 'Syft', 'SimplePay', 'Karbon', 'Draftworx'];
+
+// ── Date helpers ──────────────────────────────────────────────────────────────────
+const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTH_FULL  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+type VatStatus = 'green' | 'amber' | 'red';
+
+interface DashboardDates {
+  vatDateStr: string;
+  vatDays: number;
+  vatStatus: VatStatus;
+  closeMonth: string;
+}
+
+function computeDashboardDates(): DashboardDates {
+  const now   = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  // VAT due: 25th of the following calendar month
+  const vatDue    = new Date(now.getFullYear(), now.getMonth() + 1, 25);
+  const msPerDay  = 1000 * 60 * 60 * 24;
+  const vatDays   = Math.round((vatDue.getTime() - today.getTime()) / msPerDay);
+  const vatDateStr = `25 ${MONTH_SHORT[vatDue.getMonth()]} ${vatDue.getFullYear()}`;
+  const vatStatus: VatStatus = vatDays > 30 ? 'green' : vatDays > 7 ? 'amber' : 'red';
+
+  // Monthly close: previous calendar month = latest fully complete month
+  const prev       = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const closeMonth = MONTH_FULL[prev.getMonth()];
+
+  return { vatDateStr, vatDays, vatStatus, closeMonth };
+}
+
+const VAT_STATUS_STYLES: Record<VatStatus, { bg: string; color: string }> = {
+  green: { bg: 'rgba(46,216,137,.15)',  color: '#2ED889' },
+  amber: { bg: 'rgba(234,179,8,.15)',   color: '#eab308' },
+  red:   { bg: 'rgba(239,68,68,.15)',   color: '#ef4444' },
+};
 
 // ── Finance Command Centre ────────────────────────────────────────────────────────
 const tileVariants = {
@@ -20,6 +58,14 @@ const tileVariants = {
 };
 
 function FinanceCommandCentre() {
+  const [dates, setDates] = useState<DashboardDates | null>(null);
+
+  useEffect(() => {
+    setDates(computeDashboardDates());
+  }, []);
+
+  const vatStyle = VAT_STATUS_STYLES[dates?.vatStatus ?? 'amber'];
+
   return (
     <div className="relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden">
       {/* Header */}
@@ -100,13 +146,16 @@ function FinanceCommandCentre() {
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             VAT Due
           </div>
-          <div className="font-mono font-bold text-sm leading-tight">25 May 2026</div>
+          <div className="font-mono font-bold text-sm leading-tight">
+            {dates?.vatDateStr ?? '—'}
+          </div>
           <div className="mt-2">
             <span
               className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide"
-              style={{ background: 'rgba(234,179,8,.15)', color: '#eab308' }}
+              style={{ background: vatStyle.bg, color: vatStyle.color }}
             >
-              <AlertCircle className="h-3 w-3" /> 29 days
+              <AlertCircle className="h-3 w-3" />
+              {dates ? `${dates.vatDays} days` : '—'}
             </span>
           </div>
         </motion.div>
@@ -121,7 +170,9 @@ function FinanceCommandCentre() {
           </div>
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: '#2ED889' }} />
-            <span className="text-xs font-semibold">April — Complete</span>
+            <span className="text-xs font-semibold">
+              {dates ? `${dates.closeMonth} — Complete` : '—'}
+            </span>
           </div>
         </motion.div>
 
