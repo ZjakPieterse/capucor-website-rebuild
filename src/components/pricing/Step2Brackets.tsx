@@ -53,7 +53,7 @@ export function Step2Brackets({
           return (
             <div
               key={svc.slug}
-              className="flex items-center justify-between gap-6 rounded-xl border border-border bg-card px-5 py-4"
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 rounded-xl border border-border bg-card px-5 py-4"
             >
               <div className="min-w-0">
                 <p className="font-semibold text-sm">{svc.name}</p>
@@ -67,7 +67,7 @@ export function Step2Brackets({
               >
                 <SelectTrigger
                   size="default"
-                  className="w-52 h-10 text-sm border-border bg-background/60"
+                  className="w-full sm:w-52 h-10 text-sm border-border bg-background/60"
                 >
                   <SelectValue placeholder="Select an option..." />
                 </SelectTrigger>
