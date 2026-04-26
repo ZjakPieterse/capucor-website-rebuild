@@ -62,11 +62,11 @@ export function ProblemCards() {
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {PROBLEMS.map((problem, i) => (
             <ScrollReveal key={problem.title} delay={i * 0.08} className="h-full">
-              <div className="problem-card h-full rounded-xl border border-border">
+              <div className="problem-card h-full rounded-xl border border-border bg-card overflow-hidden">
                 <div className="problem-card-inner">
 
                   {/* Front face — Problem */}
-                  <div className="problem-card-face rounded-xl bg-card p-6 flex flex-col">
+                  <div className="problem-card-face p-6 flex flex-col">
                     <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10">
                       <problem.icon className="h-5 w-5 text-destructive" />
                     </div>
@@ -75,7 +75,7 @@ export function ProblemCards() {
                   </div>
 
                   {/* Back face — Solution */}
-                  <div className="problem-card-face problem-card-back rounded-xl bg-card p-6 flex flex-col justify-between">
+                  <div className="problem-card-face problem-card-back p-6 flex flex-col justify-between">
                     <div>
                       <div className="mb-3 text-[10px] font-bold tracking-[0.2em] text-primary uppercase">The fix</div>
                       <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">

@@ -113,12 +113,14 @@
 
 /*
  * Both faces share the same grid area so the container auto-sizes to
- * whichever face is tallest — no fixed min-height needed.
+ * whichever face is tallest. height:100% fills the parent card so
+ * shorter cards don't leave a gap inside their border.
  */
 .problem-card-inner {
   display: grid;
   grid-template-areas: "face";
   width: 100%;
+  height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.5s ease;
 }
