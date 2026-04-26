@@ -86,7 +86,7 @@ function FinanceCommandCentre() {
       </div>
 
       {/* Tile grid */}
-      <div className="grid grid-cols-3 gap-2.5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
 
         {/* Cash Runway */}
         <motion.div
@@ -212,7 +212,7 @@ function FinanceCommandCentre() {
         {/* SARS / CIPC Compliance — full width */}
         <motion.div
           custom={6} variants={tileVariants} initial="hidden" animate="visible"
-          className="col-span-3 rounded-xl p-3.5"
+          className="col-span-1 sm:col-span-3 rounded-xl p-3.5"
           style={{ border: '1px solid rgba(46,216,137,.2)', background: 'rgba(46,216,137,.05)' }}
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2.5">
