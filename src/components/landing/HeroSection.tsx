@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { ArrowRight, Calendar, TrendingDown, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
@@ -59,13 +58,8 @@ const tileVariants = {
 };
 
 function FinanceCommandCentre() {
-  const [dates, setDates] = useState<DashboardDates | null>(null);
-
-  useEffect(() => {
-    setDates(computeDashboardDates());
-  }, []);
-
-  const vatStyle = VAT_STATUS_STYLES[dates?.vatStatus ?? 'amber'];
+  const dates    = computeDashboardDates();
+  const vatStyle = VAT_STATUS_STYLES[dates.vatStatus];
 
   return (
     <div className="relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden">
@@ -147,16 +141,17 @@ function FinanceCommandCentre() {
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             VAT Due
           </div>
-          <div className="font-mono font-bold text-sm leading-tight">
-            {dates?.vatDateStr ?? '—'}
+          <div className="font-mono font-bold text-sm leading-tight" suppressHydrationWarning>
+            {dates.vatDateStr}
           </div>
           <div className="mt-2">
             <span
               className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide"
               style={{ background: vatStyle.bg, color: vatStyle.color }}
+              suppressHydrationWarning
             >
               <AlertCircle className="h-3 w-3" />
-              {dates ? `${dates.vatDays} days` : '—'}
+              {dates.vatDays} days
             </span>
           </div>
         </motion.div>
@@ -171,8 +166,8 @@ function FinanceCommandCentre() {
           </div>
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: '#2ED889' }} />
-            <span className="text-xs font-semibold">
-              {dates ? `${dates.closeMonth} — Complete` : '—'}
+            <span className="text-xs font-semibold" suppressHydrationWarning>
+              {dates.closeMonth} — Complete
             </span>
           </div>
         </motion.div>
