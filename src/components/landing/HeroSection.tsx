@@ -33,7 +33,7 @@ function computeDashboardDates(): DashboardDates {
   const msPerDay  = 1000 * 60 * 60 * 24;
   const vatDays   = Math.round((vatDue.getTime() - today.getTime()) / msPerDay);
   const vatDateStr = `25 ${MONTH_SHORT[vatDue.getMonth()]} ${vatDue.getFullYear()}`;
-  const vatStatus: VatStatus = vatDays > 30 ? 'green' : vatDays > 7 ? 'amber' : 'red';
+  const vatStatus: VatStatus = vatDays > 15 ? 'green' : vatDays > 7 ? 'amber' : 'red';
 
   // Monthly close: previous calendar month = latest fully complete month
   const prev       = new Date(now.getFullYear(), now.getMonth() - 1, 1);
