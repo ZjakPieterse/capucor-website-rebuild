@@ -27,8 +27,9 @@ function computeDashboardDates(): DashboardDates {
   const now   = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // VAT due: 25th of the following calendar month
-  const vatDue    = new Date(now.getFullYear(), now.getMonth() + 1, 25);
+  // VAT due: 25th of the current month, or 25th of next month if already past the 25th
+  const monthOffset = today.getDate() > 25 ? 1 : 0;
+  const vatDue    = new Date(now.getFullYear(), now.getMonth() + monthOffset, 25);
   const msPerDay  = 1000 * 60 * 60 * 24;
   const vatDays   = Math.round((vatDue.getTime() - today.getTime()) / msPerDay);
   const vatDateStr = `25 ${MONTH_SHORT[vatDue.getMonth()]} ${vatDue.getFullYear()}`;
