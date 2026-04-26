@@ -2,6 +2,7 @@
 
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import { Separator } from '@/components/ui/separator';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 const STATS = [
   { label: 'Years in practice', value: 14, suffix: '+' },
@@ -19,6 +20,7 @@ export function SocialProofStrip() {
   return (
     <section className="border-y border-border bg-muted/40 py-10">
       <div className="max-w-7xl mx-auto px-6">
+        <ScrollReveal>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6">
           {STATS.map((stat, i) => (
             <div key={stat.label} className="flex items-center gap-8">
@@ -47,6 +49,7 @@ export function SocialProofStrip() {
             </div>
           ))}
         </div>
+        </ScrollReveal>
       </div>
     </section>
   );

@@ -42,7 +42,7 @@ export function ProblemCards() {
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {PROBLEMS.map((problem, i) => (
             <ScrollReveal key={problem.title} delay={i * 0.08}>
-              <div className="rounded-xl border border-border bg-card p-6 h-full">
+              <div className="rounded-xl border border-border bg-card p-6 h-full transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-lg hover:border-muted-foreground/20">
                 <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10">
                   <problem.icon className="h-5 w-5 text-destructive" />
                 </div>

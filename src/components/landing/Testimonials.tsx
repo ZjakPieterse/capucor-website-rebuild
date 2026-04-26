@@ -82,6 +82,7 @@ function TestimonialCard({
     <div
       className={cn(
         'rounded-xl border border-border bg-card p-6 h-full flex flex-col',
+        'transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-lg hover:border-primary/20',
         className
       )}
     >
@@ -95,6 +96,8 @@ function TestimonialCard({
           <img
             src={t.avatar_url}
             alt={t.name}
+            loading="lazy"
+            decoding="async"
             className="h-9 w-9 rounded-full object-cover"
           />
         ) : (

@@ -86,8 +86,8 @@ export function ServicePillars() {
             <ScrollReveal key={svc.title} delay={i * 0.1}>
               <div
                 className={cn(
-                  'group rounded-xl border bg-card p-8 h-full transition-all duration-200',
-                  'hover:-translate-y-0.5 hover:shadow-lg',
+                  'group rounded-xl border bg-card p-8 h-full transition-all duration-[250ms]',
+                  'hover:-translate-y-1 hover:shadow-lg',
                   svc.featured
                     ? 'border-primary/40 shadow-md shadow-primary/10'
                     : 'border-border hover:border-primary/30'

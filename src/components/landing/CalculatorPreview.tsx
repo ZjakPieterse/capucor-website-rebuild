@@ -24,7 +24,7 @@ export function CalculatorPreview() {
 
           <Link
             href="/pricing"
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
           >
             Start building your subscription
             <ArrowRight className="h-4 w-4" />

@@ -22,7 +22,7 @@ export function FinalCTA() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/pricing"
-              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
             >
               Calculate your price
               <ArrowRight className="h-4 w-4" />
@@ -32,7 +32,7 @@ export function FinalCTA() {
               href={siteConfig.links.booking}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg border border-input bg-input/30 px-6 py-3 text-sm font-semibold hover:bg-input/50 transition-colors"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg border border-input bg-input/30 px-6 py-3 text-sm font-semibold hover:bg-input/50 transition-all hover:scale-[1.03]"
             >
               <Calendar className="h-4 w-4" />
               Book a discovery call

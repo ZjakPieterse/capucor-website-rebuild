@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowRight, CalendarCheck, Check, Layers, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { cn } from '@/lib/utils';
 import { TIER_HIGHLIGHTS, TIER_CUMULATIVE_LABELS, PACKAGE_COMMON_ITEMS } from '@/config/tiers';
 import type { Service, Tier } from '@/types';
@@ -26,13 +27,16 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
   return (
     <section className="py-24 lg:py-32 bg-muted/30">
       <div className="max-w-7xl mx-auto px-6">
-        <SectionHeading
-          eyebrow="Packages"
-          title="One subscription. Full financial cover."
-          subtitle="Fixed monthly subscription. SARS-compliant. Scales with your business."
-        />
+        <ScrollReveal>
+          <SectionHeading
+            eyebrow="Packages"
+            title="One subscription. Full financial cover."
+            subtitle="Fixed monthly subscription. SARS-compliant. Scales with your business."
+          />
+        </ScrollReveal>
 
         {/* Included in every package */}
+        <ScrollReveal delay={0.1}>
         <div className="mt-10 rounded-xl border border-border bg-card px-8 py-6">
           <p className="text-xs font-medium uppercase tracking-widest text-center text-muted-foreground mb-5">
             Included in every package
@@ -49,6 +53,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
             })}
           </div>
         </div>
+        </ScrollReveal>
 
         <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedTiers.map((tier, i) => {
@@ -56,13 +61,14 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
             const displayItems = getDisplayItems(tier.slug);
 
             return (
+              <ScrollReveal key={tier.slug} delay={i * 0.1}>
               <div
-                key={tier.slug}
                 className={cn(
-                  'rounded-xl border bg-card p-8 flex flex-col',
+                  'rounded-xl border bg-card p-8 flex flex-col h-full transition-all duration-[250ms]',
+                  'hover:-translate-y-1 hover:shadow-lg',
                   isMiddle
-                    ? 'border-primary/40 shadow-lg shadow-primary/10 relative'
-                    : 'border-border'
+                    ? 'border-primary/40 shadow-lg shadow-primary/10 relative hover:shadow-primary/15'
+                    : 'border-border hover:border-primary/20'
                 )}
               >
                 {isMiddle && (
@@ -92,12 +98,13 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
                 <div className="mt-6 flex justify-center">
                   <Link
                     href="/pricing"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
                   >
                     Explore pricing →
                   </Link>
                 </div>
               </div>
+              </ScrollReveal>
             );
           })}
         </div>

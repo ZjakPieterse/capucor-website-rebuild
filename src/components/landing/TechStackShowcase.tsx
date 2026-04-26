@@ -57,7 +57,7 @@ export function TechStackShowcase() {
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {TOOLS.map((tool, i) => (
             <ScrollReveal key={tool.name} delay={i * 0.07}>
-              <div className="rounded-xl border border-border bg-card p-6 h-full">
+              <div className="rounded-xl border border-border bg-card p-6 h-full transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-lg hover:border-primary/20">
                 {/* Tool name badge */}
                 <div className="mb-4 inline-flex items-center rounded-lg border border-primary/30 bg-primary/8 px-3 py-1.5">
                   {/* [EDITABLE] swap text with SVG logo from public/logos/tools/ */}
