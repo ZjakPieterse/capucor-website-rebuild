@@ -61,14 +61,12 @@ export function ProblemCards() {
 
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {PROBLEMS.map((problem, i) => (
-            <ScrollReveal key={problem.title} delay={i * 0.08}>
-              {/* Outer: perspective + border glow + scale on hover */}
-              <div className="group relative h-full rounded-xl border border-border [perspective:1000px] cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:border-primary/60 hover:shadow-[0_0_28px_rgba(46,216,137,0.18)]">
-                {/* Flip container */}
-                <div className="relative min-h-[220px] h-full w-full [transform-style:preserve-3d] transition-transform duration-500 group-hover:[transform:rotateY(180deg)]">
+            <ScrollReveal key={problem.title} delay={i * 0.08} className="h-full">
+              <div className="problem-card h-full rounded-xl border border-border">
+                <div className="problem-card-inner">
 
                   {/* Front face — Problem */}
-                  <div className="absolute inset-0 [backface-visibility:hidden] rounded-xl bg-card p-6 flex flex-col">
+                  <div className="problem-card-face rounded-xl bg-card p-6 flex flex-col">
                     <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10">
                       <problem.icon className="h-5 w-5 text-destructive" />
                     </div>
@@ -77,7 +75,7 @@ export function ProblemCards() {
                   </div>
 
                   {/* Back face — Solution */}
-                  <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-xl bg-card p-6 flex flex-col justify-between">
+                  <div className="problem-card-face problem-card-back rounded-xl bg-card p-6 flex flex-col justify-between">
                     <div>
                       <div className="mb-3 text-[10px] font-bold tracking-[0.2em] text-primary uppercase">The fix</div>
                       <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">

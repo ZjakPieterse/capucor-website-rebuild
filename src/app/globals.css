@@ -97,3 +97,40 @@
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* ─── Problem card flip ──────────────────────────────────────────────────── */
+.problem-card {
+  perspective: 1000px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.problem-card:hover {
+  transform: scale(1.03);
+  border-color: color-mix(in oklch, var(--primary) 60%, transparent);
+  box-shadow: 0 0 28px color-mix(in oklch, var(--primary) 18%, transparent);
+}
+
+.problem-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.problem-card:hover .problem-card-inner {
+  transform: rotateY(180deg);
+}
+
+.problem-card-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.problem-card-back {
+  transform: rotateY(180deg);
+}
