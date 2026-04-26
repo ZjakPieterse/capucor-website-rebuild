@@ -8,22 +8,22 @@ const PROBLEMS = [
   {
     icon: BookOpen,
     title: 'Messy, outdated books',
-    body: 'Your financials are weeks behind. When you need a number, no one can give you a straight answer.',
+    body: 'Your financials are weeks behind. When you need a number — for the bank, a funder, or yourself — no one can give you a straight answer.',
   },
   {
     icon: AlertCircle,
     title: 'Surprise tax bills',
-    body: "SARS deadlines arrive without warning and provisional tax catches you off guard every time.",
+    body: 'Provisional tax, EMP201s, VAT201s — SARS penalties don\'t care that you forgot. And your accountant is nowhere to be found when you need them.',
   },
   {
     icon: Unplug,
     title: 'Disconnected tools',
-    body: 'Spreadsheets, emails, a bank statement — all in different places, none of them talking to each other.',
+    body: 'Spreadsheets, emails, a bank statement — all in different places, none of them talking. Cash flow, debtors, and VAT liability are invisible until you dig.',
   },
   {
     icon: Clock,
     title: 'No time for decisions',
-    body: 'You are too busy chasing invoices and doing admin to focus on actually growing the business.',
+    body: 'You are spending your week chasing debtor payments and sorting receipts instead of running the business.',
   },
 ];
 

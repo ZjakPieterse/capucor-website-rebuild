@@ -7,7 +7,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What's included in each subscription tier?",
     answer:
-      'Each tier builds on the previous. Basic covers core compliance (bookkeeping, annual statements, tax returns). Pro adds quarterly management accounts, VAT submissions, and expanded payroll. Premium adds monthly management accounts, advisory calls, and cash-flow forecasting. Full inclusions are shown in the pricing calculator.',
+      'Each tier builds on the previous. Basic covers core compliance — bookkeeping, annual financial statements, income tax and provisional tax returns, and VAT201 submissions. Pro adds monthly management accounts, EMP201 submissions, and expanded payroll. Premium adds daily processing, budget vs actuals, and a live KPI dashboard. Full inclusions are in the pricing calculator.',
   },
   {
     question: 'How do I switch from my current accountant?',
@@ -17,7 +17,7 @@ export const faqs: FaqItem[] = [
   {
     question: 'Are you SARS compliant?',
     answer:
-      'Yes. All submissions — VAT201, EMP201, provisional tax, and annual returns — are filed on time through our SARS eFiling integration. SAICA-aligned senior reviewers sign off on every set of financials.',
+      'Yes. VAT201s, EMP201s, provisional tax returns, and CIPC annual returns are all filed on time via SARS eFiling. Every set of financials is reviewed and signed off by a SAICA-aligned senior accountant before submission.',
   },
   {
     question: 'How is my data kept secure?',

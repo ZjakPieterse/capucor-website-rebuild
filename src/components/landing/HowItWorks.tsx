@@ -31,7 +31,7 @@ const STEPS = [
     number: '4',
     label: '04',
     title: 'Monthly Cadence + Advisory',
-    body: 'Regular submissions, reconciliations, and reports on a fixed schedule. Your accountant is accessible, not absent.',
+    body: 'EMP201s, VAT201s, provisional tax — filed on the correct dates, every period. Monthly management accounts delivered by the 15th. Your accountant is accessible, not absent.',
   },
 ];
 

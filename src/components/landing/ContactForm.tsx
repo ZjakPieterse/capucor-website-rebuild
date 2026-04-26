@@ -75,8 +75,8 @@ export function ContactForm() {
             <SectionHeading
               align="left"
               eyebrow="Get in touch"
-              title="Ready to get started?"
-              subtitle="Send us a message and we will be in touch within one business day."
+              title="Let's get your books in order."
+              subtitle="Send us a message and we'll be in touch within one business day. No hard sell, no obligation."
             />
             <a
               href={siteConfig.links.booking}

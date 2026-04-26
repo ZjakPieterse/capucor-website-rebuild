@@ -8,7 +8,7 @@ const TOOLS = [
     name: 'Xero',
     tagline: 'Real-time ledger',
     benefit:
-      'Your numbers are current, not a month behind. Every transaction categorised and reconciled as it happens.',
+      'Your numbers are current, not a month behind. Every transaction categorised and reconciled — so your management accounts are ready when you need them.',
   },
   {
     name: 'Dext',
@@ -26,7 +26,7 @@ const TOOLS = [
     name: 'Karbon',
     tagline: 'Structured workflows',
     benefit:
-      'Every deadline tracked. Every task assigned. Nothing falls through the cracks, ever.',
+      'VAT deadlines, EMP201s, CIPC returns — every submission tracked and assigned. Nothing falls through the cracks.',
   },
 ];
 
@@ -38,7 +38,7 @@ export function TechStackShowcase() {
           <SectionHeading
             eyebrow="Our tech stack"
             title="The tools your finances deserve."
-            subtitle="Most SMEs still rely on spreadsheets and email. We don't."
+            subtitle="South African SMEs are still running their books on spreadsheets. We moved past that years ago."
           />
         </ScrollReveal>
 

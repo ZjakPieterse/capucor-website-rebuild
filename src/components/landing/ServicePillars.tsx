@@ -9,24 +9,24 @@ const SERVICES = [
   {
     icon: BarChart2,
     title: 'Accounting',
-    pitch: 'Compliance and financial reporting, done properly.',
+    pitch: 'Annual financials, tax returns, and SARS and CIPC compliance — done properly.',
     bullets: [
-      'Annual financials',
-      'Tax preparation',
-      'VAT submission',
-      'CIPC compliance',
+      'Annual financial statements',
+      'Income tax and provisional tax',
+      'VAT201 submissions, every cycle',
+      'CIPC annual return filings',
     ],
     href: '/pricing',
   },
   {
     icon: BookMarked,
     title: 'Bookkeeping',
-    pitch: 'Real-time books, reconciled and ready to act on.',
+    pitch: 'Real-time books, reconciled monthly and ready to make decisions from.',
     bullets: [
       'Xero business software',
-      'Transaction processing',
-      'Monthly recons',
-      'Monthly reports',
+      'Transaction processing and categorisation',
+      'Monthly bank reconciliations',
+      'Monthly management accounts',
     ],
     href: '/pricing',
     featured: true,
@@ -53,7 +53,7 @@ export function ServicePillars() {
           <SectionHeading
             eyebrow="What we do"
             title="One firm. Three disciplines."
-            subtitle="Accounting, bookkeeping, and payroll on a single subscription."
+            subtitle="Annual financials, monthly books, and compliant payroll — on one fixed subscription."
           />
         </ScrollReveal>
 

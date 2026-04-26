@@ -29,7 +29,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
         <SectionHeading
           eyebrow="Packages"
           title="One subscription. Full financial cover."
-          subtitle="Flexible packages built on the same solid foundation."
+          subtitle="Fixed monthly subscription. SARS-compliant. Scales with your business."
         />
 
         {/* Included in every package */}

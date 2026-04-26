@@ -8,7 +8,7 @@ const DIFFERENTIATORS = [
   {
     icon: CreditCard,
     title: 'Subscription pricing',
-    body: 'One fixed monthly fee. No hourly billing, no surprise invoices, no end-of-year shock. You always know what you pay.',
+    body: 'One fixed monthly fee. No hourly rates, no surprise invoices at year-end, no ambiguity. You know exactly what Capucor costs.',
   },
   {
     icon: BadgeCheck,
@@ -23,7 +23,7 @@ const DIFFERENTIATORS = [
   {
     icon: MessageSquare,
     title: 'Advisory included, not extra',
-    body: 'Questions about a supplier contract, a tax strategy, or cash-flow timing? That is part of the service, not a billable add-on.',
+    body: 'B-BBEE certificates, cash-flow timing, tax structuring, supplier contract questions — that conversation is part of the service, not a billable extra.',
   },
 ];
 
