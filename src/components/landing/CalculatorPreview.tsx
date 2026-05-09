@@ -18,8 +18,8 @@ export function CalculatorPreview() {
             Build your subscription in 3 minutes.
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
-            Select your services, choose your bracket, pick your tier — and see an exact monthly
-            price before you speak to anyone. No forms, no waiting, no obligation.
+            Pick your services and bracket. You'll see an exact monthly price on the spot.
+            No contact form, no callback — just a number.
           </p>
 
           <Link

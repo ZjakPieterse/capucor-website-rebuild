@@ -21,19 +21,19 @@ const STEPS = [
     icon: Eye,
     number: '3',
     title: 'Review',
-    body: 'A senior accountant reviews your books each month and flags anything unusual — missed deductions, cost overruns, or transactions that need your attention.',
+    body: 'A senior accountant reviews your books each month and flags anything unusual: missed deductions, cost overruns, or transactions that need your attention.',
   },
   {
     icon: BarChart2,
     number: '4',
     title: 'Report',
-    body: 'Monthly management accounts are delivered by the 15th. Revenue, expenses, cash flow, and debtors — clear and actionable, every month.',
+    body: 'Monthly management accounts are delivered by the 15th. Revenue, expenses, cash flow, and debtors: all in one place, every month.',
   },
   {
     icon: MessageSquare,
     number: '5',
     title: 'Advise',
-    body: 'Your accountant raises issues before they become problems — tax structuring, cash-flow timing, B-BBEE certificates. Included in your subscription, not an extra call-out.',
+    body: 'Your accountant reviews your numbers each month and flags anything worth discussing: tax structuring, cash-flow timing, B-BBEE certificates. All included.',
   },
 ];
 
@@ -45,7 +45,7 @@ export function HowItWorks() {
           <SectionHeading
             eyebrow="How the monthly finance system works"
             title="A system, not ad-hoc work."
-            subtitle="Every month runs the same five-step cycle — so your numbers are always current, your filings are always on time, and your accountant is always ahead."
+            subtitle="Every month runs the same five-step cycle. By the time the new month starts, your books are closed, your returns are filed, and there's a management report in your inbox."
           />
         </ScrollReveal>
 

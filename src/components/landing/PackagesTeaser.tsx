@@ -31,7 +31,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
           <SectionHeading
             eyebrow="Packages"
             title="One subscription. Full financial cover."
-            subtitle="Fixed monthly subscription. SARS-compliant. Scales with your business."
+            subtitle="One flat monthly fee. All the compliance covered. Adjust your tier as your business grows."
           />
         </ScrollReveal>
 

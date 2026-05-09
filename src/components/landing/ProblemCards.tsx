@@ -8,27 +8,27 @@ const PROBLEMS = [
   {
     icon: BookOpen,
     title: 'Messy, outdated books',
-    body: 'Your financials are weeks behind. When you need a number — for the bank, a funder, or yourself — no one can give you a straight answer.',
+    body: 'Your financials are weeks behind. When you need a number for the bank, a funder, or a decision, no one can give you a straight answer.',
     solution: {
       icon: CheckCircle2,
       title: 'Real-time books. Always ready.',
-      body: 'Reconciled weekly, automated, and live. Pull a clean P&L or balance sheet on demand — no waiting, no chasing, no surprises.',
+      body: 'Reconciled weekly, automated, and live. Pull a clean P&L or balance sheet any time. No waiting, no chasing, no surprises.',
     },
   },
   {
     icon: AlertCircle,
     title: 'Surprise tax bills',
-    body: 'Provisional tax, EMP201s, VAT201s — SARS penalties don\'t care that you forgot. And your accountant is nowhere to be found when you need them.',
+    body: 'Provisional tax, EMP201s, VAT201s: SARS penalties don\'t care that you forgot. And your accountant is nowhere to be found when you need them.',
     solution: {
       icon: CalendarCheck,
       title: 'Every deadline. On time.',
-      body: 'We track every VAT201, EMP201, and provisional tax date. Submissions go out before they\'re due — SARS penalties stay someone else\'s problem.',
+      body: 'We track every VAT201, EMP201, and provisional tax date. Submissions go out before they\'re due. SARS penalties stay someone else\'s problem.',
     },
   },
   {
     icon: Unplug,
     title: 'Disconnected tools',
-    body: 'Spreadsheets, emails, a bank statement — all in different places, none of them talking. Cash flow, debtors, and VAT liability are invisible until you dig.',
+    body: 'Spreadsheets, emails, a bank statement: all in different places, none of them talking. Cash flow, debtors, and VAT liability are invisible until you dig.',
     solution: {
       icon: Link2,
       title: 'One live view. Everything connected.',
@@ -42,7 +42,7 @@ const PROBLEMS = [
     solution: {
       icon: Zap,
       title: 'Finance handled. Focus reclaimed.',
-      body: 'We own the admin, the follow-ups, and the filings — so your week is spent on strategy, not spreadsheets.',
+      body: 'We own the admin, the follow-ups, and the filings. Your week stays on strategy, not spreadsheets.',
     },
   },
 ];
@@ -55,7 +55,7 @@ export function ProblemCards() {
           <SectionHeading
             eyebrow="The problem"
             title="Your business is moving faster than your finance function."
-            subtitle="Late submissions, unclear numbers, reactive accounting. While you focus on growth, the books fall behind — and by the time you notice, the damage is done."
+            subtitle="Late submissions, unclear numbers, reactive accounting. While you focus on growth, the books fall behind. By the time you notice, the damage is done."
           />
         </ScrollReveal>
 

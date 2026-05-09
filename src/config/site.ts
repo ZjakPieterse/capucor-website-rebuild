@@ -2,7 +2,7 @@ export const siteConfig = {
   name: 'Capucor Business Solutions',
   tagline: 'Outsourced finance for growing SMEs.',
   description:
-    'Subscription accounting, bookkeeping, and payroll services for South African SMEs. Tech-forward, transparent pricing, SAICA-aligned.',
+    'Subscription accounting, bookkeeping, and payroll for South African SMEs. Fixed monthly pricing, Xero-powered, SAICA-aligned.',
   url: 'https://capucor.co.za',
   ogImage: '/api/og',
   links: {

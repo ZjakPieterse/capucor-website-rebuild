@@ -8,7 +8,7 @@ const TOOLS = [
     name: 'Xero',
     tagline: 'Real-time ledger',
     benefit:
-      'Your numbers are current, not a month behind. Every transaction categorised and reconciled — so your management accounts are ready when you need them.',
+      'Your numbers are current, not a month behind. Every transaction categorised and reconciled, so your management accounts are ready when you need them.',
   },
   {
     name: 'Dext',
@@ -20,19 +20,19 @@ const TOOLS = [
     name: 'Syft',
     tagline: 'Live dashboards',
     benefit:
-      'Financial clarity on demand. Revenue, expenses, and cash position in one place — no waiting for a scheduled report.',
+      'Pull up revenue, expenses, or cash position whenever you need them. No waiting for someone to run a report.',
   },
   {
     name: 'Karbon',
     tagline: 'Structured workflows',
     benefit:
-      'VAT deadlines, EMP201s, CIPC returns — every submission tracked, assigned, and completed. Nothing falls through the cracks.',
+      'VAT deadlines, EMP201s, CIPC returns: every submission tracked, assigned, and confirmed. No deadline missed.',
   },
   {
     name: 'SimplePay',
     tagline: 'Compliant payroll',
     benefit:
-      'Accurate payslips, PAYE and UIF submissions, and IRP5 certificates — processed on time, every pay run, with full SARS compliance.',
+      'Accurate payslips, PAYE and UIF submissions, and IRP5 certificates: processed on time, every pay run.',
   },
   {
     name: 'Draftworx',
@@ -49,8 +49,8 @@ export function TechStackShowcase() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="Our tech stack"
-            title="Best-in-class cloud tools, so your data is always accurate."
-            subtitle="We use purpose-built software at every step — so your numbers are accessible, secure, and ready when you need them."
+            title="The right tools, set up properly. Your numbers are always current."
+            subtitle="Each tool does one job well. Together, they mean your numbers are live, yours to access, and never sitting in someone's spreadsheet."
           />
         </ScrollReveal>
 

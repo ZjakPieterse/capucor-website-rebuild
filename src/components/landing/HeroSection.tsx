@@ -269,8 +269,8 @@ export function HeroSection() {
               className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}
             >
-              We combine expert accountants, cloud systems and fixed monthly pricing to give your
-              business clearer numbers, cleaner compliance and better financial control.
+              Real accountants, the right software, and a flat monthly rate. Your books are clean,
+              your tax is filed on time, and you always know where your business stands.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-3"

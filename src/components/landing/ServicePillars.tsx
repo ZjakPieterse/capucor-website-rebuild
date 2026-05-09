@@ -8,7 +8,7 @@ const SERVICES = [
   {
     icon: BarChart2,
     title: 'Accounting',
-    pitch: 'Annual financials, tax returns, and SARS and CIPC compliance — done properly and on time.',
+    pitch: 'Annual financials, tax returns, and SARS and CIPC compliance. Done properly, on time.',
     bullets: [
       'Annual financial statements',
       'Income tax and provisional tax',
@@ -52,7 +52,7 @@ export function ServicePillars() {
           <SectionHeading
             eyebrow="What we do"
             title="Three disciplines. One subscription."
-            subtitle="Accounting, bookkeeping, and payroll — covered end-to-end on a fixed monthly fee."
+            subtitle="Accounting, bookkeeping, and payroll. All on one flat monthly subscription."
           />
         </ScrollReveal>
 

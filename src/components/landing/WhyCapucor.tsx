@@ -13,17 +13,17 @@ const OUTCOMES = [
   {
     icon: CalendarCheck,
     title: 'On-time compliance, every period',
-    body: 'VAT201s, EMP201s, provisional tax, and CIPC annual returns — filed on the correct dates, every cycle. No penalties, no last-minute scrambling.',
+    body: 'VAT201s, EMP201s, provisional tax, and CIPC annual returns: filed on the correct dates, every cycle. No penalties, no last-minute scrambling.',
   },
   {
     icon: BarChart2,
     title: 'Monthly management reports',
-    body: 'A concise management account pack delivered by the 15th of each month. Revenue, expenses, cash flow, and debtors — in one place, every time.',
+    body: 'A concise management account pack delivered by the 15th of each month: revenue, expenses, cash flow, and debtors. In one place, every time.',
   },
   {
     icon: Lightbulb,
     title: 'Proactive advisory included',
-    body: 'Your accountant reviews your numbers and raises issues before they become problems. Tax structuring, cash-flow timing, B-BBEE certificates — included, not billable.',
+    body: 'Your accountant reviews your numbers and raises issues before they become problems: tax structuring, cash-flow timing, B-BBEE certificates. All included in your subscription.',
   },
 ];
 
@@ -35,7 +35,7 @@ export function WhyCapucor() {
           <SectionHeading
             eyebrow="What you get"
             title="Four outcomes, every month, without fail."
-            subtitle="Your subscription delivers concrete results — not ad-hoc work when you happen to call."
+            subtitle="Every month, your books are clean, your filings are done, and your accountant has already flagged anything worth discussing. Same cycle, every time."
           />
         </ScrollReveal>
 

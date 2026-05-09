@@ -7,7 +7,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What's included in each subscription tier?",
     answer:
-      'Each tier builds on the previous. Basic covers core compliance — bookkeeping, annual financial statements, income tax and provisional tax returns, and VAT201 submissions. Pro adds monthly management accounts, EMP201 submissions, and expanded payroll. Premium adds daily processing, budget vs actuals, and a live KPI dashboard. Full inclusions are in the pricing calculator.',
+      'Each tier builds on the previous. Basic covers core compliance: bookkeeping, annual financial statements, income tax and provisional tax returns, and VAT201 submissions. Pro adds monthly management accounts, EMP201 submissions, and expanded payroll. Premium adds daily processing, budget vs actuals, and a live KPI dashboard. Full inclusions are in the pricing calculator.',
   },
   {
     question: 'How do I switch from my current accountant?',
