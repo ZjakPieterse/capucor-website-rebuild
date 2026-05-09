@@ -7,7 +7,7 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 const ITEMS = [
   { animate: true, number: 175, suffix: '+', label: 'SMEs served' },
   { animate: true, number: 14, suffix: '+', label: 'Years in practice' },
-  { animate: false, text: 'SAICA', label: 'member' },
+  { animate: false, text: 'SAICA', label: 'Member' },
   { animate: false, text: 'Xero', label: 'Gold Partner' },
 ];
 
