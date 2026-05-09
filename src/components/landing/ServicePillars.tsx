@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart2, BookMarked, Users, FileText, TrendingUp } from 'lucide-react';
+import { BarChart2, BookMarked, Users } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
@@ -42,30 +42,6 @@ const SERVICES = [
     ],
     href: '/pricing',
   },
-  {
-    icon: FileText,
-    title: 'Tax',
-    pitch: 'Tax planning and structuring that keeps more money in your business — legally.',
-    bullets: [
-      'Annual tax planning and strategy',
-      'Income tax and provisional tax returns',
-      'VAT registration and submissions',
-      'SARS dispute resolution',
-    ],
-    href: '/pricing',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Advisory',
-    pitch: 'Practical financial advice when you need it — included in your subscription, not billed separately.',
-    bullets: [
-      'Cash-flow planning and forecasting',
-      'B-BBEE certificate and advisory',
-      'Business structuring guidance',
-      'Budget vs actuals reviews',
-    ],
-    href: '/pricing',
-  },
 ];
 
 export function ServicePillars() {
@@ -75,8 +51,8 @@ export function ServicePillars() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="What we do"
-            title="Five disciplines. One subscription."
-            subtitle="Accounting, bookkeeping, payroll, tax, and advisory — covered end-to-end on a fixed monthly fee."
+            title="Three disciplines. One subscription."
+            subtitle="Accounting, bookkeeping, and payroll — covered end-to-end on a fixed monthly fee."
           />
         </ScrollReveal>
 

@@ -109,6 +109,10 @@
   box-shadow: 0 12px 40px -8px color-mix(in oklch, var(--primary) 15%, transparent);
 }
 
+.outcome-card {
+  transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+}
+
 /* ─── Problem card flip ──────────────────────────────────────────────────── */
 .problem-card {
   perspective: 1000px;

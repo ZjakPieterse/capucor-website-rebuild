@@ -83,10 +83,10 @@ export function ProblemCards() {
                       <h3 className="text-base font-semibold mb-2">{problem.solution.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{problem.solution.body}</p>
                     </div>
-                    <div className="mt-4 text-xs font-medium text-primary flex items-center gap-1">
+                    <a href="/pricing" className="mt-4 text-xs font-medium text-primary flex items-center gap-1 hover:underline">
                       <span>Capucor takes care of this</span>
                       <ArrowRight className="h-3 w-3" />
-                    </div>
+                    </a>
                   </div>
 
                 </div>
