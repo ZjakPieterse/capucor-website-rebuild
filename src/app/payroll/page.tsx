@@ -57,7 +57,7 @@ export default function PayrollPage() {
             Accurate payroll for your staff team, every month. Every payslip calculated correctly,
             every statutory submission filed on time. PAYE and UIF submitted to SARS each month,
             COIDA returns filed annually, and IRP5 certificates ready for every employee at
-            year-end. When payroll day comes, it&apos;s handled.
+            year-end.
           </p>
         </div>
       </section>

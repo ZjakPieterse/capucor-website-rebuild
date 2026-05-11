@@ -37,7 +37,7 @@ const INCLUDED = [
   {
     title: 'CIPC annual return filings',
     description:
-      "Your company's annual return filed with CIPC every year, before the due date. It's a straightforward requirement that carries real consequences if missed: deregistration risk, director liability. It gets handled.",
+      "Your company's annual return filed with CIPC every year, before the due date. It's a straightforward requirement that carries real consequences if missed: deregistration risk, director liability.",
   },
 ];
 
