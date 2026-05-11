@@ -9,7 +9,7 @@ const STEPS = [
     icon: Inbox,
     number: '1',
     title: 'Collect & Collaborate',
-    body: 'You get a structured monthly process that tells you exactly what to provide and when. We take it from there.',
+    body: 'You get a structured monthly process that tells you exactly what to provide and when. We take over from there, and you can focus on growing your business.',
   },
   {
     icon: Cog,
