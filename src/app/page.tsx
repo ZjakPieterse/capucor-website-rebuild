@@ -102,10 +102,10 @@ export default async function HomePage() {
       <ServicePillars />
       {/* 6. How the monthly finance system works */}
       <HowItWorks />
-      {/* 7. Calculator preview */}
-      <CalculatorPreview />
-      {/* 8. Packages */}
+      {/* 7. Packages */}
       <PackagesTeaser services={services} tiers={tiers} />
+      {/* 8. Calculator preview */}
+      <CalculatorPreview />
       {/* 9. Tech stack */}
       <TechStackShowcase />
       {/* 10. Client outcomes */}
