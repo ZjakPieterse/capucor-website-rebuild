@@ -16,7 +16,7 @@ const OUTCOMES: OutcomeCard[] = [
     before:
       'Books three months behind. VAT201 filed late once, triggering a SARS penalty. Accountant unreachable at year-end — financial statements took six weeks to finalise.',
     after:
-      'Monthly close completed by the 10th. Zero late filings across 12 months. Year-end took four days because the records were already clean.',
+      'Monthly close completed by the 10th. Zero late filings across 12 months. Year-end took four days. The records were already clean.',
     metric: '12 months. Zero late filings.',
   },
   {
@@ -24,7 +24,7 @@ const OUTCOMES: OutcomeCard[] = [
     before:
       'Payroll calculated manually in spreadsheets each month. IRP5 certificates issued six weeks late. One SARS penalty for an EMP201 error that went unnoticed for two cycles.',
     after:
-      'Payroll processed through SimplePay every month. IRP5s filed before the May deadline. A SARS query on the prior-year error was resolved in full — with clean records to back it up.',
+      'Payroll processed through SimplePay every month. IRP5s filed before the May deadline. When SARS queried the prior-year error, clean records meant it was resolved without escalation.',
     metric: 'First clean payroll year-end.',
   },
   {
@@ -32,7 +32,7 @@ const OUTCOMES: OutcomeCard[] = [
     before:
       'No management accounts. Cash decisions made by checking the bank balance. Surprised by a R40,000 VAT liability the month before a planned equipment purchase.',
     after:
-      'Monthly P&L and balance sheet delivered by the 15th. Cash runway tracked. Seasonal dips anticipated two months out instead of discovered mid-crisis.',
+      'Monthly P&L and balance sheet delivered by the 15th. Cash runway tracked every month. Seasonal dips visible in the P&L two months before they hit the bank balance.',
     metric: 'Monthly P&L. Every month. No chasing.',
   },
 ];
@@ -45,7 +45,7 @@ export function OutcomeStories() {
           <SectionHeading
             eyebrow="Client outcomes"
             title="What changes when your finances are finally sorted."
-            subtitle="These are anonymised examples of situations we see regularly and what gets resolved once a proper system is in place."
+            subtitle="Anonymised examples of what we typically walk into with a new client, and what the same business looks like twelve months later."
           />
         </ScrollReveal>
 

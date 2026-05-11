@@ -18,7 +18,7 @@ export function FaqAccordion() {
           <SectionHeading
             eyebrow="FAQ"
             title="Common questions."
-            subtitle="If something is not covered here, reach out via the contact form below."
+            subtitle="Something not covered here? Book a call and we'll walk you through it."
           />
         </ScrollReveal>
 
