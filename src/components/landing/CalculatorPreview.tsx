@@ -4,7 +4,7 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export function CalculatorPreview() {
   return (
-    <section className="py-24 lg:py-32">
+    <section className="py-24 lg:py-32 bg-muted/30">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <ScrollReveal>
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/8 px-4 py-1.5 mb-6">
@@ -26,7 +26,7 @@ export function CalculatorPreview() {
             href="/pricing"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
           >
-            Start building your subscription
+            Build your subscription
             <ArrowRight className="h-4 w-4" />
           </Link>
         </ScrollReveal>

@@ -1,8 +1,10 @@
 'use client';
 
-import { Inbox, Cog, BarChart2, MessageSquare } from 'lucide-react';
+import Link from 'next/link';
+import { Inbox, Cog, BarChart2, MessageSquare, ArrowRight, Calendar } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { siteConfig } from '@/config/site';
 
 const STEPS = [
   {
@@ -117,6 +119,31 @@ export function HowItWorks() {
           })}
         </div>
       </div>
+
+      {/* Bottom CTA */}
+      <ScrollReveal delay={0.4}>
+        <div className="mt-16 text-center">
+          <p className="text-sm text-muted-foreground mb-6">Ready to put this system to work for your business?</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 rounded-lg border border-input bg-input/30 px-5 py-2.5 text-sm font-semibold hover:bg-input/50 transition-all hover:scale-[1.03]"
+            >
+              Build your subscription
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <a
+              href={siteConfig.links.booking}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Calendar className="h-4 w-4" />
+              Book a call
+            </a>
+          </div>
+        </div>
+      </ScrollReveal>
     </section>
   );
 }

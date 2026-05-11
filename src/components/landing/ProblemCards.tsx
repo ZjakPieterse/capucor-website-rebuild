@@ -49,7 +49,7 @@ const PROBLEMS = [
 
 export function ProblemCards() {
   return (
-    <section className="py-24 lg:py-32">
+    <section className="py-24 lg:py-32 bg-muted/30">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading

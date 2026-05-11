@@ -25,7 +25,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
   const sortedTiers = [...tiers].sort((a, b) => a.display_order - b.display_order);
 
   return (
-    <section className="py-24 lg:py-32 bg-muted/30">
+    <section className="py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
@@ -100,7 +100,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
                     href="/pricing"
                     className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
                   >
-                    Explore pricing →
+                    Build your subscription →
                   </Link>
                 </div>
               </div>
@@ -119,7 +119,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
             variant="outline"
             className="gap-2"
           >
-            Open pricing calculator <ArrowRight className="h-4 w-4" />
+            Build your subscription <ArrowRight className="h-4 w-4" />
           </Button>
         </div>
       </div>

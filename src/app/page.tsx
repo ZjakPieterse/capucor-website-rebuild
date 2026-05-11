@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { siteConfig } from '@/config/site';
-import type { Service, Tier, Testimonial } from '@/types';
+import type { Service, Tier } from '@/types';
 
 import { HeroSection } from '@/components/landing/HeroSection';
 import { SocialProofStrip } from '@/components/landing/SocialProofStrip';
@@ -12,7 +12,7 @@ import { HowItWorks } from '@/components/landing/HowItWorks';
 import { CalculatorPreview } from '@/components/landing/CalculatorPreview';
 import { PackagesTeaser } from '@/components/landing/PackagesTeaser';
 import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
-import { Testimonials } from '@/components/landing/Testimonials';
+import { OutcomeStories } from '@/components/landing/OutcomeStories';
 import { FaqAccordion } from '@/components/landing/FaqAccordion';
 import { FinalCTA } from '@/components/landing/FinalCTA';
 
@@ -36,12 +36,11 @@ export function generateMetadata(): Metadata {
 async function getLandingData(): Promise<{
   services: Service[];
   tiers: Tier[];
-  testimonials: Testimonial[];
 }> {
   try {
     const supabase = await createSupabaseServerClient();
 
-    const [servicesRes, tiersRes, testimonialsRes] = await Promise.all([
+    const [servicesRes, tiersRes] = await Promise.all([
       supabase
         .from('services')
         .select('*')
@@ -54,26 +53,19 @@ async function getLandingData(): Promise<{
         .eq('active', true)
         .order('display_order')
         .returns<Tier[]>(),
-      supabase
-        .from('testimonials')
-        .select('*')
-        .eq('active', true)
-        .order('display_order')
-        .returns<Testimonial[]>(),
     ]);
 
     return {
       services: servicesRes.data ?? [],
       tiers: tiersRes.data ?? [],
-      testimonials: testimonialsRes.data ?? [],
     };
   } catch {
-    return { services: [], tiers: [], testimonials: [] };
+    return { services: [], tiers: [] };
   }
 }
 
 export default async function HomePage() {
-  const { services, tiers, testimonials } = await getLandingData();
+  const { services, tiers } = await getLandingData();
 
   return (
     <>
@@ -116,8 +108,8 @@ export default async function HomePage() {
       <PackagesTeaser services={services} tiers={tiers} />
       {/* 9. Tech stack */}
       <TechStackShowcase />
-      {/* 10. Social proof */}
-      <Testimonials testimonials={testimonials} />
+      {/* 10. Client outcomes */}
+      <OutcomeStories />
       {/* 11. FAQ */}
       <FaqAccordion />
       {/* 12. Final CTA */}

@@ -12,7 +12,7 @@ import { faqs } from '@/config/faq';
 
 export function FaqAccordion() {
   return (
-    <section id="faq" className="py-24 lg:py-32">
+    <section id="faq" className="py-24 lg:py-32 bg-muted/30">
       <div className="max-w-3xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading

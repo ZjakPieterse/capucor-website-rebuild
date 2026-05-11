@@ -51,16 +51,10 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-2">
           <Button
             nativeButton={false}
-            render={
-              <a
-                href={siteConfig.links.booking}
-                target="_blank"
-                rel="noopener noreferrer"
-              />
-            }
+            render={<Link href="/client-portal" />}
             size="sm"
           >
-            Book a Call
+            Client Portal
           </Button>
         </div>
 
@@ -92,16 +86,10 @@ export function Navbar() {
                 <div className="pt-4 border-t border-border">
                   <Button
                     nativeButton={false}
-                    render={
-                      <a
-                        href={siteConfig.links.booking}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      />
-                    }
+                    render={<Link href="/client-portal" />}
                     className="w-full"
                   >
-                    Book a Call
+                    Client Portal
                   </Button>
                 </div>
               </nav>
