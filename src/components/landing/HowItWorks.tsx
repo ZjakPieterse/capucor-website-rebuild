@@ -15,19 +15,19 @@ const STEPS = [
     icon: Cog,
     number: '2',
     title: 'Process & Reconcile',
-    body: 'We capture, code, and process the monthly accounting activity using the right systems and workflows. Bank feeds, supplier documents, payroll information, and other records are brought together so your accounts stay current and organised.',
+    body: 'Your books are closed, reconciled, and up to date by the time the month ends. Every bank feed, supplier invoice, and payroll entry is captured and coded correctly.',
   },
   {
     icon: BarChart2,
     number: '3',
     title: 'Review & Report',
-    body: 'Your numbers are reviewed for accuracy, completeness, and consistency before reports are prepared. We highlight what matters, identify areas that need attention, and give you a clearer view of business performance.',
+    body: 'You receive a management report that tells you exactly where the business stands. Before it lands, every number has been checked and anything worth your attention is flagged.',
   },
   {
     icon: MessageSquare,
     number: '4',
     title: 'Advise & Plan',
-    body: 'We use the numbers to guide better decisions. Through advisory input, meetings, and strategic conversations, we help you understand what is happening in the business, what needs action, and where opportunities exist for improvement and growth.',
+    body: 'You leave each month clear on what the numbers mean and what needs to happen next. We use your financials to surface opportunities, flag risks, and help you make better decisions.',
   },
 ];
 
