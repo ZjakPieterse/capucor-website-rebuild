@@ -38,7 +38,7 @@ export function HowItWorks() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="How the monthly finance system works"
-            title="A simple monthly rhythm that keeps your business financially in control."
+            title="A monthly rhythm that keeps you in control."
             subtitle="Our FinTeam solution works best when there is clear collaboration between your business and our team. You provide the information we need, and we turn that into accurate records, useful reports, and practical advice you can use to make better decisions."
           />
         </ScrollReveal>
