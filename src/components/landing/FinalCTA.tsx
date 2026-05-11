@@ -5,10 +5,7 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export function FinalCTA() {
   return (
-    <section
-      id="contact"
-      className="py-24 lg:py-32 bg-muted/50 border-t border-border"
-    >
+    <section className="py-24 lg:py-32 bg-muted/50 border-t border-border">
       <div className="max-w-3xl mx-auto px-6 text-center">
         <ScrollReveal>
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">

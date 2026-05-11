@@ -6,9 +6,9 @@ export const siteConfig = {
   url: 'https://capucor.co.za',
   ogImage: '/api/og',
   links: {
-    facebook: 'https://facebook.com/capucor',
-    instagram: 'https://instagram.com/capucor',
-    linkedin: 'https://linkedin.com/company/capucor',
+    facebook: 'https://www.facebook.com/capucorbusinesssolutions',
+    instagram: 'https://www.instagram.com/capucorbusinesssolutions/',
+    linkedin: 'https://www.linkedin.com/company/capucor/',
     booking: process.env.NEXT_PUBLIC_BOOKING_URL ?? 'https://calendar.app.google/ixopmxLuGgNH5Lkk8',
   },
   nav: [
