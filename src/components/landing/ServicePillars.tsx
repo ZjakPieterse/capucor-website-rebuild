@@ -8,14 +8,14 @@ const SERVICES = [
   {
     icon: BarChart2,
     title: 'Accounting',
-    pitch: 'Annual financials, tax returns, and SARS and CIPC compliance. Done properly, on time.',
+    pitch: 'Financial statements, tax returns, and CIPC compliance. Done properly, and on time.',
     bullets: [
       'Annual financial statements',
       'Income tax and provisional tax',
-      'VAT201 submissions, every cycle',
+      'VAT201 reporting and submission',
       'CIPC annual return filings',
     ],
-    href: '/pricing',
+    href: '/accounting',
   },
   {
     icon: BookMarked,
@@ -27,20 +27,20 @@ const SERVICES = [
       'Monthly bank reconciliations',
       'Monthly management accounts',
     ],
-    href: '/pricing',
+    href: '/bookkeeping',
     featured: true,
   },
   {
     icon: Users,
     title: 'Payroll',
-    pitch: 'Accurate, compliant payroll for South African teams of any size.',
+    pitch: 'Accurate, compliant payroll for staff teams of any size.',
     bullets: [
       'Payroll processing and payslips',
-      'PAYE and UIF submission via SimplePay',
+      'PAYE and UIF submissions',
       'COIDA compliance',
       'IRP5 certificates',
     ],
-    href: '/pricing',
+    href: '/payroll',
   },
 ];
 
@@ -84,7 +84,7 @@ export function ServicePillars() {
                   href={svc.href}
                   className="text-sm font-medium text-primary hover:underline underline-offset-4"
                 >
-                  See pricing →
+                  Read more →
                 </a>
               </div>
             </ScrollReveal>
