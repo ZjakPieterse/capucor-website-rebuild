@@ -3,12 +3,19 @@
 import { BarChart2, BookMarked, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
 import type { Service } from '@/types';
 
 const SERVICE_ICONS: Record<string, React.ElementType> = {
   accounting: BarChart2,
   bookkeeping: BookMarked,
   payroll: Users,
+};
+
+const SERVICE_DELIVERABLES: Record<string, string[]> = {
+  accounting: ['Annual financial statements', 'VAT & income tax returns', 'CIPC compliance'],
+  bookkeeping: ['Monthly reconciliation', 'Xero software included', 'Supplier processing'],
+  payroll: ['Payslips & EMP201 submissions', 'Leave & deduction management', 'UIF compliance'],
 };
 
 interface Step1ServicesProps {
@@ -24,14 +31,17 @@ export function Step1Services({ services, selected, onToggle, onNext }: Step1Ser
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Which services do you need?</h2>
-        <p className="text-sm text-muted-foreground">Select one or more. You can combine services.</p>
+        <h2 className="text-xl font-semibold mb-1">Which services does your business need?</h2>
+        <p className="text-sm text-muted-foreground">
+          Select one or more — combine any services into a single monthly subscription.
+        </p>
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
         {services.map((svc) => {
           const Icon = SERVICE_ICONS[svc.slug] ?? BarChart2;
           const isSelected = selected.has(svc.slug);
+          const deliverables = SERVICE_DELIVERABLES[svc.slug] ?? [];
 
           return (
             <button
@@ -59,12 +69,34 @@ export function Step1Services({ services, selected, onToggle, onNext }: Step1Ser
               </div>
               <div className="font-semibold mb-1">{svc.name}</div>
               {svc.description && (
-                <p className="text-xs text-muted-foreground leading-relaxed">{svc.description}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed mb-3">{svc.description}</p>
+              )}
+              {deliverables.length > 0 && (
+                <ul className="space-y-1">
+                  {deliverables.map((item) => (
+                    <li key={item} className="text-xs text-muted-foreground flex items-center gap-1.5">
+                      <span className={cn('h-1 w-1 rounded-full shrink-0', isSelected ? 'bg-primary' : 'bg-muted-foreground/50')} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               )}
             </button>
           );
         })}
       </div>
+
+      <p className="text-xs text-muted-foreground">
+        Not sure which services apply to your business?{' '}
+        <a
+          href={siteConfig.links.booking}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline underline-offset-2 hover:no-underline"
+        >
+          Book a free 15-min call →
+        </a>
+      </p>
 
       <div className="flex justify-end pt-2">
         <Button onClick={onNext} disabled={!canContinue} className="gap-2">

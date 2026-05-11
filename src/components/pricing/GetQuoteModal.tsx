@@ -108,11 +108,18 @@ export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteMo
         <DialogHeader>
           <DialogTitle>
             {submitted
-              ? 'Enquiry received'
+              ? "You're all set."
               : source === 'enterprise'
               ? 'Get a Custom Quote'
-              : 'Sign Up'}
+              : 'Complete your subscription'}
           </DialogTitle>
+          {!submitted && (
+            <p className="text-sm text-muted-foreground mt-1">
+              {source === 'enterprise'
+                ? "Share your details and we'll put together a tailored quote within one business day."
+                : "We'll confirm your details and set up your account within one business day."}
+            </p>
+          )}
         </DialogHeader>
 
         {submitted ? (
@@ -198,7 +205,7 @@ export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteMo
               ) : source === 'enterprise' ? (
                 'Get a Custom Quote'
               ) : (
-                'Sign Up'
+                'Complete Subscription'
               )}
             </Button>
           </form>

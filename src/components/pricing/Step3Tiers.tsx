@@ -4,7 +4,7 @@ import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MonoPrice } from '@/components/ui/MonoPrice';
 import { cn } from '@/lib/utils';
-import { bracketPrice } from '@/lib/pricing';
+import { bracketPrice, hasEnterpriseService } from '@/lib/pricing';
 import { TIER_HIGHLIGHTS, TIER_CUMULATIVE_LABELS } from '@/config/tiers';
 import type { TierHighlightItem } from '@/config/tiers';
 import type { Bracket, Service, Tier, BracketValue } from '@/types';
@@ -18,6 +18,7 @@ interface Step3TiersProps {
   selectedTier: string | null;
   onTierSelect: (slug: string) => void;
   onBack: () => void;
+  onGetQuote?: (source: 'signup' | 'enterprise') => void;
 }
 
 export function Step3Tiers({
@@ -29,23 +30,26 @@ export function Step3Tiers({
   selectedTier,
   onTierSelect,
   onBack,
+  onGetQuote,
 }: Step3TiersProps) {
   const sortedTiers = [...tiers].sort((a, b) => a.display_order - b.display_order);
   const activeServices = services.filter((s) => selectedServices.has(s.slug));
+  const activeSlugs = [...selectedServices];
+  const isEnterprise = hasEnterpriseService(activeSlugs, selectedBrackets);
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Choose your package</h2>
+        <h2 className="text-xl font-semibold mb-1">Choose your support level.</h2>
         <p className="text-sm text-muted-foreground">
-          Select the tier that matches the level of service you need. All prices excl. VAT.
+          All plans include a dedicated consultant, full SARS compliance, and monthly reporting. Upgrade or downgrade at any time.
         </p>
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
         {sortedTiers.map((tier, i) => {
           const isSelected = selectedTier === tier.slug;
-          const isMiddle = i === 1;
+          const isPro = i === 1;
 
           // Compute per-service prices for this tier
           const priceLines = activeServices.map((svc) => {
@@ -64,8 +68,6 @@ export function Step3Tiers({
 
           const hasEnterprise = priceLines.some((l) => l.isEnterprise);
 
-          // Inclusions for this tier filtered to selected services,
-          // always preceded by the cumulative label for pro/premium
           const filteredItems = (TIER_HIGHLIGHTS[tier.slug] ?? []).filter((item) =>
             item.services.some((s) => selectedServices.has(s))
           );
@@ -81,15 +83,21 @@ export function Step3Tiers({
               onClick={() => onTierSelect(tier.slug)}
               aria-pressed={isSelected}
               className={cn(
-                'rounded-xl border-2 p-6 text-left transition-all duration-150 outline-none w-full',
+                'rounded-xl border-2 p-6 text-left transition-all duration-150 outline-none w-full relative',
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isSelected
                   ? 'border-primary bg-primary/5'
-                  : isMiddle
-                  ? 'border-border/80 bg-card hover:border-primary/40'
+                  : isPro
+                  ? 'border-primary/60 bg-card hover:border-primary'
                   : 'border-border bg-card hover:border-primary/40 hover:bg-muted/20'
               )}
             >
+              {isPro && (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 border border-primary/20 rounded-full px-3 py-0.5 whitespace-nowrap">
+                  Most Popular
+                </span>
+              )}
+
               <div className="mb-4">
                 <div className="font-semibold text-base">{tier.name}</div>
                 {tier.tagline && (
@@ -103,9 +111,7 @@ export function Step3Tiers({
                   <div className="text-2xl font-bold font-mono">Custom</div>
                 ) : hasEnterprise ? (
                   <div>
-                    <span className="text-xl font-bold font-mono">
-                      From{' '}
-                    </span>
+                    <span className="text-xl font-bold font-mono">From </span>
                     <MonoPrice amount={regularTotal} size="lg" />
                     <div className="text-xs text-muted-foreground mt-0.5">+ custom pricing</div>
                   </div>
@@ -138,6 +144,23 @@ export function Step3Tiers({
           );
         })}
       </div>
+
+      {selectedTier && onGetQuote && (
+        <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <p className="font-semibold text-sm">Ready to proceed?</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Your quote is ready in the summary panel.
+            </p>
+          </div>
+          <Button
+            onClick={() => onGetQuote(isEnterprise ? 'enterprise' : 'signup')}
+            className="shrink-0"
+          >
+            {isEnterprise ? 'Get a Custom Quote →' : 'Activate Subscription →'}
+          </Button>
+        </div>
+      )}
 
       <div className="flex justify-start pt-2">
         <Button variant="outline" onClick={onBack}>

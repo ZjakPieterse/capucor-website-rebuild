@@ -32,8 +32,8 @@ export const TIER_HIGHLIGHTS: Record<string, TierHighlightItem[]> = {
 };
 
 export const TIER_CUMULATIVE_LABELS: Record<string, string> = {
-  pro: 'Everything in Basic PLUS:',
-  premium: 'Everything under Pro PLUS:',
+  pro: 'All of Basic, plus:',
+  premium: 'All of Pro, plus:',
 };
 
 export const PACKAGE_COMMON_ITEMS = [

@@ -36,9 +36,9 @@ export function Step2Brackets({
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Tell us about your business</h2>
+        <h2 className="text-xl font-semibold mb-1">How big is your business?</h2>
         <p className="text-sm text-muted-foreground">
-          Select the bracket that best describes your business for each service.
+          Your size sets the scope of monthly work. All pricing is fixed — no hourly billing, no end-of-month surprises.
         </p>
       </div>
 
@@ -69,7 +69,7 @@ export function Step2Brackets({
                   size="default"
                   className="w-full sm:w-52 h-10 text-sm border-border bg-background/60"
                 >
-                  <SelectValue placeholder="Select an option..." />
+                  <SelectValue placeholder={`Select ${svc.bracket_unit_label ?? 'size'} range…`} />
                 </SelectTrigger>
                 <SelectContent align="end">
                   {svcBrackets.map((bracket) => (
@@ -83,6 +83,10 @@ export function Step2Brackets({
           );
         })}
       </div>
+
+      <p className="text-xs text-muted-foreground">
+        Larger or more complex operation? Complete this step and we&rsquo;ll include custom pricing in your quote.
+      </p>
 
       <div className="flex justify-between pt-2">
         <Button variant="outline" onClick={onBack}>

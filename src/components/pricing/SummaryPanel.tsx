@@ -38,10 +38,10 @@ export function SummaryPanel({
 
   return (
     <div className="rounded-xl border border-border bg-card p-6 space-y-5 sticky top-24">
-      <h3 className="font-semibold text-base">Your Subscription</h3>
+      <h3 className="font-semibold text-base">Your Quote</h3>
 
       {activeSlugs.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Select services to see your quote.</p>
+        <p className="text-sm text-muted-foreground">Select services above to see your pricing.</p>
       ) : (
         <>
           <div className="space-y-2">
@@ -88,9 +88,13 @@ export function SummaryPanel({
                 <span className="text-muted-foreground text-sm ml-1">/ month</span>
               </div>
             ) : (
-              <div className="text-muted-foreground">Select package to see total</div>
+              <div className="text-muted-foreground text-xs">Choose a package in Step 3</div>
             )}
-            <p className="text-xs text-muted-foreground mt-1">excl. VAT</p>
+            {tier ? (
+              <p className="text-xs text-muted-foreground mt-1">{tier.name} plan · excl. VAT</p>
+            ) : (
+              <p className="text-xs text-muted-foreground mt-1">excl. VAT</p>
+            )}
           </div>
 
           {selectedTierSlug && (
