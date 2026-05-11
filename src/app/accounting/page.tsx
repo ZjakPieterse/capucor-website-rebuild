@@ -54,10 +54,9 @@ export default function AccountingPage() {
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">Accounting</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Your annual financials, tax returns, and CIPC compliance, handled completely. Every
-            year, a professional accountant compiles your financial statements, files your tax
-            returns before the deadlines, and makes sure your VAT201 and CIPC submissions go in on
-            time. You focus on running your business. The compliance side gets done properly.
+            Every year, a professional accountant compiles your financial statements, files your
+            tax returns before the deadlines, and makes sure your VAT201 and CIPC submissions go
+            in on time. You focus on running your business. The compliance side is off your plate.
           </p>
         </div>
       </section>
