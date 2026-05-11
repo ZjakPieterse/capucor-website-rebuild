@@ -90,6 +90,17 @@ export function ServicePillars() {
             </ScrollReveal>
           ))}
         </div>
+
+        <ScrollReveal delay={0.3}>
+          <div className="mt-12 text-center">
+            <a
+              href="/pricing"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+            >
+              Build your subscription →
+            </a>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

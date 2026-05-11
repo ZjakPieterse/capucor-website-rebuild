@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { BarChart2 } from 'lucide-react';
+import { BookMarked, Users } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
@@ -22,23 +22,28 @@ const INCLUDED = [
   {
     title: 'Annual financial statements',
     description:
-      'Compiled by a professional accountant each year. Ready for SARS, your bank, or any third party that asks.',
+      "Compiled by a professional accountant each year and signed off correctly. Whether you need them for SARS, your bank, a potential investor, or just to understand where your business stands, they're ready when you need them.",
   },
   {
     title: 'Income tax and provisional tax',
     description:
-      'Your tax returns filed on time. Provisional tax calculated and submitted before both deadlines.',
+      'Your income tax return filed before the SARS deadline, and your provisional tax calculated and submitted on time for both the August and February cycles. No late-filing penalties, no guesswork on the estimates.',
   },
   {
     title: 'VAT201 reporting and submission',
     description:
-      'Every VAT cycle, handled. Whether monthly or bi-monthly, your VAT201 is submitted before the due date.',
+      'Your VAT return prepared and submitted every cycle — monthly or bi-monthly, depending on your registration. Input and output VAT reconciled correctly before each submission goes in.',
   },
   {
     title: 'CIPC annual return filings',
     description:
-      "Your company's annual return filed with CIPC. No late fees, no risk of deregistration.",
+      "Your company's annual return filed with CIPC every year, before the due date. It's a straightforward requirement that carries real consequences if missed — deregistration risk, director liability. It gets handled.",
   },
+];
+
+const OTHER_SERVICES = [
+  { title: 'Bookkeeping', href: '/bookkeeping', icon: BookMarked },
+  { title: 'Payroll', href: '/payroll', icon: Users },
 ];
 
 export default function AccountingPage() {
@@ -47,16 +52,12 @@ export default function AccountingPage() {
       {/* Hero */}
       <section className="py-24 lg:py-32">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-muted mb-6">
-            <BarChart2 className="h-6 w-6 text-foreground" />
-          </div>
-          <p className="text-sm font-medium text-primary uppercase tracking-widest mb-4">
-            Service overview
-          </p>
           <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">Accounting</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Your annual financials, tax returns, and CIPC compliance, handled completely. Filed
-            correctly, on time, every year.
+            Your annual financials, tax returns, and CIPC compliance, handled completely. Every
+            year, a professional accountant compiles your financial statements, files your tax
+            returns before the deadlines, and makes sure your VAT201 and CIPC submissions go in on
+            time. You focus on running your business. The compliance side gets done properly.
           </p>
         </div>
       </section>
@@ -86,7 +87,8 @@ export default function AccountingPage() {
           <p className="text-muted-foreground leading-relaxed">
             At year-end, you don&apos;t chase an accountant or scramble to find documents. Your
             financials are ready when SARS needs them, when your bank asks, and when you want to
-            know where your business stands.
+            know where your business stands. Every filing goes in on time. Every deadline gets met.
+            And if SARS ever does come knocking, your records are clean.
           </p>
         </div>
       </section>
@@ -96,14 +98,36 @@ export default function AccountingPage() {
         <div className="max-w-xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-semibold mb-3">See what it costs</h2>
           <p className="text-muted-foreground mb-8">
-            Flat monthly pricing. Build your exact subscription.
+            Flat monthly pricing. Build your exact subscription in minutes.
           </p>
           <a
             href="/pricing"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
           >
-            See our pricing →
+            Build your subscription →
           </a>
+        </div>
+      </section>
+
+      {/* Other services */}
+      <section className="py-16">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-lg font-semibold mb-6 text-muted-foreground">Other services</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {OTHER_SERVICES.map((svc) => (
+              <a
+                key={svc.title}
+                href={svc.href}
+                className="feature-card flex items-center gap-4 rounded-xl border border-border bg-card px-6 py-5 hover:border-primary/50 transition-colors"
+              >
+                <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                  <svc.icon className="h-5 w-5 text-foreground" />
+                </div>
+                <span className="text-sm font-medium">{svc.title}</span>
+                <span className="ml-auto text-muted-foreground text-sm">→</span>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
     </>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Users } from 'lucide-react';
+import { BarChart2, BookMarked } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
@@ -21,21 +21,29 @@ export const metadata: Metadata = {
 const INCLUDED = [
   {
     title: 'Payroll processing and payslips',
-    description: "Your team's payslips calculated correctly and issued on time, every month.",
+    description:
+      'Your payroll calculated correctly each month — gross pay, deductions, net pay, and any variable items like overtime or commissions. Payslips issued to every employee before pay day, and your payroll records kept up to date.',
   },
   {
     title: 'PAYE and UIF submissions',
     description:
-      'Your EMP201 filed monthly. PAYE and UIF submitted to SARS before the deadline.',
+      'Your EMP201 prepared and submitted to SARS every month before the seventh. Employee PAYE deducted correctly, UIF contributions calculated for both employee and employer, and the payment reconciled to your declaration.',
   },
   {
     title: 'COIDA compliance',
-    description: 'Your COIDA return filed annually. No compliance gaps.',
+    description:
+      'Your Return of Earnings filed with the Compensation Fund each year before the March deadline. Your COIDA assessment calculated correctly based on your actual payroll figures.',
   },
   {
     title: 'IRP5 certificates',
-    description: 'Year-end certificates for every employee, ready before the filing deadline.',
+    description:
+      'Year-end IRP5 certificates issued for every employee and submitted to SARS via the EMP501 reconciliation. Done before the May deadline so your employees can file their personal tax returns without delays.',
   },
+];
+
+const OTHER_SERVICES = [
+  { title: 'Accounting', href: '/accounting', icon: BarChart2 },
+  { title: 'Bookkeeping', href: '/bookkeeping', icon: BookMarked },
 ];
 
 export default function PayrollPage() {
@@ -44,16 +52,12 @@ export default function PayrollPage() {
       {/* Hero */}
       <section className="py-24 lg:py-32">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-muted mb-6">
-            <Users className="h-6 w-6 text-foreground" />
-          </div>
-          <p className="text-sm font-medium text-primary uppercase tracking-widest mb-4">
-            Service overview
-          </p>
           <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">Payroll</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Accurate payroll for your staff team, every month. PAYE and UIF submissions handled.
-            IRP5s ready at year-end.
+            Accurate payroll for your staff team, every month. Every payslip calculated correctly,
+            every statutory submission filed on time. PAYE and UIF submitted to SARS each month,
+            COIDA returns filed annually, and IRP5 certificates ready for every employee at
+            year-end. When payroll day comes, it&apos;s handled.
           </p>
         </div>
       </section>
@@ -82,7 +86,8 @@ export default function PayrollPage() {
           <h2 className="text-2xl font-semibold mb-4">What this means for you</h2>
           <p className="text-muted-foreground leading-relaxed">
             Your staff get paid correctly. SARS gets its submissions on time. You&apos;re not
-            exposed to penalties for late or incorrect filings. When payroll day comes,
+            exposed to penalties for late or incorrect filings. And at year-end, your IRP5s are
+            ready before the deadline — not a last-minute scramble. When payroll day comes,
             it&apos;s just done.
           </p>
         </div>
@@ -93,14 +98,36 @@ export default function PayrollPage() {
         <div className="max-w-xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-semibold mb-3">See what it costs</h2>
           <p className="text-muted-foreground mb-8">
-            Flat monthly pricing. Build your exact subscription.
+            Flat monthly pricing. Build your exact subscription in minutes.
           </p>
           <a
             href="/pricing"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
           >
-            See our pricing →
+            Build your subscription →
           </a>
+        </div>
+      </section>
+
+      {/* Other services */}
+      <section className="py-16">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-lg font-semibold mb-6 text-muted-foreground">Other services</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {OTHER_SERVICES.map((svc) => (
+              <a
+                key={svc.title}
+                href={svc.href}
+                className="feature-card flex items-center gap-4 rounded-xl border border-border bg-card px-6 py-5 hover:border-primary/50 transition-colors"
+              >
+                <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                  <svc.icon className="h-5 w-5 text-foreground" />
+                </div>
+                <span className="text-sm font-medium">{svc.title}</span>
+                <span className="ml-auto text-muted-foreground text-sm">→</span>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
     </>
