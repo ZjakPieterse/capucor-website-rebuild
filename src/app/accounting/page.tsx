@@ -87,8 +87,8 @@ export default function AccountingPage() {
           <p className="text-muted-foreground leading-relaxed">
             At year-end, you don&apos;t chase an accountant or scramble to find documents. Your
             financials are ready when SARS needs them, when your bank asks, and when you want to
-            know where your business stands. Every filing goes in on time. Every deadline gets met.
-            And if SARS ever does come knocking, your records are clean.
+            know where your business stands. Filings go in on time. If SARS ever asks, your
+            records are clean.
           </p>
         </div>
       </section>

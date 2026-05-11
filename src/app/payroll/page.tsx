@@ -85,10 +85,9 @@ export default function PayrollPage() {
         <div className="max-w-2xl mx-auto px-6">
           <h2 className="text-2xl font-semibold mb-4">What this means for you</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Your staff get paid correctly. SARS gets its submissions on time. You&apos;re not
-            exposed to penalties for late or incorrect filings. And at year-end, your IRP5s are
-            ready before the deadline — not a last-minute scramble. When payroll day comes,
-            it&apos;s just done.
+            Your staff get paid correctly and on time. SARS filings go in before the seventh,
+            every month. At year-end, your IRP5s are issued before the deadline so your employees
+            can file their personal tax without waiting on you.
           </p>
         </div>
       </section>

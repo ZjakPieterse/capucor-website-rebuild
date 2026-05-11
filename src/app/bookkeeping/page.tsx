@@ -56,8 +56,7 @@ export default function BookkeepingPage() {
           <p className="text-lg text-muted-foreground leading-relaxed">
             Your books, reconciled and up to date every month. Every transaction is processed,
             categorised, and reconciled against your bank statements by the time the new month
-            starts. You get a real P&amp;L and balance sheet each month — not a vague sense of how
-            the business is doing, but actual numbers you can act on.
+            starts. You get a real P&amp;L and balance sheet each month. Actual numbers you can act on.
           </p>
         </div>
       </section>
@@ -87,8 +86,8 @@ export default function BookkeepingPage() {
           <p className="text-muted-foreground leading-relaxed">
             You stop running your business on gut feel and bank balance. You have a real P&amp;L, a
             clean balance sheet, and books your accountant can sign off on. At year-end,
-            there&apos;s nothing to scramble for. And when you need to make a decision — whether
-            to hire, invest, or pull back — the numbers are already there.
+            there&apos;s nothing to scramble for. When you need to decide whether to hire, invest,
+            or pull back, the numbers are already there.
           </p>
         </div>
       </section>
