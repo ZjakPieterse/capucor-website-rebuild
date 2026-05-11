@@ -257,20 +257,19 @@ export function HeroSection() {
               style={{ color: 'var(--brand-navy)' }}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
             >
-              Outsourced finance for growing SMEs
+              Outsourced finance team for your growing business
             </motion.p>
             <motion.h1
               className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
             >
-              Your finance function, rebuilt for modern SME growth.
+              Accounting support that feels like part of your team.
             </motion.h1>
             <motion.p
               className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}
             >
-              Real accountants, the right software, and a flat monthly rate. Your books are clean,
-              your tax is filed on time, and you always know where your business stands.
+              We combine expert accountants, cloud software, and a fixed monthly subscription to give SME owners clean numbers, fewer surprises, and better financial control.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-3"
