@@ -9,7 +9,7 @@ const STEPS = [
     icon: Inbox,
     number: '1',
     title: 'Collect & Collaborate',
-    body: 'We start with a clear monthly information flow between your team and ours. You upload documents, share key updates, and respond to requests on time so we have what we need to keep your finance function moving. When information flows properly, we can deliver accurate, timely work.',
+    body: 'You get a structured monthly process that tells you exactly what to provide and when. We take it from there.',
   },
   {
     icon: Cog,
