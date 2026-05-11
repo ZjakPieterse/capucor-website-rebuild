@@ -148,16 +148,16 @@ export function Step3Tiers({
       {selectedTier && onGetQuote && (
         <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <p className="font-semibold text-sm">Ready to proceed?</p>
+            <p className="font-semibold text-sm">Your quote is set.</p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Your quote is ready in the summary panel.
+              See the full breakdown in the summary panel on the right.
             </p>
           </div>
           <Button
             onClick={() => onGetQuote(isEnterprise ? 'enterprise' : 'signup')}
             className="shrink-0"
           >
-            {isEnterprise ? 'Get a Custom Quote →' : 'Activate Subscription →'}
+            {isEnterprise ? 'Get a Custom Quote →' : 'Get Started →'}
           </Button>
         </div>
       )}

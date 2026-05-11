@@ -38,7 +38,7 @@ export function Step2Brackets({
       <div>
         <h2 className="text-xl font-semibold mb-1">How big is your business?</h2>
         <p className="text-sm text-muted-foreground">
-          Your size sets the scope of monthly work. All pricing is fixed — no hourly billing, no end-of-month surprises.
+          Your bracket determines how much work is involved each month. Pricing is fixed — no hourly billing, no surprises at month-end.
         </p>
       </div>
 

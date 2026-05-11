@@ -31,7 +31,7 @@ const INCLUDED_ICONS: React.ElementType[] = [Users2, Shield, MessageSquare];
 const FAQ_ITEMS = [
   {
     q: 'How is my monthly price calculated?',
-    a: 'Your price is based on the services you select and the size of your business. Each service has brackets that reflect the monthly workload — for example, the number of employees for payroll or the volume of transactions for bookkeeping. Select your bracket in Step 2 and your fixed monthly price is calculated instantly.',
+    a: 'Your price is based on the services you select and the size of your business. Each service has size brackets — for example, the number of employees for payroll or monthly transactions for bookkeeping. Select your bracket in Step 2 and your price is calculated immediately.',
   },
   {
     q: 'Are prices inclusive of VAT?',
@@ -43,11 +43,11 @@ const FAQ_ITEMS = [
   },
   {
     q: 'What is enterprise pricing?',
-    a: 'Enterprise pricing applies to larger or more complex businesses — typically those with higher transaction volumes, multiple entities, or bespoke requirements. If your business falls outside our standard brackets, we\'ll prepare a custom quote based on your specific needs.',
+    a: 'Enterprise pricing is for businesses outside our standard brackets — typically high transaction volumes, multiple entities, or unusual structures. We\'ll put together a price that fits what you actually need.',
   },
   {
     q: 'What is the difference between accounting and bookkeeping?',
-    a: 'Bookkeeping keeps your financial records current — reconciling transactions, processing invoices, and maintaining your Xero ledger. Accounting takes that data further: financial statements, tax submissions, SARS compliance, and strategic reporting. Many clients subscribe to both for a complete finance function.',
+    a: 'Bookkeeping keeps your records current: reconciling transactions, processing invoices, and maintaining your Xero ledger. Accounting uses those records to produce financial statements, file your taxes with SARS, and report on how the business is tracking. Most clients take both.',
   },
   {
     q: 'Do you require a long-term contract?',
@@ -55,11 +55,11 @@ const FAQ_ITEMS = [
   },
   {
     q: 'What happens if my business grows?',
-    a: 'We adjust your bracket as your business scales. If you move into a higher size range during the year, we\'ll update your subscription at the next billing date. There are no penalties for growing.',
+    a: 'We adjust your bracket when your business grows. If you move into a higher size range mid-year, we\'ll update your subscription at the next billing date. There\'s no penalty and no back-billing.',
   },
   {
     q: 'How do I get started after choosing a plan?',
-    a: 'Complete the form at the end of Step 3 and we\'ll be in touch within one business day to confirm your subscription, gather any outstanding information, and get your account set up.',
+    a: 'Fill in the form at the end of Step 3. We\'ll be in touch within one business day to confirm your services, answer any questions, and get you set up.',
   },
 ];
 
@@ -83,7 +83,7 @@ function IncludedInEveryPlan() {
         <p className="text-xs font-medium uppercase tracking-widest text-primary mb-2">Every Plan</p>
         <h2 className="text-2xl font-bold tracking-tight">What&rsquo;s included across all tiers</h2>
         <p className="text-sm text-muted-foreground mt-2 max-w-xl mx-auto">
-          Regardless of which tier you choose, every Capucor subscription includes these foundations.
+          Every plan includes these three things, regardless of price.
         </p>
       </div>
       <div className="grid sm:grid-cols-3 gap-6">
@@ -191,7 +191,7 @@ function PricingCalculatorInner({ data }: PricingCalculatorProps) {
           Build your exact subscription.
         </h1>
         <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Accounting, bookkeeping, and payroll — configured to your business. Fixed monthly pricing, no hourly billing, no surprises.
+          Accounting, bookkeeping, and payroll. Built around your business, priced as a fixed monthly fee.
         </p>
         <TrustBar />
       </section>

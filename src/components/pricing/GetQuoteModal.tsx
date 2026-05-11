@@ -116,8 +116,8 @@ export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteMo
           {!submitted && (
             <p className="text-sm text-muted-foreground mt-1">
               {source === 'enterprise'
-                ? "Share your details and we'll put together a tailored quote within one business day."
-                : "We'll confirm your details and set up your account within one business day."}
+                ? "Tell us about your business and we'll send you a quote within one business day."
+                : "We'll be in touch within one business day to get everything set up."}
             </p>
           )}
         </DialogHeader>
