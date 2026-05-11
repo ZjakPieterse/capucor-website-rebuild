@@ -33,7 +33,7 @@ export function Step1Services({ services, selected, onToggle, onNext }: Step1Ser
       <div>
         <h2 className="text-xl font-semibold mb-1">Which services does your business need?</h2>
         <p className="text-sm text-muted-foreground">
-          Select one or more — combine any services into a single monthly subscription.
+          Pick the services that apply to your business. Each one is priced independently, then combined into a single monthly fee.
         </p>
       </div>
 

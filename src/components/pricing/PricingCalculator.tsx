@@ -188,10 +188,10 @@ function PricingCalculatorInner({ data }: PricingCalculatorProps) {
           Transparent Pricing
         </p>
         <h1 className="text-4xl font-bold tracking-tight mb-4">
-          Build your exact subscription.
+          Know your numbers before you sign anything.
         </h1>
         <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Accounting, bookkeeping, and payroll. Built around your business, priced as a fixed monthly fee.
+          Select your services, set your size bracket, and you&apos;ll see an exact monthly price in under two minutes. Accounting, bookkeeping, and payroll are each priced by the scope of work your business requires. It all combines into a single fixed monthly subscription, with a dedicated finance team included.
         </p>
         <TrustBar />
       </section>

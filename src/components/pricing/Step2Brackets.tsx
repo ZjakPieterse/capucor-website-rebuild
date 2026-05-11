@@ -38,7 +38,7 @@ export function Step2Brackets({
       <div>
         <h2 className="text-xl font-semibold mb-1">How big is your business?</h2>
         <p className="text-sm text-muted-foreground">
-          Your bracket determines how much work is involved each month. Pricing is fixed — no hourly billing, no surprises at month-end.
+          Each service has flexible packages priced to match your business size and monthly workload. Select the range that fits your current operation and your monthly fee is calculated from there.
         </p>
       </div>
 
@@ -83,10 +83,6 @@ export function Step2Brackets({
           );
         })}
       </div>
-
-      <p className="text-xs text-muted-foreground">
-        Larger or more complex operation? Complete this step and we&rsquo;ll include custom pricing in your quote.
-      </p>
 
       <div className="flex justify-between pt-2">
         <Button variant="outline" onClick={onBack}>

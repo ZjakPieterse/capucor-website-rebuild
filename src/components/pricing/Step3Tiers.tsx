@@ -40,16 +40,15 @@ export function Step3Tiers({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Choose your support level.</h2>
+        <h2 className="text-xl font-semibold mb-1">Choose your plan</h2>
         <p className="text-sm text-muted-foreground">
-          All plans include a dedicated consultant, full SARS compliance, and monthly reporting. Upgrade or downgrade at any time.
+          All plans include a dedicated finance team, SARS &amp; CIPC compliance, and core monthly financial services. Upgrade or downgrade at any time.
         </p>
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
-        {sortedTiers.map((tier, i) => {
+        {sortedTiers.map((tier) => {
           const isSelected = selectedTier === tier.slug;
-          const isPro = i === 1;
 
           // Compute per-service prices for this tier
           const priceLines = activeServices.map((svc) => {
@@ -87,17 +86,9 @@ export function Step3Tiers({
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isSelected
                   ? 'border-primary bg-primary/5'
-                  : isPro
-                  ? 'border-primary/60 bg-card hover:border-primary'
                   : 'border-border bg-card hover:border-primary/40 hover:bg-muted/20'
               )}
             >
-              {isPro && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 border border-primary/20 rounded-full px-3 py-0.5 whitespace-nowrap">
-                  Most Popular
-                </span>
-              )}
-
               <div className="mb-4">
                 <div className="font-semibold text-base">{tier.name}</div>
                 {tier.tagline && (
