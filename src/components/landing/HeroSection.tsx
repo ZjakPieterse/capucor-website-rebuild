@@ -167,7 +167,7 @@ function FinanceCommandCentre() {
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: '#2ED889' }} />
             <span className="text-xs font-semibold" suppressHydrationWarning>
-              {dates.closeMonth} — Complete
+              {dates.closeMonth}: complete
             </span>
           </div>
         </motion.div>
