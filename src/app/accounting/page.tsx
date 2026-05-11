@@ -32,12 +32,12 @@ const INCLUDED = [
   {
     title: 'VAT201 reporting and submission',
     description:
-      'Your VAT return prepared and submitted every cycle — monthly or bi-monthly, depending on your registration. Input and output VAT reconciled correctly before each submission goes in.',
+      'Your VAT return prepared and submitted every cycle, monthly or bi-monthly depending on your registration. Input and output VAT reconciled correctly before each submission goes in.',
   },
   {
     title: 'CIPC annual return filings',
     description:
-      "Your company's annual return filed with CIPC every year, before the due date. It's a straightforward requirement that carries real consequences if missed — deregistration risk, director liability. It gets handled.",
+      "Your company's annual return filed with CIPC every year, before the due date. It's a straightforward requirement that carries real consequences if missed: deregistration risk, director liability. It gets handled.",
   },
 ];
 
