@@ -1,6 +1,6 @@
 'use client';
 
-import { Inbox, Cog, Eye, BarChart2, MessageSquare } from 'lucide-react';
+import { Inbox, Cog, BarChart2, MessageSquare } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
@@ -8,32 +8,26 @@ const STEPS = [
   {
     icon: Inbox,
     number: '1',
-    title: 'Capture',
-    body: 'Documents, receipts, and bank feeds are pulled in automatically via Xero and Dext. No chasing suppliers for invoices, no manual uploads.',
+    title: 'Collect & Collaborate',
+    body: 'We start with a clear monthly information flow between your team and ours. You upload documents, share key updates, and respond to requests on time so we have what we need to keep your finance function moving. When information flows properly, we can deliver accurate, timely work.',
   },
   {
     icon: Cog,
     number: '2',
-    title: 'Process',
-    body: 'Transactions are coded, categorised, and reconciled against your bank feeds. Payroll, VAT registers, and debtors are kept current throughout the month.',
-  },
-  {
-    icon: Eye,
-    number: '3',
-    title: 'Review',
-    body: 'A senior accountant reviews your books each month and flags anything unusual: missed deductions, cost overruns, or transactions that need your attention.',
+    title: 'Process & Reconcile',
+    body: 'We capture, code, and process the monthly accounting activity using the right systems and workflows. Bank feeds, supplier documents, payroll information, and other records are brought together so your accounts stay current and organised.',
   },
   {
     icon: BarChart2,
-    number: '4',
-    title: 'Report',
-    body: 'Monthly management accounts are delivered by the 15th. Revenue, expenses, cash flow, and debtors: all in one place, every month.',
+    number: '3',
+    title: 'Review & Report',
+    body: 'Your numbers are reviewed for accuracy, completeness, and consistency before reports are prepared. We highlight what matters, identify areas that need attention, and give you a clearer view of business performance.',
   },
   {
     icon: MessageSquare,
-    number: '5',
-    title: 'Advise',
-    body: 'Your accountant reviews your numbers each month and flags anything worth discussing: tax structuring, cash-flow timing, B-BBEE certificates. All included.',
+    number: '4',
+    title: 'Advise & Plan',
+    body: 'We use the numbers to guide better decisions. Through advisory input, meetings, and strategic conversations, we help you understand what is happening in the business, what needs action, and where opportunities exist for improvement and growth.',
   },
 ];
 
@@ -44,8 +38,8 @@ export function HowItWorks() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="How the monthly finance system works"
-            title="A system, not ad-hoc work."
-            subtitle="Every month runs the same five-step cycle. By the time the new month starts, your books are closed, your returns are filed, and there's a management report in your inbox."
+            title="A simple monthly rhythm that keeps your business financially in control."
+            subtitle="Our FinTeam solution works best when there is clear collaboration between your business and our team. You provide the information we need, and we turn that into accurate records, useful reports, and practical advice you can use to make better decisions."
           />
         </ScrollReveal>
 
@@ -55,7 +49,7 @@ export function HowItWorks() {
               left: calc(50%+32px) = right edge of the icon (centered in column).
               right: calc(-50%+32px) = extends past the column boundary by exactly
               col_width/2 - 32px, landing at the left edge of the next icon. */}
-          <div className="grid grid-cols-5 gap-0">
+          <div className="grid grid-cols-4 gap-0">
             {STEPS.map((step, i) => (
               <ScrollReveal key={step.title} delay={i * 0.1}>
                 <div className="relative flex flex-col items-center text-center px-3">
