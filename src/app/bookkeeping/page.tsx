@@ -22,7 +22,7 @@ const INCLUDED = [
   {
     title: 'Xero included',
     description:
-      "Your Xero subscription is part of the service, set up correctly for your business from day one. You get access to proper cloud accounting software — the same platform your bookkeeper works in — without paying for it separately or setting it up yourself.",
+      "Your Xero subscription is part of the service, set up correctly for your business from day one. You get access to proper cloud accounting software, the same platform your bookkeeper works in, without paying for it separately or setting it up yourself.",
   },
   {
     title: 'Transaction processing and categorisation',

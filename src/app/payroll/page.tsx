@@ -22,7 +22,7 @@ const INCLUDED = [
   {
     title: 'Payroll processing and payslips',
     description:
-      'Your payroll calculated correctly each month — gross pay, deductions, net pay, and any variable items like overtime or commissions. Payslips issued to every employee before pay day, and your payroll records kept up to date.',
+      'Your payroll calculated correctly each month: gross pay, deductions, net pay, and any variable items like overtime or commissions. Payslips issued to every employee before pay day, and your payroll records kept up to date.',
   },
   {
     title: 'PAYE and UIF submissions',
