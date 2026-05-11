@@ -2,7 +2,7 @@
 
 import { Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { MonoPrice } from '@/components/ui/MonoPrice';
+import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { Separator } from '@/components/ui/separator';
 import { bracketPrice, hasEnterpriseService, monthlyTotal } from '@/lib/pricing';
 import { siteConfig } from '@/config/site';
@@ -61,7 +61,7 @@ export function SummaryPanel({
                     {isEnterpriseService ? (
                       <span className="text-warning font-semibold">Custom</span>
                     ) : price !== null ? (
-                      <MonoPrice amount={price} />
+                      <AnimatedPrice amount={price} />
                     ) : (
                       '—'
                     )}
@@ -79,12 +79,16 @@ export function SummaryPanel({
             ) : isEnterprise ? (
               <div>
                 <span className="text-muted-foreground">From </span>
-                <span className="font-semibold font-mono">{total > 0 ? `R ${total.toLocaleString('en-US')}` : '—'}</span>
+                {total > 0 ? (
+                  <AnimatedPrice amount={total} className="font-semibold" />
+                ) : (
+                  <span className="font-semibold font-mono">—</span>
+                )}
                 <span className="text-muted-foreground"> / month + custom</span>
               </div>
             ) : total > 0 ? (
               <div>
-                <MonoPrice amount={total} size="lg" />
+                <AnimatedPrice amount={total} size="lg" />
                 <span className="text-muted-foreground text-sm ml-1">/ month</span>
               </div>
             ) : (

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { CheckCircle, Calendar, Loader2, X } from 'lucide-react';
+import { CheckCircle, Calendar, Loader2, X, Mail, Phone, Sparkles } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -17,6 +17,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ConsentCheckbox } from '@/components/ui/ConsentCheckbox';
 import { siteConfig } from '@/config/site';
+import { formatZAR } from '@/lib/utils';
 import type { BracketValue } from '@/types';
 
 const QuoteSchema = z.object({
@@ -30,6 +31,19 @@ const QuoteSchema = z.object({
 
 type QuoteValues = z.infer<typeof QuoteSchema>;
 
+export interface QuoteSummaryLine {
+  serviceName: string;
+  bracketLabel: string;
+  price: number | null;
+}
+
+export interface QuoteSummary {
+  lines: QuoteSummaryLine[];
+  tierName: string | null;
+  total: number;
+  isEnterprise: boolean;
+}
+
 interface GetQuoteModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -40,10 +54,12 @@ interface GetQuoteModalProps {
     tier: string | null;
     hasEnterprise: boolean;
   };
+  summary?: QuoteSummary;
 }
 
-export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteModalProps) {
+export function GetQuoteModal({ open, onOpenChange, source, config, summary }: GetQuoteModalProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [submittedName, setSubmittedName] = useState('');
   const [serverError, setServerError] = useState<string | null>(null);
   const [consentGiven, setConsentGiven] = useState(false);
   const [consentError, setConsentError] = useState('');
@@ -61,6 +77,7 @@ export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteMo
     if (!nextOpen) {
       reset();
       setSubmitted(false);
+      setSubmittedName('');
       setServerError(null);
       setConsentGiven(false);
       setConsentError('');
@@ -94,6 +111,7 @@ export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteMo
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Submission failed. Please try again.');
+      setSubmittedName(values.name.split(' ')[0] ?? '');
       setSubmitted(true);
     } catch (err) {
       setServerError(
@@ -108,7 +126,7 @@ export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteMo
         <DialogHeader>
           <DialogTitle>
             {submitted
-              ? "You're all set."
+              ? `Welcome to Capucor${submittedName ? `, ${submittedName}` : ''}.`
               : source === 'enterprise'
               ? 'Get a Custom Quote'
               : 'Complete your subscription'}
@@ -123,7 +141,7 @@ export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteMo
         </DialogHeader>
 
         {submitted ? (
-          <SuccessState onClose={() => handleClose(false)} />
+          <SuccessState summary={summary} onClose={() => handleClose(false)} />
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2" noValidate>
             {/* Honeypot */}
@@ -135,6 +153,10 @@ export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteMo
               className="hidden"
               autoComplete="off"
             />
+
+            {summary && summary.lines.length > 0 && (
+              <SummaryCard summary={summary} />
+            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -215,16 +237,103 @@ export function GetQuoteModal({ open, onOpenChange, source, config }: GetQuoteMo
   );
 }
 
-function SuccessState({ onClose }: { onClose: () => void }) {
+function SummaryCard({ summary }: { summary: QuoteSummary }) {
   return (
-    <div className="text-center space-y-4 py-4">
-      <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-success/15 mx-auto">
-        <CheckCircle className="h-6 w-6 text-success" />
+    <div className="rounded-lg border border-primary/20 bg-primary/[0.03] p-4 space-y-3">
+      <div className="flex items-baseline justify-between gap-3">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+          Your subscription
+        </p>
+        {!summary.isEnterprise && summary.total > 0 && (
+          <p className="text-lg font-bold font-mono tabular-nums">
+            {formatZAR(summary.total)}
+            <span className="text-xs font-normal text-muted-foreground ml-1">/mo</span>
+          </p>
+        )}
+        {summary.isEnterprise && summary.total > 0 && (
+          <p className="text-sm font-semibold font-mono tabular-nums">
+            From {formatZAR(summary.total)}
+          </p>
+        )}
+        {summary.isEnterprise && summary.total === 0 && (
+          <p className="text-sm font-semibold">Custom quote</p>
+        )}
       </div>
-      <p className="text-sm text-muted-foreground">
-        We&rsquo;ll be in touch within one business day.
-      </p>
-      <div className="flex gap-3 justify-center">
+      <div className="space-y-1.5 pt-2 border-t border-primary/15">
+        {summary.lines.map((line) => (
+          <div
+            key={line.serviceName}
+            className="flex items-baseline justify-between gap-3 text-xs"
+          >
+            <span className="text-muted-foreground">
+              {line.serviceName}
+              {line.bracketLabel ? ` · ${line.bracketLabel}` : ''}
+            </span>
+            <span className="font-mono tabular-nums text-foreground">
+              {line.price !== null ? formatZAR(line.price) : 'Custom'}
+            </span>
+          </div>
+        ))}
+        {summary.tierName && (
+          <p className="text-[11px] text-muted-foreground pt-1">
+            {summary.tierName} plan · excl. VAT
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const NEXT_STEPS = [
+  { icon: Mail, label: 'Email confirmation', detail: 'within 1 hour' },
+  { icon: Phone, label: 'Onboarding call', detail: 'within 1 business day' },
+  { icon: Sparkles, label: 'Your finance team takes over', detail: 'from week 1' },
+];
+
+function SuccessState({
+  summary,
+  onClose,
+}: {
+  summary?: QuoteSummary;
+  onClose: () => void;
+}) {
+  return (
+    <div className="space-y-5 mt-2">
+      <div className="flex flex-col items-center text-center gap-3">
+        <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-success/15">
+          <CheckCircle className="h-6 w-6 text-success" />
+        </div>
+        <p className="text-sm text-muted-foreground max-w-xs">
+          Your quote is logged. We&apos;ll be in touch within one business day.
+        </p>
+      </div>
+
+      {summary && summary.lines.length > 0 && <SummaryCard summary={summary} />}
+
+      <div className="space-y-2">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          What happens next
+        </p>
+        <ol className="space-y-2.5">
+          {NEXT_STEPS.map((step, i) => {
+            const Icon = step.icon;
+            return (
+              <li key={step.label} className="flex items-center gap-3 text-sm">
+                <div className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-[11px] font-semibold">
+                  {i + 1}
+                </div>
+                <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <div className="min-w-0 flex-1">
+                  <span className="font-medium">{step.label}</span>
+                  <span className="text-muted-foreground"> · {step.detail}</span>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+
+      <div className="flex gap-2 pt-1">
         <Button
           render={
             <a
@@ -234,10 +343,10 @@ function SuccessState({ onClose }: { onClose: () => void }) {
             />
           }
           variant="outline"
-          className="gap-2"
+          className="flex-1 gap-2"
         >
           <Calendar className="h-4 w-4" />
-          Book a Call
+          Book a call instead
         </Button>
         <Button variant="outline" onClick={onClose} className="gap-2">
           <X className="h-4 w-4" />

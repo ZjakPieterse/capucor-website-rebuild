@@ -15,30 +15,39 @@ const STEPS = [
 export function StepIndicator({ currentStep }: StepIndicatorProps) {
   return (
     <nav aria-label="Calculator progress" className="mb-8">
-      <ol className="flex items-center gap-0">
+      <ol className="flex items-start gap-0">
         {STEPS.map((step, i) => {
           const isDone = step.number < currentStep;
           const isActive = step.number === currentStep;
 
           return (
-            <li key={step.number} className="flex items-center flex-1 last:flex-none">
-              <div className="flex flex-col items-center">
+            <li
+              key={step.number}
+              className={cn('flex items-start', i === STEPS.length - 1 ? '' : 'flex-1')}
+            >
+              <div className="flex flex-col items-center shrink-0">
                 <div
                   className={cn(
-                    'h-8 w-8 rounded-full border-2 flex items-center justify-center text-sm font-semibold transition-colors',
+                    'relative h-8 w-8 rounded-full border-2 flex items-center justify-center text-sm font-semibold transition-all duration-200',
                     isDone
                       ? 'border-primary bg-primary text-primary-foreground'
                       : isActive
-                      ? 'border-primary bg-primary/10 text-primary'
+                      ? 'border-primary bg-primary/10 text-primary scale-110'
                       : 'border-border bg-background text-muted-foreground'
                   )}
                   aria-current={isActive ? 'step' : undefined}
                 >
-                  {isDone ? '✓' : step.number}
+                  {isActive && (
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 rounded-full ring-4 ring-primary/15 animate-pulse"
+                    />
+                  )}
+                  <span className="relative">{isDone ? '✓' : step.number}</span>
                 </div>
                 <span
                   className={cn(
-                    'mt-1.5 text-xs font-medium hidden sm:block',
+                    'mt-2 text-[10px] sm:text-xs font-medium text-center max-w-[80px] leading-tight',
                     isActive ? 'text-foreground' : 'text-muted-foreground'
                   )}
                 >
@@ -47,12 +56,14 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
               </div>
 
               {i < STEPS.length - 1 && (
-                <div
-                  className={cn(
-                    'flex-1 h-px mx-3 -mt-5',
-                    isDone ? 'bg-primary' : 'bg-border'
-                  )}
-                />
+                <div className="flex-1 h-px mt-4 mx-2 sm:mx-3 bg-border relative overflow-hidden">
+                  <div
+                    className={cn(
+                      'absolute inset-0 bg-primary origin-left transition-transform duration-500 ease-out',
+                      isDone ? 'scale-x-100' : 'scale-x-0'
+                    )}
+                  />
+                </div>
               )}
             </li>
           );

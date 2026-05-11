@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import {
   Select,
   SelectContent,
@@ -49,40 +50,69 @@ export function Step2Brackets({
             .sort((a, b) => a.display_order - b.display_order);
           const currentValue = selectedBrackets[svc.slug];
           const selectValue = currentValue !== undefined ? String(currentValue) : '';
+          const isEnterpriseSelection = currentValue === 'enterprise';
+          const selectedBracket =
+            currentValue !== undefined && currentValue !== 'enterprise'
+              ? svcBrackets.find((b) => b.ordinal === currentValue)
+              : null;
+          const basicPrice = selectedBracket?.basic_price ?? 0;
 
           return (
             <div
               key={svc.slug}
-              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 rounded-xl border border-border bg-card px-5 py-4"
+              className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-6 rounded-xl border border-border bg-card px-5 py-4"
             >
-              <div className="min-w-0">
+              <div className="min-w-0 sm:pt-2">
                 <p className="font-semibold text-sm">{svc.name}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">{svc.bracket_unit_label}</p>
               </div>
 
-              <Select
-                value={selectValue}
-                onValueChange={(val) => onBracketChange(svc.slug, Number(val) as BracketValue)}
-                items={Object.fromEntries(svcBrackets.map((b) => [String(b.ordinal), b.label]))}
-              >
-                <SelectTrigger
-                  size="default"
-                  className="w-full sm:w-52 h-10 text-sm border-border bg-background/60"
+              <div className="flex flex-col gap-1.5 sm:items-end">
+                <Select
+                  value={selectValue}
+                  onValueChange={(val) => onBracketChange(svc.slug, Number(val) as BracketValue)}
+                  items={Object.fromEntries(svcBrackets.map((b) => [String(b.ordinal), b.label]))}
                 >
-                  <SelectValue placeholder={`Select ${svc.bracket_unit_label ?? 'size'} range…`} />
-                </SelectTrigger>
-                <SelectContent align="end">
-                  {svcBrackets.map((bracket) => (
-                    <SelectItem key={bracket.id} value={String(bracket.ordinal)}>
-                      {bracket.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  <SelectTrigger
+                    size="default"
+                    className="w-full sm:w-52 h-10 text-sm border-border bg-background/60"
+                  >
+                    <SelectValue placeholder={`Select ${svc.bracket_unit_label ?? 'size'} range…`} />
+                  </SelectTrigger>
+                  <SelectContent align="end">
+                    {svcBrackets.map((bracket) => (
+                      <SelectItem key={bracket.id} value={String(bracket.ordinal)}>
+                        {bracket.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {currentValue !== undefined && (
+                  <p className="text-xs text-muted-foreground sm:text-right">
+                    {isEnterpriseSelection ? (
+                      <span>Custom pricing for this size</span>
+                    ) : (
+                      <>
+                        From{' '}
+                        <AnimatedPrice
+                          amount={basicPrice}
+                          className="text-xs font-semibold text-foreground"
+                        />
+                        {' / month'}
+                      </>
+                    )}
+                  </p>
+                )}
+              </div>
             </div>
           );
         })}
       </div>
+
+      <p className="text-xs text-muted-foreground -mt-2">
+        Between brackets? Pick the higher one. You can move down at any billing cycle.
+      </p>
 
       <div className="flex justify-between pt-2">
         <Button variant="outline" onClick={onBack}>

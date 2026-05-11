@@ -1,8 +1,10 @@
 'use client';
 
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { BracketValue, PricingState } from '@/types';
+
+const STORAGE_KEY = 'capucor:pricing-config:v1';
 
 export function usePricingState() {
   const router = useRouter();
@@ -11,12 +13,35 @@ export function usePricingState() {
   const [state, setState] = useState<PricingState>(() =>
     hydrateFromParams(searchParams)
   );
+  const hydratedFromStorageRef = useRef(false);
 
   // Sync URL whenever state changes
   useEffect(() => {
     const params = serializeToParams(state);
     router.replace(`/pricing?${params}`, { scroll: false });
   }, [state, router]);
+
+  // On mount: if URL was empty, restore state from localStorage.
+  // setState here is intentional — restoring browser-only persisted state.
+  useEffect(() => {
+    if (hydratedFromStorageRef.current) return;
+    hydratedFromStorageRef.current = true;
+    const urlHasServices = !!searchParams.get('services');
+    if (urlHasServices) return;
+    const stored = readStorage();
+    if (stored && stored.selectedServices.size > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setState(stored);
+    }
+    // searchParams read once on first mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist state to localStorage after initial hydration
+  useEffect(() => {
+    if (!hydratedFromStorageRef.current) return;
+    writeStorage(state);
+  }, [state]);
 
   const setStep = useCallback((step: PricingState['step']) => {
     setState((s) => ({ ...s, step }));
@@ -96,6 +121,58 @@ function hydrateFromParams(params: URLSearchParams): PricingState {
     selectedBrackets,
     selectedTier: tierParam,
   };
+}
+
+function readStorage(): PricingState | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as unknown;
+    if (typeof parsed !== 'object' || parsed === null) return null;
+    const obj = parsed as Record<string, unknown>;
+
+    const services = Array.isArray(obj.services)
+      ? obj.services.filter((s): s is string => typeof s === 'string')
+      : [];
+    const brackets: Record<string, BracketValue> = {};
+    if (obj.brackets && typeof obj.brackets === 'object') {
+      for (const [k, v] of Object.entries(obj.brackets as Record<string, unknown>)) {
+        if (v === 'enterprise' || typeof v === 'number') {
+          brackets[k] = v as BracketValue;
+        }
+      }
+    }
+    const tier = typeof obj.tier === 'string' ? obj.tier : null;
+    const step =
+      obj.step === 1 || obj.step === 2 || obj.step === 3
+        ? (obj.step as PricingState['step'])
+        : 1;
+
+    return {
+      step,
+      selectedServices: new Set(services),
+      selectedBrackets: brackets,
+      selectedTier: tier,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function writeStorage(state: PricingState): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const payload = {
+      step: state.step,
+      services: [...state.selectedServices],
+      brackets: state.selectedBrackets,
+      tier: state.selectedTier,
+    };
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  } catch {
+    // Storage unavailable (privacy mode, quota) — silent fail
+  }
 }
 
 function serializeToParams(state: PricingState): string {

@@ -1,9 +1,9 @@
 'use client';
 
 import { Suspense, useState } from 'react';
-import { BadgeCheck, Users2, Shield, MessageSquare, ChevronDown } from 'lucide-react';
+import { BadgeCheck, Users2, Shield, MessageSquare, ChevronDown, Clock } from 'lucide-react';
 import { usePricingState } from '@/hooks/usePricingState';
-import { hasEnterpriseService } from '@/lib/pricing';
+import { hasEnterpriseService, bracketPrice, monthlyTotal } from '@/lib/pricing';
 import { PACKAGE_COMMON_ITEMS } from '@/config/tiers';
 import { siteConfig } from '@/config/site';
 import { StepIndicator } from './StepIndicator';
@@ -11,11 +11,14 @@ import { Step1Services } from './Step1Services';
 import { Step2Brackets } from './Step2Brackets';
 import { Step3Tiers } from './Step3Tiers';
 import { SummaryPanel } from './SummaryPanel';
-import { GetQuoteModal } from './GetQuoteModal';
-import type { PricingData } from '@/types';
+import { MobileTotalBar } from './MobileTotalBar';
+import { StickyConfigChip } from './StickyConfigChip';
+import { GetQuoteModal, type QuoteSummary } from './GetQuoteModal';
+import type { PricingData, Testimonial } from '@/types';
 
 interface PricingCalculatorProps {
   data: PricingData;
+  testimonials?: Testimonial[];
 }
 
 const TRUST_ITEMS = [
@@ -28,44 +31,64 @@ const TRUST_ITEMS = [
 
 const INCLUDED_ICONS: React.ElementType[] = [Users2, Shield, MessageSquare];
 
-const FAQ_ITEMS = [
+const FAQ_GROUPS: { label: string; items: { q: string; a: string }[] }[] = [
   {
-    q: 'How is my monthly price calculated?',
-    a: 'Your price is based on the services you select and the size of your business. Each service has size brackets — for example, the number of employees for payroll or monthly transactions for bookkeeping. Select your bracket in Step 2 and your price is calculated immediately.',
+    label: 'Contract & flexibility',
+    items: [
+      {
+        q: 'Do you require a long-term contract?',
+        a: 'No lock-in. Our subscriptions run month-to-month and can be cancelled with 30 days’ written notice.',
+      },
+      {
+        q: 'Can I change my plan after signing up?',
+        a: 'Yes. You can upgrade or downgrade your tier, or add and remove services, at any time. Changes take effect from the start of the next billing month.',
+      },
+      {
+        q: 'What happens if my business grows?',
+        a: 'We adjust your bracket when your business grows. If you move into a higher size range mid-year, we’ll update your subscription at the next billing date. No penalty, no back-billing.',
+      },
+    ],
   },
   {
-    q: 'Are prices inclusive of VAT?',
-    a: 'No. All prices shown on this calculator exclude VAT (15%). VAT will be added to your monthly invoice.',
+    label: 'Pricing',
+    items: [
+      {
+        q: 'How is my monthly price calculated?',
+        a: 'Your price is based on the services you select and the size of your business. Each service has its own size brackets: number of employees for payroll, monthly transactions for bookkeeping, turnover for accounting. Pick your bracket in Step 2 and your price calculates immediately.',
+      },
+      {
+        q: 'Are prices inclusive of VAT?',
+        a: 'No. All prices shown on this calculator exclude VAT (15%). VAT is added to your monthly invoice.',
+      },
+      {
+        q: 'What is enterprise pricing?',
+        a: 'Enterprise pricing is for businesses outside our standard brackets: high transaction volumes, multiple entities, or unusual structures. We’ll put together a price that fits what you actually need.',
+      },
+    ],
   },
   {
-    q: 'Can I change my plan after signing up?',
-    a: 'Yes. You can upgrade or downgrade your tier, or add and remove services, at any time. Changes take effect from the start of the next billing month.',
+    label: 'What’s included',
+    items: [
+      {
+        q: 'What is the difference between accounting and bookkeeping?',
+        a: 'Bookkeeping keeps your records current: reconciling transactions, processing invoices, and maintaining your Xero ledger. Accounting uses those records to produce financial statements, file your taxes with SARS, and report on how the business is tracking. Most clients take both.',
+      },
+    ],
   },
   {
-    q: 'What is enterprise pricing?',
-    a: 'Enterprise pricing is for businesses outside our standard brackets — typically high transaction volumes, multiple entities, or unusual structures. We\'ll put together a price that fits what you actually need.',
-  },
-  {
-    q: 'What is the difference between accounting and bookkeeping?',
-    a: 'Bookkeeping keeps your records current: reconciling transactions, processing invoices, and maintaining your Xero ledger. Accounting uses those records to produce financial statements, file your taxes with SARS, and report on how the business is tracking. Most clients take both.',
-  },
-  {
-    q: 'Do you require a long-term contract?',
-    a: 'No lock-in. Our subscriptions run month-to-month and can be cancelled with 30 days’ written notice.',
-  },
-  {
-    q: 'What happens if my business grows?',
-    a: 'We adjust your bracket when your business grows. If you move into a higher size range mid-year, we\'ll update your subscription at the next billing date. There\'s no penalty and no back-billing.',
-  },
-  {
-    q: 'How do I get started after choosing a plan?',
-    a: 'Fill in the form at the end of Step 3. We\'ll be in touch within one business day to confirm your services, answer any questions, and get you set up.',
+    label: 'Getting started',
+    items: [
+      {
+        q: 'How do I get started after choosing a plan?',
+        a: 'Fill in the form at the end of Step 3. We’ll be in touch within one business day to confirm your services, answer any questions, and get you set up.',
+      },
+    ],
   },
 ];
 
 function TrustBar() {
   return (
-    <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8">
+    <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
       {TRUST_ITEMS.map((item) => (
         <div key={item} className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <BadgeCheck className="h-3.5 w-3.5 text-primary shrink-0" />
@@ -73,6 +96,53 @@ function TrustBar() {
         </div>
       ))}
     </div>
+  );
+}
+
+function InHouseComparison() {
+  return (
+    <section className="py-12 border-t border-border">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-8">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+            For perspective
+          </p>
+          <h2 className="text-xl font-bold tracking-tight">What in-house would cost.</h2>
+        </div>
+        <div className="grid sm:grid-cols-3 gap-3">
+          <div className="rounded-xl border border-border bg-card p-5">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+              Bookkeeper on staff
+            </p>
+            <p className="font-mono text-xl font-bold mt-1">R 15&ndash;25k</p>
+            <p className="text-xs text-muted-foreground mt-1 leading-snug">
+              per month plus benefits, software, leave cover
+            </p>
+          </div>
+          <div className="rounded-xl border border-border bg-card p-5">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+              Year-end accountant
+            </p>
+            <p className="font-mono text-xl font-bold mt-1">R 18&ndash;30k</p>
+            <p className="text-xs text-muted-foreground mt-1 leading-snug">
+              once-off for AFS and tax submissions
+            </p>
+          </div>
+          <div className="rounded-xl border-2 border-primary/40 bg-primary/[0.03] p-5">
+            <p className="text-[10px] uppercase tracking-wider text-primary font-semibold">
+              With Capucor
+            </p>
+            <p className="font-mono text-xl font-bold mt-1">From R 1,575</p>
+            <p className="text-xs text-muted-foreground mt-1 leading-snug">
+              per month, both included, Xero included
+            </p>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground text-center mt-5 max-w-md mx-auto leading-relaxed">
+          Indicative South African market figures. Your actual hire costs vary by experience, sector, and benefits.
+        </p>
+      </div>
+    </section>
   );
 }
 
@@ -116,15 +186,24 @@ function FAQSection() {
         <p className="text-xs font-medium uppercase tracking-widest text-primary mb-2">FAQ</p>
         <h2 className="text-2xl font-bold tracking-tight">Common questions</h2>
       </div>
-      <div className="max-w-2xl mx-auto divide-y divide-border">
-        {FAQ_ITEMS.map(({ q, a }) => (
-          <details key={q} className="group py-4">
-            <summary className="flex cursor-pointer items-center justify-between gap-4 list-none text-sm font-medium select-none">
-              {q}
-              <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
-            </summary>
-            <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{a}</p>
-          </details>
+      <div className="max-w-2xl mx-auto space-y-8">
+        {FAQ_GROUPS.map((group) => (
+          <div key={group.label}>
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 px-1">
+              {group.label}
+            </p>
+            <div className="divide-y divide-border rounded-xl border border-border bg-card/40">
+              {group.items.map(({ q, a }) => (
+                <details key={q} className="group p-4">
+                  <summary className="flex cursor-pointer items-center justify-between gap-4 list-none text-sm font-medium select-none">
+                    {q}
+                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+                  </summary>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </section>
@@ -150,8 +229,9 @@ function BottomCTA() {
   );
 }
 
-function PricingCalculatorInner({ data }: PricingCalculatorProps) {
+function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorProps) {
   const { services, brackets, tiers } = data;
+  const spotlightTestimonial = testimonials[0] ?? null;
   const [modalOpen, setModalOpen] = useState(false);
   const [modalSource, setModalSource] = useState<'signup' | 'enterprise'>('signup');
 
@@ -180,20 +260,57 @@ function PricingCalculatorInner({ data }: PricingCalculatorProps) {
     hasEnterprise: isEnterprise,
   };
 
+  const activeTier = tiers.find((t) => t.slug === state.selectedTier) ?? null;
+  const modalSummary: QuoteSummary = {
+    lines: activeSlugs.map((slug) => {
+      const svc = services.find((s) => s.slug === slug);
+      const bracketVal = state.selectedBrackets[slug];
+      if (bracketVal === 'enterprise' || bracketVal === undefined) {
+        return {
+          serviceName: svc?.name ?? slug,
+          bracketLabel: bracketVal === 'enterprise' ? 'Custom size' : '',
+          price: null,
+        };
+      }
+      const bracket = brackets.find(
+        (b) => b.service_slug === slug && b.ordinal === bracketVal
+      );
+      const price = bracket && activeTier ? bracketPrice(bracket, activeTier.slug) : null;
+      return {
+        serviceName: svc?.name ?? slug,
+        bracketLabel: bracket?.label ?? '',
+        price,
+      };
+    }),
+    tierName: activeTier?.name ?? null,
+    total: activeTier
+      ? monthlyTotal(activeSlugs, state.selectedBrackets, activeTier.slug, brackets)
+      : 0,
+    isEnterprise,
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-6">
+    <div className="max-w-7xl mx-auto px-6 pb-24 lg:pb-0">
       {/* Hero */}
-      <section className="pt-16 pb-12 text-center">
-        <p className="text-xs font-medium uppercase tracking-widest text-primary mb-3">
-          Transparent Pricing
-        </p>
-        <h1 className="text-4xl font-bold tracking-tight mb-4">
+      <section className="relative pt-10 sm:pt-14 pb-8 text-center">
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none"
+        >
+          <div className="h-64 w-[28rem] max-w-[80%] rounded-full bg-primary/[0.05] blur-3xl" />
+        </div>
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 mb-5">
+          <Clock className="h-3 w-3 text-primary" />
+          <span className="text-xs font-medium text-foreground">
+            About 2 minutes to a final price
+          </span>
+        </div>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 max-w-2xl mx-auto">
           Know your numbers before you sign anything.
         </h1>
-        <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Select your services, set your size bracket, and you&apos;ll see an exact monthly price in under two minutes. Accounting, bookkeeping, and payroll are each priced by the scope of work your business requires. It all combines into a single fixed monthly subscription, with a dedicated finance team included.
+        <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          Pick your services, set your size, see your fee. One fixed monthly subscription. No quote process, no surprises.
         </p>
-        <TrustBar />
       </section>
 
       {/* Calculator */}
@@ -239,23 +356,32 @@ function PricingCalculatorInner({ data }: PricingCalculatorProps) {
               onTierSelect={setTier}
               onBack={() => setStep(2)}
               onGetQuote={openModal}
+              testimonial={spotlightTestimonial}
             />
           )}
         </div>
 
         {/* Right: Summary */}
-        <SummaryPanel
-          services={services}
-          brackets={brackets}
-          tiers={tiers}
-          selectedServices={state.selectedServices}
-          selectedBrackets={state.selectedBrackets}
-          selectedTierSlug={state.selectedTier}
-          onGetQuote={openModal}
-        />
+        <div id="pricing-summary">
+          <SummaryPanel
+            services={services}
+            brackets={brackets}
+            tiers={tiers}
+            selectedServices={state.selectedServices}
+            selectedBrackets={state.selectedBrackets}
+            selectedTierSlug={state.selectedTier}
+            onGetQuote={openModal}
+          />
+        </div>
       </div>
 
+      {/* Trust signals near commitment, not in the warm-up */}
+      <section className="py-8 border-t border-border">
+        <TrustBar />
+      </section>
+
       {/* Post-calculator sections */}
+      <InHouseComparison />
       <IncludedInEveryPlan />
       <FAQSection />
       <BottomCTA />
@@ -265,13 +391,34 @@ function PricingCalculatorInner({ data }: PricingCalculatorProps) {
         onOpenChange={setModalOpen}
         source={modalSource}
         config={modalConfig}
+        summary={modalSummary}
+      />
+
+      <MobileTotalBar
+        selectedServices={state.selectedServices}
+        selectedBrackets={state.selectedBrackets}
+        selectedTierSlug={state.selectedTier}
+        tiers={tiers}
+        brackets={brackets}
+        summaryAnchorId="pricing-summary"
+        onGetQuote={openModal}
+      />
+
+      <StickyConfigChip
+        selectedServices={state.selectedServices}
+        selectedBrackets={state.selectedBrackets}
+        selectedTierSlug={state.selectedTier}
+        tiers={tiers}
+        brackets={brackets}
+        observeElementId="pricing-summary"
+        scrollToId="pricing-summary"
       />
     </div>
   );
 }
 
 // Wrap in Suspense for useSearchParams
-export function PricingCalculator({ data }: PricingCalculatorProps) {
+export function PricingCalculator({ data, testimonials }: PricingCalculatorProps) {
   return (
     <Suspense
       fallback={
@@ -291,7 +438,7 @@ export function PricingCalculator({ data }: PricingCalculatorProps) {
         </div>
       }
     >
-      <PricingCalculatorInner data={data} />
+      <PricingCalculatorInner data={data} testimonials={testimonials} />
     </Suspense>
   );
 }

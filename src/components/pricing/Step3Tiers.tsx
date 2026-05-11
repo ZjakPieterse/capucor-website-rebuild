@@ -2,12 +2,14 @@
 
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { MonoPrice } from '@/components/ui/MonoPrice';
+import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
+import { TestimonialSpotlight } from './TestimonialSpotlight';
+import { TierComparison } from './TierComparison';
 import { cn } from '@/lib/utils';
 import { bracketPrice, hasEnterpriseService } from '@/lib/pricing';
 import { TIER_HIGHLIGHTS, TIER_CUMULATIVE_LABELS } from '@/config/tiers';
 import type { TierHighlightItem } from '@/config/tiers';
-import type { Bracket, Service, Tier, BracketValue } from '@/types';
+import type { Bracket, Service, Tier, BracketValue, Testimonial } from '@/types';
 
 interface Step3TiersProps {
   services: Service[];
@@ -19,6 +21,7 @@ interface Step3TiersProps {
   onTierSelect: (slug: string) => void;
   onBack: () => void;
   onGetQuote?: (source: 'signup' | 'enterprise') => void;
+  testimonial?: Testimonial | null;
 }
 
 export function Step3Tiers({
@@ -31,6 +34,7 @@ export function Step3Tiers({
   onTierSelect,
   onBack,
   onGetQuote,
+  testimonial,
 }: Step3TiersProps) {
   const sortedTiers = [...tiers].sort((a, b) => a.display_order - b.display_order);
   const activeServices = services.filter((s) => selectedServices.has(s.slug));
@@ -46,9 +50,10 @@ export function Step3Tiers({
         </p>
       </div>
 
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-3 gap-4 sm:pt-3">
         {sortedTiers.map((tier) => {
           const isSelected = selectedTier === tier.slug;
+          const isRecommended = tier.slug === 'pro';
 
           // Compute per-service prices for this tier
           const priceLines = activeServices.map((svc) => {
@@ -85,10 +90,23 @@ export function Step3Tiers({
                 'rounded-xl border-2 p-6 text-left transition-all duration-150 outline-none w-full relative',
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isSelected
-                  ? 'border-primary bg-primary/5'
+                  ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
+                  : isRecommended
+                  ? 'border-primary/50 bg-primary/[0.025] shadow-md hover:border-primary hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/10 sm:-translate-y-1.5'
                   : 'border-border bg-card hover:border-primary/40 hover:bg-muted/20'
               )}
             >
+              {isRecommended && (
+                <div
+                  className={cn(
+                    'absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full',
+                    'text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap',
+                    'bg-primary text-primary-foreground shadow-sm'
+                  )}
+                >
+                  Most Popular
+                </div>
+              )}
               <div className="mb-4">
                 <div className="font-semibold text-base">{tier.name}</div>
                 {tier.tagline && (
@@ -103,12 +121,12 @@ export function Step3Tiers({
                 ) : hasEnterprise ? (
                   <div>
                     <span className="text-xl font-bold font-mono">From </span>
-                    <MonoPrice amount={regularTotal} size="lg" />
+                    <AnimatedPrice amount={regularTotal} size="lg" />
                     <div className="text-xs text-muted-foreground mt-0.5">+ custom pricing</div>
                   </div>
                 ) : (
                   <div>
-                    <MonoPrice amount={regularTotal} size="lg" />
+                    <AnimatedPrice amount={regularTotal} size="lg" />
                     <div className="text-xs text-muted-foreground mt-0.5">/month</div>
                   </div>
                 )}
@@ -136,6 +154,13 @@ export function Step3Tiers({
         })}
       </div>
 
+      <TierComparison
+        tiers={tiers}
+        brackets={brackets}
+        selectedServices={selectedServices}
+        selectedBrackets={selectedBrackets}
+      />
+
       {selectedTier && onGetQuote && (
         <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -150,6 +175,15 @@ export function Step3Tiers({
           >
             {isEnterprise ? 'Get a Custom Quote →' : 'Get Started →'}
           </Button>
+        </div>
+      )}
+
+      {testimonial && (
+        <div className="pt-4">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-3">
+            From a Capucor client
+          </p>
+          <TestimonialSpotlight testimonial={testimonial} />
         </div>
       )}
 
