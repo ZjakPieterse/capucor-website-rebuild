@@ -20,10 +20,11 @@ export function usePricingState() {
       const next = new Set(s.selectedServices);
       if (next.has(slug)) {
         next.delete(slug);
-        // Remove bracket when service is deselected
         const brackets = { ...s.selectedBrackets };
         delete brackets[slug];
-        return { ...s, selectedServices: next, selectedBrackets: brackets };
+        // If no services remain, clear the tier too so we don't carry an orphan selection.
+        const selectedTier = next.size === 0 ? null : s.selectedTier;
+        return { ...s, selectedServices: next, selectedBrackets: brackets, selectedTier };
       } else {
         next.add(slug);
         return { ...s, selectedServices: next };

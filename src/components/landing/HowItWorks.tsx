@@ -39,7 +39,7 @@ export function HowItWorks() {
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="How the monthly finance system works"
+            eyebrow="How it works"
             title="A monthly rhythm that keeps your business in control."
             subtitle="Great finance work needs a clear monthly rhythm. You provide the documents, approvals and answers we need. We process, review, report and advise from there. So the month closes properly and your business stays in control."
           />

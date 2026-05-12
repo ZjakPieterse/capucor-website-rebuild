@@ -9,11 +9,11 @@ import { ProblemCards } from '@/components/landing/ProblemCards';
 import { WhyCapucor } from '@/components/landing/WhyCapucor';
 import { ServicePillars } from '@/components/landing/ServicePillars';
 import { HowItWorks } from '@/components/landing/HowItWorks';
-import { CalculatorPreview } from '@/components/landing/CalculatorPreview';
 import { PackagesTeaser } from '@/components/landing/PackagesTeaser';
 import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
 import { OutcomeStories } from '@/components/landing/OutcomeStories';
 import { FaqAccordion } from '@/components/landing/FaqAccordion';
+import { ContactForm } from '@/components/landing/ContactForm';
 import { FinalCTA } from '@/components/landing/FinalCTA';
 
 export function generateMetadata(): Metadata {
@@ -104,14 +104,14 @@ export default async function HomePage() {
       <HowItWorks />
       {/* 7. Packages */}
       <PackagesTeaser services={services} tiers={tiers} />
-      {/* 8. Calculator preview */}
-      <CalculatorPreview />
-      {/* 9. Tech stack */}
+      {/* 8. Tech stack */}
       <TechStackShowcase />
-      {/* 10. Client outcomes */}
+      {/* 9. Client outcomes */}
       <OutcomeStories />
-      {/* 11. FAQ */}
+      {/* 10. FAQ */}
       <FaqAccordion />
+      {/* 11. Contact */}
+      <ContactForm />
       {/* 12. Final CTA */}
       <FinalCTA />
     </>

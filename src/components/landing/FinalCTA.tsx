@@ -9,11 +9,10 @@ export function FinalCTA() {
       <div className="max-w-3xl mx-auto px-6 text-center">
         <ScrollReveal>
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">
-            Ready for a finance function that keeps pace with your business?
+            Two ways to start.
           </h2>
           <p className="text-lg text-muted-foreground mb-10">
-            Build your subscription in minutes, or book a short fit call and we&apos;ll help you
-            decide what your business actually needs.
+            Build a subscription in a few minutes, or book a short fit call and we&apos;ll tell you which services your business needs.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
