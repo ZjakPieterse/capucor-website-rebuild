@@ -124,6 +124,79 @@
   box-shadow: 0 12px 40px -8px color-mix(in oklch, var(--primary) 18%, transparent);
 }
 
+/* ─── Finance Command Centre tiles (hero dashboard) ─────────────────────── */
+.fcc-tile {
+  transition: transform 250ms ease, opacity 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+}
+
+.fcc-grid:has(.fcc-tile:hover) .fcc-tile:not(:hover) {
+  opacity: 0.55;
+}
+
+.fcc-tile:hover {
+  transform: translateY(-2px) scale(1.015);
+  border-color: color-mix(in oklch, var(--primary) 45%, transparent);
+  box-shadow: 0 10px 30px -10px color-mix(in oklch, var(--primary) 22%, transparent);
+}
+
+/* Sequential heartbeat on SARS/CIPC compliance row — fires once every 8s, items offset by 200ms */
+@keyframes fcc-heartbeat {
+  0%, 96%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  97% {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 6px color-mix(in oklch, var(--primary) 70%, transparent));
+  }
+  98.5% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+}
+
+.fcc-heartbeat {
+  animation: fcc-heartbeat 8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.fcc-heartbeat:nth-child(2) { animation-delay: 0.2s; }
+.fcc-heartbeat:nth-child(3) { animation-delay: 0.4s; }
+
+/* ─── Animated price first-reveal glow ───────────────────────────────────── */
+@keyframes price-first-reveal {
+  0%   { text-shadow: 0 0 0 transparent; transform: scale(0.94); }
+  35%  { text-shadow: 0 0 22px color-mix(in oklch, var(--primary) 60%, transparent); transform: scale(1.03); }
+  100% { text-shadow: 0 0 0 transparent; transform: scale(1); }
+}
+
+.price-first-reveal {
+  animation: price-first-reveal 850ms cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+  will-change: transform, text-shadow;
+}
+
+/* ─── Cursor-aware radial gradient on dark sections (set via --x, --y) ──── */
+.cursor-glow {
+  position: relative;
+  isolation: isolate;
+}
+
+.cursor-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--cursor-glow-opacity, 0);
+  background: radial-gradient(
+    600px circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
+    color-mix(in oklch, var(--primary) 14%, transparent),
+    transparent 60%
+  );
+  transition: opacity 240ms ease;
+}
+
 /* ─── Reduced motion ─────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -141,7 +214,16 @@
 
   .feature-card:hover,
   .problem-card:hover,
-  .outcome-card:hover {
+  .outcome-card:hover,
+  .fcc-tile:hover {
     transform: none !important;
+  }
+
+  .fcc-heartbeat {
+    animation: none !important;
+  }
+
+  .cursor-glow::before {
+    opacity: 0 !important;
   }
 }

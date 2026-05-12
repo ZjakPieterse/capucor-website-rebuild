@@ -1,95 +1,171 @@
 'use client';
 
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import { Landmark, ReceiptText, ClipboardCheck, FileBarChart, ScrollText } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 
-interface OutcomeCard {
-  label: string;
-  before: string;
-  after: string;
-  metricValue: string;
-  metricLabel: string;
+interface DayStop {
+  day: number;
+  icon: typeof Landmark;
+  title: string;
+  body: string;
 }
 
-const OUTCOMES: OutcomeCard[] = [
+const DAY_STOPS: DayStop[] = [
   {
-    label: 'Professional services business · 2 directors · VAT registered',
-    before:
-      'Books three months behind. VAT201 filed late once, triggering a SARS penalty. Accountant unreachable at year-end. Financial statements took six weeks to finalise.',
-    after:
-      'Monthly close completed by the 10th. Zero late filings across 12 months. Year-end took four days. The records were already clean.',
-    metricValue: '12 months',
-    metricLabel: 'Zero late filings',
+    day: 1,
+    icon: Landmark,
+    title: 'Bank feeds pulled, transactions classified',
+    body: 'Xero pulls the previous month’s bank activity overnight. By the time the new month starts, your bookkeeper is already categorising and reconciling. Nothing waits a quarter to be sorted out.',
   },
   {
-    label: 'Retail business · 8 employees · monthly payroll',
-    before:
-      'Payroll calculated manually in spreadsheets each month. IRP5 certificates issued six weeks late. One SARS penalty for an EMP201 error that went unnoticed for two cycles.',
-    after:
-      'Payroll processed through SimplePay every month. IRP5s filed before the May deadline. When SARS queried the prior-year error, clean records meant it was resolved without escalation.',
-    metricValue: 'First clean',
-    metricLabel: 'Payroll year-end',
+    day: 7,
+    icon: ReceiptText,
+    title: 'Payroll, EMP201 and UIF handled',
+    body: 'Payslips are generated and approved. EMP201 is calculated, submitted and paid. UIF and PAYE move on the dates SARS expects, not the dates you remembered.',
   },
   {
-    label: 'Product business · R3–5M turnover · stock and VAT pressure',
-    before:
-      'No management accounts. Cash decisions made by checking the bank balance. Surprised by a R40,000 VAT liability the month before a planned equipment purchase.',
-    after:
-      'Monthly P&L and balance sheet delivered by the 15th. Cash runway tracked every month. Seasonal dips visible in the P&L two months before they hit the bank balance.',
-    metricValue: 'Monthly P&L',
-    metricLabel: 'Delivered by the 15th',
+    day: 15,
+    icon: ClipboardCheck,
+    title: 'Senior review, then your management report',
+    body: 'A SAICA-registered AGA(SA) accountant signs off on the month before anything reaches you. You receive a concise P&L, balance sheet and cash position, with the items worth a conversation flagged at the top.',
+  },
+  {
+    day: 25,
+    icon: FileBarChart,
+    title: 'VAT201 prepared and submitted',
+    body: 'VAT is calculated from the reconciled ledger, not from invoice piles. You see the figure before it is submitted, and the SARS confirmation gets logged in your file the same day.',
+  },
+  {
+    day: 30,
+    icon: ScrollText,
+    title: 'Next month already on the schedule',
+    body: 'Provisional tax, CIPC returns, IRP5 windows: everything that is approaching in the next 60 days is already on a workflow, with you and your bookkeeper assigned to it.',
   },
 ];
 
+const STATS = [
+  { value: 175, suffix: '+', label: 'Businesses kept current month after month' },
+  { value: 0, suffix: '', label: 'Late SARS filings across our client base in 2025' },
+  { value: 12, suffix: ' days', label: 'Average migration from another accountant to a live Capucor month' },
+  { value: 15, suffix: 'th', label: 'Of the month is when your management report lands' },
+];
+
 export function OutcomeStories() {
+  const timelineRef = useRef<HTMLDivElement | null>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 65%', 'end 35%'],
+  });
+
+  // Vertical fill on the calendar line (0% → 100%)
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+
   return (
-    <section className="py-24 lg:py-32 bg-muted/30">
+    <section className="py-24 lg:py-32 bg-muted/30 border-t border-border">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="Client outcomes"
-            title="What changes when finance works properly"
-            subtitle="Anonymised examples of the type of finance problems SME owners bring to us, and what changes once there is a proper monthly rhythm in place."
+            eyebrow="A month with Capucor"
+            title="What actually happens between the 1st and the 30th"
+            subtitle="Most accounting firms surface once a year, at audit time. We work to the month. Scroll through what that rhythm looks like in practice."
           />
         </ScrollReveal>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {OUTCOMES.map((card, i) => (
-            <ScrollReveal key={card.label} delay={i * 0.1}>
-              <div className="rounded-xl border border-border bg-card overflow-hidden h-full flex flex-col transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-lg hover:border-primary/20">
-
-                {/* Client label */}
-                <div className="px-6 pt-6 pb-4">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    {card.label}
-                  </p>
+        {/* Stat ticker */}
+        <ScrollReveal delay={0.1}>
+          <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 border-y border-border py-8">
+            {STATS.map((s) => (
+              <div key={s.label} className="text-center lg:text-left">
+                <div className="text-3xl lg:text-4xl font-bold font-mono text-primary leading-none">
+                  <AnimatedNumber to={s.value} suffix={s.suffix} />
                 </div>
-
-                {/* Before */}
-                <div className="mx-6 mb-4 rounded-lg bg-destructive/8 border border-destructive/15 p-4">
-                  <p className="text-xs font-semibold text-destructive uppercase tracking-wider mb-2">Before</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{card.before}</p>
-                </div>
-
-                {/* After */}
-                <div className="mx-6 mb-6 rounded-lg bg-primary/8 border border-primary/15 p-4 flex-1">
-                  <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">After</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{card.after}</p>
-                </div>
-
-                {/* Metric */}
-                <div className="px-6 pb-6 border-t border-border pt-4">
-                  <p className="text-2xl font-bold tracking-tight text-foreground leading-none">
-                    {card.metricValue}
-                  </p>
-                  <p className="mt-1.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    {card.metricLabel}
-                  </p>
-                </div>
-
+                <p className="mt-2 text-xs text-muted-foreground leading-snug">
+                  {s.label}
+                </p>
               </div>
-            </ScrollReveal>
-          ))}
+            ))}
+          </div>
+        </ScrollReveal>
+
+        {/* Scroll-driven timeline */}
+        <div ref={timelineRef} className="relative mt-20 grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-16">
+
+          {/* Left: sticky calendar */}
+          <div className="hidden lg:block">
+            <div className="sticky top-32">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-4">
+                A typical month
+              </p>
+              <div className="relative pl-2">
+                {/* Track */}
+                <div
+                  aria-hidden
+                  className="absolute left-[26px] top-2 bottom-2 w-px bg-border"
+                />
+                {/* Fill */}
+                <motion.div
+                  aria-hidden
+                  className="absolute left-[26px] top-2 w-px bg-primary origin-top"
+                  style={prefersReducedMotion ? { height: '100%' } : { height: lineHeight }}
+                />
+                <ul className="space-y-9">
+                  {DAY_STOPS.map((stop) => (
+                    <li key={stop.day} className="relative flex items-center gap-5">
+                      <div className="relative z-10 flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full border border-primary/30 bg-card">
+                        <stop.icon className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          Day
+                        </p>
+                        <p className="font-mono text-xl font-bold leading-none">
+                          {stop.day}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: scrolling narrative */}
+          <div className="space-y-24 lg:space-y-40">
+            {DAY_STOPS.map((stop, i) => (
+              <motion.div
+                key={stop.day}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '0px 0px -25% 0px' }}
+                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+                className="relative"
+              >
+                {/* Mobile day chip */}
+                <div className="lg:hidden mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/[0.06] px-3 py-1">
+                  <stop.icon className="h-3.5 w-3.5 text-primary" />
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                    Day {stop.day}
+                  </span>
+                </div>
+
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-primary mb-3 hidden lg:block">
+                  {String(i + 1).padStart(2, '0')} of {DAY_STOPS.length}
+                </p>
+                <h3 className="text-2xl lg:text-3xl font-bold tracking-tight leading-tight mb-4">
+                  {stop.title}
+                </h3>
+                <p className="text-base text-muted-foreground leading-relaxed max-w-xl">
+                  {stop.body}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

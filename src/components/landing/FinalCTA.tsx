@@ -1,11 +1,18 @@
+'use client';
+
 import Link from 'next/link';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { useCursorGlow } from '@/hooks/useCursorGlow';
 
 export function FinalCTA() {
+  const sectionRef = useCursorGlow<HTMLElement>();
   return (
-    <section className="py-24 lg:py-32 bg-muted/50 border-t border-border">
+    <section
+      ref={sectionRef}
+      className="cursor-glow relative py-24 lg:py-32 bg-muted/50 border-t border-border"
+    >
       <div className="max-w-3xl mx-auto px-6 text-center">
         <ScrollReveal>
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">

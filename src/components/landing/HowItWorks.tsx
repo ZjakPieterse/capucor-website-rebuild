@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'motion/react';
 import Link from 'next/link';
 import { Inbox, Cog, BarChart2, MessageSquare, ArrowRight, Calendar } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
@@ -60,21 +61,33 @@ export function HowItWorks() {
               <ScrollReveal key={step.title} delay={i * 0.1}>
                 <div className="relative flex flex-col items-center text-center px-3">
                   {i < STEPS.length - 1 && (
-                    <div
+                    <motion.div
                       aria-hidden
-                      className="absolute top-8 h-0.5 pointer-events-none"
+                      className="absolute top-8 h-0.5 pointer-events-none origin-left"
                       style={{
                         left: 'calc(50% + 32px)',
                         right: 'calc(-50% + 32px)',
                         background:
-                          'linear-gradient(to right, color-mix(in oklch, var(--primary) 60%, transparent), transparent)',
+                          'linear-gradient(to right, color-mix(in oklch, var(--primary) 70%, transparent), transparent)',
                       }}
+                      initial={{ scaleX: 0, opacity: 0.4 }}
+                      whileInView={{ scaleX: 1, opacity: 1 }}
+                      viewport={{ once: true, margin: '0px 0px -25% 0px' }}
+                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 + i * 0.1 }}
                     />
                   )}
 
                   {/* Icon */}
                   <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40">
-                    <step.icon className="h-6 w-6 text-primary" />
+                    <motion.span
+                      aria-hidden
+                      className="absolute inset-0 rounded-full border-2 border-primary"
+                      initial={{ scale: 1, opacity: 0 }}
+                      whileInView={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                      viewport={{ once: true, margin: '0px 0px -30% 0px' }}
+                      transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 + i * 0.1 }}
+                    />
+                    <step.icon className="relative z-10 h-6 w-6 text-primary" />
                   </div>
 
                   {/* Content */}
@@ -101,19 +114,31 @@ export function HowItWorks() {
                 <div className="relative flex gap-5 pb-10">
                   {/* Vertical line segment — hidden on last step */}
                   {!isLast && (
-                    <div
+                    <motion.div
                       aria-hidden
-                      className="absolute left-6 top-12 bottom-0 w-[2px] pointer-events-none"
+                      className="absolute left-6 top-12 bottom-0 w-[2px] pointer-events-none origin-top"
                       style={{
                         background:
-                          'linear-gradient(to bottom, color-mix(in oklch, var(--primary) 50%, transparent), color-mix(in oklch, var(--border) 20%, transparent))',
+                          'linear-gradient(to bottom, color-mix(in oklch, var(--primary) 70%, transparent), color-mix(in oklch, var(--border) 20%, transparent))',
                       }}
+                      initial={{ scaleY: 0, opacity: 0.4 }}
+                      whileInView={{ scaleY: 1, opacity: 1 }}
+                      viewport={{ once: true, margin: '0px 0px -15% 0px' }}
+                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
                     />
                   )}
 
                   {/* Node */}
                   <div className="relative z-10 shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40 ring-4 ring-background">
-                    <step.icon className="h-5 w-5 text-primary" />
+                    <motion.span
+                      aria-hidden
+                      className="absolute inset-0 rounded-full border-2 border-primary"
+                      initial={{ scale: 1, opacity: 0 }}
+                      whileInView={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                      viewport={{ once: true, margin: '0px 0px -15% 0px' }}
+                      transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 }}
+                    />
+                    <step.icon className="relative z-10 h-5 w-5 text-primary" />
                   </div>
 
                   {/* Content */}

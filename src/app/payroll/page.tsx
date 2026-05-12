@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
-import { BarChart2, BookMarked } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, BarChart2, BookMarked } from 'lucide-react';
 import { siteConfig } from '@/config/site';
+import { PayrollDashboard } from '@/components/services/ServiceMiniDashboards';
 
 export const metadata: Metadata = {
   title: 'Payroll',
@@ -50,15 +52,29 @@ export default function PayrollPage() {
   return (
     <>
       {/* Hero */}
-      <section className="py-24 lg:py-32">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">Payroll</h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Accurate payroll for your staff team, every month. Every payslip calculated correctly,
-            every statutory submission filed on time. PAYE and UIF submitted to SARS each month,
-            COIDA returns filed annually, and IRP5 certificates ready for every employee at
-            year-end.
-          </p>
+      <section className="py-24 lg:py-28">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-4">
+                Payroll
+              </p>
+              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-[1.1]">
+                Payslips, EMP201 and IRP5s done before SARS comes asking
+              </h1>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
+                Every payslip calculated, every PAYE and UIF submission filed by the seventh, COIDA Return of Earnings filed annually. IRP5 certificates ready before the May deadline.
+              </p>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
+              >
+                Build your subscription
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <PayrollDashboard />
+          </div>
         </div>
       </section>
 

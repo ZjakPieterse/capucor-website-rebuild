@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
-import { BarChart2, Users } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, BarChart2, Users } from 'lucide-react';
 import { siteConfig } from '@/config/site';
+import { BookkeepingDashboard } from '@/components/services/ServiceMiniDashboards';
 
 export const metadata: Metadata = {
   title: 'Bookkeeping',
@@ -50,14 +52,29 @@ export default function BookkeepingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="py-24 lg:py-32">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">Bookkeeping</h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Your books, reconciled and up to date every month. Every transaction is processed,
-            categorised, and reconciled against your bank statements by the time the new month
-            starts. You get a real P&amp;L and balance sheet each month. Actual numbers you can act on.
-          </p>
+      <section className="py-24 lg:py-28">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-4">
+                Bookkeeping
+              </p>
+              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-[1.1]">
+                Your ledger, reconciled before the new month starts
+              </h1>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
+                Every transaction processed, categorised and reconciled against your bank statements each month. By the time the new month begins, your P&amp;L and balance sheet are already there.
+              </p>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
+              >
+                Build your subscription
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <BookkeepingDashboard />
+          </div>
         </div>
       </section>
 

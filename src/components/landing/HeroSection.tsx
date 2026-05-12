@@ -1,5 +1,6 @@
 'use client';
 
+import { useCursorGlow } from '@/hooks/useCursorGlow';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { ArrowRight, Calendar, TrendingDown, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
@@ -86,12 +87,12 @@ function FinanceCommandCentre() {
       </div>
 
       {/* Tile grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+      <div className="fcc-grid grid grid-cols-1 sm:grid-cols-3 gap-2.5">
 
         {/* Cash Runway */}
         <motion.div
           custom={0} variants={tileVariants} initial="hidden" animate="visible"
-          className="rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Cash Runway
@@ -121,7 +122,7 @@ function FinanceCommandCentre() {
         {/* Debtor Days */}
         <motion.div
           custom={1} variants={tileVariants} initial="hidden" animate="visible"
-          className="rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Debtor Days
@@ -139,7 +140,7 @@ function FinanceCommandCentre() {
         {/* VAT Due Date */}
         <motion.div
           custom={2} variants={tileVariants} initial="hidden" animate="visible"
-          className="rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             VAT Due
@@ -163,7 +164,7 @@ function FinanceCommandCentre() {
         {/* Monthly Close */}
         <motion.div
           custom={3} variants={tileVariants} initial="hidden" animate="visible"
-          className="rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Monthly Close
@@ -180,7 +181,7 @@ function FinanceCommandCentre() {
         {/* Payroll */}
         <motion.div
           custom={4} variants={tileVariants} initial="hidden" animate="visible"
-          className="rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Payroll
@@ -202,7 +203,7 @@ function FinanceCommandCentre() {
         {/* Management Report */}
         <motion.div
           custom={5} variants={tileVariants} initial="hidden" animate="visible"
-          className="rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Management Report
@@ -219,7 +220,7 @@ function FinanceCommandCentre() {
         {/* SARS / CIPC Compliance — full width */}
         <motion.div
           custom={6} variants={tileVariants} initial="hidden" animate="visible"
-          className="col-span-1 sm:col-span-3 rounded-xl p-3.5"
+          className="fcc-tile col-span-1 sm:col-span-3 rounded-xl p-3.5"
           style={{ border: '1px solid rgba(46,216,137,.2)', background: 'rgba(46,216,137,.05)' }}
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2.5">
@@ -229,7 +230,7 @@ function FinanceCommandCentre() {
             {['Provisional Tax', 'EMP201', 'CIPC Annual Return'].map((item, i) => (
               <motion.div
                 key={item}
-                className="flex items-center gap-1.5"
+                className="fcc-heartbeat flex items-center gap-1.5"
                 initial={{ opacity: 0, x: -6 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.65 + i * 0.1, duration: 0.3 }}
@@ -248,8 +249,12 @@ function FinanceCommandCentre() {
 
 // ── Hero Section ──────────────────────────────────────────────────────────────────
 export function HeroSection() {
+  const sectionRef = useCursorGlow<HTMLElement>();
   return (
-    <section className="relative overflow-hidden py-24 lg:py-32">
+    <section
+      ref={sectionRef}
+      className="cursor-glow relative overflow-hidden py-24 lg:py-32"
+    >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/8 blur-3xl" />
       </div>

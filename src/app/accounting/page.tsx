@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
-import { BookMarked, Users } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, BookMarked, Users } from 'lucide-react';
 import { siteConfig } from '@/config/site';
+import { AccountingDashboard } from '@/components/services/ServiceMiniDashboards';
 
 export const metadata: Metadata = {
   title: 'Accounting',
@@ -50,14 +52,29 @@ export default function AccountingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="py-24 lg:py-32">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">Accounting</h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Every year, a professional accountant compiles your financial statements, files your
-            tax returns before the deadlines, and makes sure your VAT201 and CIPC submissions go
-            in on time. You focus on running your business. The compliance side is off your plate.
-          </p>
+      <section className="py-24 lg:py-28">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-4">
+                Accounting
+              </p>
+              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-[1.1]">
+                Financial statements, tax returns and CIPC, handled before the deadlines move
+              </h1>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
+                Annual financials, provisional and income tax, VAT201 and CIPC annual returns. A SAICA-registered AGA(SA) accountant signs off on the file before anything reaches SARS.
+              </p>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
+              >
+                Build your subscription
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <AccountingDashboard />
+          </div>
         </div>
       </section>
 
