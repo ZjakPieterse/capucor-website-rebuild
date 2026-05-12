@@ -127,10 +127,7 @@ export function TierComparison({
                 {sortedTiers.map((t) => (
                   <th
                     key={t.slug}
-                    className={cn(
-                      'text-center text-xs font-semibold uppercase tracking-wider px-3 py-3',
-                      t.slug === 'pro' ? 'text-primary' : 'text-muted-foreground'
-                    )}
+                    className="text-center text-xs font-semibold uppercase tracking-wider px-3 py-3 text-muted-foreground"
                   >
                     {t.name}
                   </th>
@@ -150,12 +147,7 @@ export function TierComparison({
                   {sortedTiers.map((t) => (
                     <td key={t.slug} className="px-3 py-2.5 text-center">
                       {isCovered(t.slug, row.lowestTier) ? (
-                        <Check
-                          className={cn(
-                            'inline h-4 w-4',
-                            t.slug === 'pro' ? 'text-primary' : 'text-foreground/70'
-                          )}
-                        />
+                        <Check className="inline h-4 w-4 text-foreground/70" />
                       ) : (
                         <Minus className="inline h-3.5 w-3.5 text-muted-foreground/40" />
                       )}
@@ -175,10 +167,7 @@ export function TierComparison({
                   return (
                     <td
                       key={t.slug}
-                      className={cn(
-                        'px-3 py-3 text-center',
-                        t.slug === 'pro' && 'text-primary'
-                      )}
+                      className="px-3 py-3 text-center"
                     >
                       {hasCustom && total === 0 ? (
                         <span className="text-xs font-semibold font-mono">Custom</span>

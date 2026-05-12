@@ -67,11 +67,13 @@ export function ProblemCards() {
 
                 {/* Problem */}
                 <div>
-                  <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10">
-                    <problem.icon className="h-5 w-5 text-destructive" />
-                  </div>
-                  <div className="text-[10px] font-semibold uppercase tracking-wider text-destructive/80 mb-1.5">
-                    Problem
+                  <div className="mb-3 flex items-center gap-3">
+                    <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-destructive/10">
+                      <problem.icon className="h-5 w-5 text-destructive" />
+                    </div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-destructive/80">
+                      Problem
+                    </div>
                   </div>
                   <h3 className="text-base font-semibold mb-2">{problem.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{problem.body}</p>
@@ -82,11 +84,13 @@ export function ProblemCards() {
 
                 {/* Fix */}
                 <div>
-                  <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <problem.solution.icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="text-[10px] font-semibold uppercase tracking-wider text-primary mb-1.5">
-                    Capucor fixes this by
+                  <div className="mb-3 flex items-center gap-3">
+                    <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <problem.solution.icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                      Capucor fixes this
+                    </div>
                   </div>
                   <h3 className="text-base font-semibold mb-2">{problem.solution.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{problem.solution.body}</p>

@@ -51,7 +51,7 @@ export function TechStackShowcase() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="Our tech stack"
-            title="Modern finance tools, configured into one monthly workflow."
+            title="Modern finance tools, built for your business"
             subtitle="The software is not the service. The service is how we set it up, monitor it and use it every month to keep your records, deadlines, payroll and reports under control."
           />
         </ScrollReveal>

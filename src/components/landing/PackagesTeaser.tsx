@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, CalendarCheck, Check, Layers, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { CalendarCheck, Check, Layers, Users } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { cn } from '@/lib/utils';
@@ -122,19 +121,6 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
           })}
         </div>
 
-        <div className="mt-10 text-center">
-          <p className="text-sm text-muted-foreground mb-4">
-            Prices vary by service and bracket. Use our pricing calculator for an exact quote.
-          </p>
-          <Button
-            nativeButton={false}
-            render={<Link href="/pricing" />}
-            variant="outline"
-            className="gap-2"
-          >
-            Build your subscription <ArrowRight className="h-4 w-4" />
-          </Button>
-        </div>
       </div>
     </section>
   );

@@ -270,13 +270,13 @@ export function HeroSection() {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
             >
-              Your numbers, deadlines, payroll and reports, handled like an in-house finance team.
+              Your finance function, handled like an in-house team.
             </motion.h1>
             <motion.p
               className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}
             >
-              We combine real accountants, Xero-led systems and a fixed monthly subscription so your books stay current, SARS deadlines stay under control, and you always know where the business stands.
+              Real accountants and Xero-led systems on a fixed monthly subscription. Your books close on time, your SARS submissions go out clean, and you can pull a current number whenever you need one.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-3"

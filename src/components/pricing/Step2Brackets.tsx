@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import {
   Select,
   SelectContent,
@@ -50,12 +49,6 @@ export function Step2Brackets({
             .sort((a, b) => a.display_order - b.display_order);
           const currentValue = selectedBrackets[svc.slug];
           const selectValue = currentValue !== undefined ? String(currentValue) : '';
-          const isEnterpriseSelection = currentValue === 'enterprise';
-          const selectedBracket =
-            currentValue !== undefined && currentValue !== 'enterprise'
-              ? svcBrackets.find((b) => b.ordinal === currentValue)
-              : null;
-          const basicPrice = selectedBracket?.basic_price ?? 0;
 
           return (
             <div
@@ -87,23 +80,6 @@ export function Step2Brackets({
                     ))}
                   </SelectContent>
                 </Select>
-
-                {currentValue !== undefined && (
-                  <p className="text-xs text-muted-foreground sm:text-right">
-                    {isEnterpriseSelection ? (
-                      <span>Custom pricing for this size</span>
-                    ) : (
-                      <>
-                        From{' '}
-                        <AnimatedPrice
-                          amount={basicPrice}
-                          className="text-xs font-semibold text-foreground"
-                        />
-                        {' / month'}
-                      </>
-                    )}
-                  </p>
-                )}
               </div>
             </div>
           );

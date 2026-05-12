@@ -53,7 +53,6 @@ export function Step3Tiers({
       <div className="grid sm:grid-cols-3 gap-4 sm:pt-3">
         {sortedTiers.map((tier) => {
           const isSelected = selectedTier === tier.slug;
-          const isRecommended = tier.slug === 'pro';
 
           // Compute per-service prices for this tier
           const priceLines = activeServices.map((svc) => {
@@ -91,22 +90,9 @@ export function Step3Tiers({
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isSelected
                   ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
-                  : isRecommended
-                  ? 'border-primary/50 bg-primary/[0.025] shadow-md hover:border-primary hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/10 sm:-translate-y-1.5'
                   : 'border-border bg-card hover:border-primary/40 hover:bg-muted/20'
               )}
             >
-              {isRecommended && (
-                <div
-                  className={cn(
-                    'absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full',
-                    'text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap',
-                    'bg-primary text-primary-foreground shadow-sm'
-                  )}
-                >
-                  Most Popular
-                </div>
-              )}
               <div className="mb-4">
                 <div className="font-semibold text-base">{tier.name}</div>
                 {tier.tagline && (
