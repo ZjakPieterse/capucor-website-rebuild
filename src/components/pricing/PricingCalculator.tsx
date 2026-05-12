@@ -10,7 +10,6 @@ import { Step1Services } from './Step1Services';
 import { Step2Brackets } from './Step2Brackets';
 import { Step3Tiers } from './Step3Tiers';
 import { Step4Activate } from './Step4Activate';
-import { SummaryPanel } from './SummaryPanel';
 import { MobileTotalBar } from './MobileTotalBar';
 import { StickyConfigChip } from './StickyConfigChip';
 import type { PricingData, Testimonial } from '@/types';
@@ -277,78 +276,64 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
       </section>
 
       {/* Calculator */}
-      <div className="grid lg:grid-cols-[1fr_320px] gap-8 items-start py-8 border-t border-border">
-        {/* Left: Steps */}
-        <div className="min-w-0">
-          <StepIndicator currentStep={state.step} />
+      <div
+        id="pricing-summary"
+        className="max-w-4xl mx-auto py-8 border-t border-border"
+      >
+        <StepIndicator currentStep={state.step} />
 
-          {state.step === 1 && (
-            <Step1Services
-              services={services}
-              selected={state.selectedServices}
-              onToggle={toggleService}
-              onNext={() => {
-                if (canProceedStep1) setStep(2);
-              }}
-            />
-          )}
+        {state.step === 1 && (
+          <Step1Services
+            services={services}
+            selected={state.selectedServices}
+            onToggle={toggleService}
+            onNext={() => {
+              if (canProceedStep1) setStep(2);
+            }}
+          />
+        )}
 
-          {state.step === 2 && (
-            <Step2Brackets
-              services={services}
-              brackets={brackets}
-              selectedServices={state.selectedServices}
-              selectedBrackets={state.selectedBrackets}
-              onBracketChange={setBracket}
-              onBack={() => setStep(1)}
-              onNext={() => {
-                if (canProceedStep2) setStep(3);
-              }}
-              canProceed={canProceedStep2}
-            />
-          )}
+        {state.step === 2 && (
+          <Step2Brackets
+            services={services}
+            brackets={brackets}
+            selectedServices={state.selectedServices}
+            selectedBrackets={state.selectedBrackets}
+            onBracketChange={setBracket}
+            onBack={() => setStep(1)}
+            onNext={() => {
+              if (canProceedStep2) setStep(3);
+            }}
+            canProceed={canProceedStep2}
+          />
+        )}
 
-          {state.step === 3 && (
-            <Step3Tiers
-              services={services}
-              brackets={brackets}
-              tiers={tiers}
-              selectedServices={state.selectedServices}
-              selectedBrackets={state.selectedBrackets}
-              selectedTier={state.selectedTier}
-              onTierSelect={setTier}
-              onBack={() => setStep(2)}
-              onActivate={advanceToActivate}
-              testimonial={spotlightTestimonial}
-            />
-          )}
-
-          {state.step === 4 && (
-            <Step4Activate
-              services={services}
-              brackets={brackets}
-              tiers={tiers}
-              selectedServices={state.selectedServices}
-              selectedBrackets={state.selectedBrackets}
-              selectedTier={state.selectedTier}
-              onBack={() => setStep(3)}
-            />
-          )}
-        </div>
-
-        {/* Right: Summary */}
-        <div id="pricing-summary">
-          <SummaryPanel
+        {state.step === 3 && (
+          <Step3Tiers
             services={services}
             brackets={brackets}
             tiers={tiers}
             selectedServices={state.selectedServices}
             selectedBrackets={state.selectedBrackets}
-            selectedTierSlug={state.selectedTier}
+            selectedTier={state.selectedTier}
+            onTierSelect={setTier}
+            onBack={() => setStep(2)}
             onActivate={advanceToActivate}
-            currentStep={state.step}
+            testimonial={spotlightTestimonial}
           />
-        </div>
+        )}
+
+        {state.step === 4 && (
+          <Step4Activate
+            services={services}
+            brackets={brackets}
+            tiers={tiers}
+            selectedServices={state.selectedServices}
+            selectedBrackets={state.selectedBrackets}
+            selectedTier={state.selectedTier}
+            onBack={() => setStep(3)}
+          />
+        )}
       </div>
 
       {/* Trust signals near commitment, not in the warm-up */}
@@ -391,18 +376,15 @@ export function PricingCalculator({ data, testimonials }: PricingCalculatorProps
   return (
     <Suspense
       fallback={
-        <div className="max-w-7xl mx-auto px-6 py-16">
-          <div className="h-8 w-64 rounded-md bg-muted animate-pulse mb-8" />
-          <div className="grid lg:grid-cols-[1fr_320px] gap-8">
-            <div className="space-y-4">
-              <div className="h-4 w-40 rounded bg-muted animate-pulse" />
-              <div className="grid sm:grid-cols-3 gap-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-36 rounded-xl bg-muted animate-pulse" />
-                ))}
-              </div>
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <div className="h-8 w-64 rounded-md bg-muted animate-pulse mb-8 mx-auto" />
+          <div className="space-y-4">
+            <div className="h-4 w-40 rounded bg-muted animate-pulse" />
+            <div className="grid sm:grid-cols-3 gap-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-36 rounded-xl bg-muted animate-pulse" />
+              ))}
             </div>
-            <div className="h-64 rounded-xl bg-muted animate-pulse" />
           </div>
         </div>
       }
