@@ -35,7 +35,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
         <ScrollReveal>
           <SectionHeading
             eyebrow="Packages"
-            title="Choose the level of finance support your business needs now."
+            title="Choose the level of support your business needs right now"
             subtitle="Start with the services you need, then choose the depth of monthly support. You see the monthly fee before any conversation, and your subscription can grow as the business becomes more complex."
           />
         </ScrollReveal>
