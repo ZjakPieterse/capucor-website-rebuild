@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import type { BracketValue, PricingState } from '@/types';
+import type { BracketValue, CalculatorStep, PricingState } from '@/types';
 
 export function usePricingState() {
   const [state, setState] = useState<PricingState>({
@@ -11,7 +11,7 @@ export function usePricingState() {
     selectedTier: null,
   });
 
-  const setStep = useCallback((step: PricingState['step']) => {
+  const setStep = useCallback((step: CalculatorStep) => {
     setState((s) => ({ ...s, step }));
   }, []);
 
@@ -47,6 +47,7 @@ export function usePricingState() {
   const canProceedStep2 =
     state.selectedServices.size > 0 &&
     [...state.selectedServices].every((slug) => slug in state.selectedBrackets);
+  const canProceedStep3 = state.selectedTier !== null;
 
   return {
     state,
@@ -56,5 +57,6 @@ export function usePricingState() {
     setTier,
     canProceedStep1,
     canProceedStep2,
+    canProceedStep3,
   };
 }

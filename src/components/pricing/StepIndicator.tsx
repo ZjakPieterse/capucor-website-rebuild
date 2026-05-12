@@ -1,16 +1,18 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import type { CalculatorStep } from '@/types';
 
 interface StepIndicatorProps {
-  currentStep: 1 | 2 | 3;
+  currentStep: CalculatorStep;
 }
 
 const STEPS = [
   { number: 1, label: 'Select services' },
   { number: 2, label: 'Your business' },
   { number: 3, label: 'Choose package' },
-];
+  { number: 4, label: 'Activate' },
+] as const;
 
 export function StepIndicator({ currentStep }: StepIndicatorProps) {
   return (

@@ -67,20 +67,16 @@ export function TierComparison({
 
   // Per-tier total for the footer row
   const tierTotals = useMemo(() => {
-    const out: Record<string, { total: number; hasCustom: boolean }> = {};
+    const out: Record<string, { total: number }> = {};
     for (const tier of sortedTiers) {
       let total = 0;
-      let hasCustom = false;
       for (const slug of selectedServices) {
         const bv = selectedBrackets[slug];
-        if (bv === 'enterprise' || bv === undefined) {
-          if (bv === 'enterprise') hasCustom = true;
-          continue;
-        }
+        if (typeof bv !== 'number') continue;
         const b = brackets.find((x) => x.service_slug === slug && x.ordinal === bv);
         if (b) total += bracketPrice(b, tier.slug);
       }
-      out[tier.slug] = { total, hasCustom };
+      out[tier.slug] = { total };
     }
     return out;
   }, [sortedTiers, selectedServices, selectedBrackets, brackets]);
@@ -160,22 +156,10 @@ export function TierComparison({
                   Monthly price
                 </td>
                 {sortedTiers.map((t) => {
-                  const { total, hasCustom } = tierTotals[t.slug] ?? {
-                    total: 0,
-                    hasCustom: false,
-                  };
+                  const { total } = tierTotals[t.slug] ?? { total: 0 };
                   return (
-                    <td
-                      key={t.slug}
-                      className="px-3 py-3 text-center"
-                    >
-                      {hasCustom && total === 0 ? (
-                        <span className="text-xs font-semibold font-mono">Custom</span>
-                      ) : hasCustom ? (
-                        <span className="text-xs font-semibold font-mono">
-                          From <AnimatedPrice amount={total} className="text-xs font-bold" />
-                        </span>
-                      ) : total > 0 ? (
+                    <td key={t.slug} className="px-3 py-3 text-center">
+                      {total > 0 ? (
                         <AnimatedPrice amount={total} className="text-sm font-bold" />
                       ) : (
                         <span className="text-xs text-muted-foreground">—</span>

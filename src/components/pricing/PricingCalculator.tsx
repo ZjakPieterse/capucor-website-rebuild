@@ -1,19 +1,18 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 import { BadgeCheck, Users2, Shield, MessageSquare, ChevronDown, Clock } from 'lucide-react';
 import { usePricingState } from '@/hooks/usePricingState';
-import { hasEnterpriseService, bracketPrice, monthlyTotal } from '@/lib/pricing';
 import { PACKAGE_COMMON_ITEMS } from '@/config/tiers';
 import { siteConfig } from '@/config/site';
 import { StepIndicator } from './StepIndicator';
 import { Step1Services } from './Step1Services';
 import { Step2Brackets } from './Step2Brackets';
 import { Step3Tiers } from './Step3Tiers';
+import { Step4Activate } from './Step4Activate';
 import { SummaryPanel } from './SummaryPanel';
 import { MobileTotalBar } from './MobileTotalBar';
 import { StickyConfigChip } from './StickyConfigChip';
-import { GetQuoteModal, type QuoteSummary } from './GetQuoteModal';
 import type { PricingData, Testimonial } from '@/types';
 
 interface PricingCalculatorProps {
@@ -237,8 +236,6 @@ function BottomCTA() {
 function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorProps) {
   const { services, brackets, tiers } = data;
   const spotlightTestimonial = testimonials[0] ?? null;
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalSource, setModalSource] = useState<'signup' | 'enterprise'>('signup');
 
   const {
     state,
@@ -248,50 +245,11 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
     setTier,
     canProceedStep1,
     canProceedStep2,
+    canProceedStep3,
   } = usePricingState();
 
-  const activeSlugs = [...state.selectedServices];
-  const isEnterprise = hasEnterpriseService(activeSlugs, state.selectedBrackets);
-
-  function openModal(source: 'signup' | 'enterprise') {
-    setModalSource(source);
-    setModalOpen(true);
-  }
-
-  const modalConfig = {
-    services: activeSlugs,
-    brackets: state.selectedBrackets,
-    tier: state.selectedTier,
-    hasEnterprise: isEnterprise,
-  };
-
-  const activeTier = tiers.find((t) => t.slug === state.selectedTier) ?? null;
-  const modalSummary: QuoteSummary = {
-    lines: activeSlugs.map((slug) => {
-      const svc = services.find((s) => s.slug === slug);
-      const bracketVal = state.selectedBrackets[slug];
-      if (bracketVal === 'enterprise' || bracketVal === undefined) {
-        return {
-          serviceName: svc?.name ?? slug,
-          bracketLabel: bracketVal === 'enterprise' ? 'Custom size' : '',
-          price: null,
-        };
-      }
-      const bracket = brackets.find(
-        (b) => b.service_slug === slug && b.ordinal === bracketVal
-      );
-      const price = bracket && activeTier ? bracketPrice(bracket, activeTier.slug) : null;
-      return {
-        serviceName: svc?.name ?? slug,
-        bracketLabel: bracket?.label ?? '',
-        price,
-      };
-    }),
-    tierName: activeTier?.name ?? null,
-    total: activeTier
-      ? monthlyTotal(activeSlugs, state.selectedBrackets, activeTier.slug, brackets)
-      : 0,
-    isEnterprise,
+  const advanceToActivate = () => {
+    if (canProceedStep3) setStep(4);
   };
 
   return (
@@ -360,8 +318,20 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
               selectedTier={state.selectedTier}
               onTierSelect={setTier}
               onBack={() => setStep(2)}
-              onGetQuote={openModal}
+              onActivate={advanceToActivate}
               testimonial={spotlightTestimonial}
+            />
+          )}
+
+          {state.step === 4 && (
+            <Step4Activate
+              services={services}
+              brackets={brackets}
+              tiers={tiers}
+              selectedServices={state.selectedServices}
+              selectedBrackets={state.selectedBrackets}
+              selectedTier={state.selectedTier}
+              onBack={() => setStep(3)}
             />
           )}
         </div>
@@ -375,7 +345,8 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
             selectedServices={state.selectedServices}
             selectedBrackets={state.selectedBrackets}
             selectedTierSlug={state.selectedTier}
-            onGetQuote={openModal}
+            onActivate={advanceToActivate}
+            currentStep={state.step}
           />
         </div>
       </div>
@@ -391,14 +362,6 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
       <FAQSection />
       <BottomCTA />
 
-      <GetQuoteModal
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-        source={modalSource}
-        config={modalConfig}
-        summary={modalSummary}
-      />
-
       <MobileTotalBar
         selectedServices={state.selectedServices}
         selectedBrackets={state.selectedBrackets}
@@ -406,7 +369,8 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
         tiers={tiers}
         brackets={brackets}
         summaryAnchorId="pricing-summary"
-        onGetQuote={openModal}
+        onActivate={advanceToActivate}
+        currentStep={state.step}
       />
 
       <StickyConfigChip

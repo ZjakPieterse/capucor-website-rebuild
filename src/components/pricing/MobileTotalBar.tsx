@@ -4,8 +4,8 @@ import { useCallback } from 'react';
 import { ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
-import { hasEnterpriseService, monthlyTotal } from '@/lib/pricing';
-import type { Bracket, BracketValue, Tier } from '@/types';
+import { monthlyTotal } from '@/lib/pricing';
+import type { Bracket, BracketValue, CalculatorStep, Tier } from '@/types';
 
 interface MobileTotalBarProps {
   selectedServices: Set<string>;
@@ -14,7 +14,8 @@ interface MobileTotalBarProps {
   tiers: Tier[];
   brackets: Bracket[];
   summaryAnchorId: string;
-  onGetQuote: (source: 'signup' | 'enterprise') => void;
+  onActivate: () => void;
+  currentStep: CalculatorStep;
 }
 
 export function MobileTotalBar({
@@ -24,10 +25,10 @@ export function MobileTotalBar({
   tiers,
   brackets,
   summaryAnchorId,
-  onGetQuote,
+  onActivate,
+  currentStep,
 }: MobileTotalBarProps) {
   const activeSlugs = [...selectedServices];
-  const isEnterprise = hasEnterpriseService(activeSlugs, selectedBrackets);
   const tier = tiers.find((t) => t.slug === selectedTierSlug) ?? null;
   const total = tier
     ? monthlyTotal(activeSlugs, selectedBrackets, tier.slug, brackets)
@@ -39,6 +40,10 @@ export function MobileTotalBar({
   }, [summaryAnchorId]);
 
   if (activeSlugs.length === 0) return null;
+
+  // Hide the bar entirely on Step 4 — the user is filling the activation form
+  // and the form's own submit button is what they need.
+  if (currentStep === 4) return null;
 
   return (
     <div
@@ -52,15 +57,7 @@ export function MobileTotalBar({
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
             {tier ? `${tier.name} plan · excl. VAT` : 'Running total · excl. VAT'}
           </p>
-          {isEnterprise && total === 0 ? (
-            <p className="font-semibold text-base">Custom quote</p>
-          ) : isEnterprise ? (
-            <p className="font-mono font-bold text-base">
-              <span className="text-xs font-normal text-muted-foreground mr-0.5">From</span>
-              <AnimatedPrice amount={total} className="text-base font-bold" />
-              <span className="text-xs font-normal text-muted-foreground ml-1">+ custom</span>
-            </p>
-          ) : total > 0 ? (
+          {total > 0 ? (
             <p className="font-mono font-bold text-lg leading-tight">
               <AnimatedPrice amount={total} className="text-lg font-bold" />
               <span className="text-xs font-normal text-muted-foreground ml-1">/mo</span>
@@ -71,12 +68,8 @@ export function MobileTotalBar({
         </div>
 
         {selectedTierSlug ? (
-          <Button
-            size="sm"
-            onClick={() => onGetQuote(isEnterprise ? 'enterprise' : 'signup')}
-            className="shrink-0"
-          >
-            Get quote
+          <Button size="sm" onClick={onActivate} className="shrink-0">
+            Activate
           </Button>
         ) : (
           <Button

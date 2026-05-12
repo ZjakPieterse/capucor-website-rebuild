@@ -61,11 +61,57 @@ export interface PricingData {
   inclusions: TierInclusion[];
 }
 
+export type CalculatorStep = 1 | 2 | 3 | 4;
+
 export interface PricingState {
-  step: 1 | 2 | 3;
+  step: CalculatorStep;
   selectedServices: Set<string>;
   selectedBrackets: Record<string, BracketValue>;
   selectedTier: string | null;
+}
+
+// ── Subscription / activation ────────────────────────────────────────────
+export interface BusinessDetails {
+  legalName: string;
+  cipcNumber?: string;
+  vatNumber?: string;
+  sector: string;
+}
+
+export type SubscriptionStatus =
+  | 'pending_payment'
+  | 'active'
+  | 'cancelling'      // notice given, still active until end_at
+  | 'cancelled'
+  | 'past_due';
+
+export interface SubscriptionSummary {
+  id: string;
+  status: SubscriptionStatus;
+  tierSlug: string;
+  tierName: string;
+  monthlyTotalZAR: number;       // excl. VAT
+  vatZAR: number;                // 15%
+  totalChargeZAR: number;        // incl. VAT
+  services: string[];            // slugs
+  brackets: Record<string, BracketValue>;
+  nextBillingDate: string | null;   // ISO date
+  endAt: string | null;             // ISO date when cancelling/cancelled
+  createdAt: string;                // ISO datetime
+}
+
+export interface SubscriptionRequestPayload {
+  // Calculator config
+  services: string[];
+  brackets: Record<string, number>;   // never enterprise in self-serve flow
+  tierSlug: string;
+  // Account + business
+  email: string;
+  fullName: string;
+  business: BusinessDetails;
+  consentGiven: true;
+  // Honeypot
+  website?: string;
 }
 
 export interface LeadPayload {

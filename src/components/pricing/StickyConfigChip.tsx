@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
-import { hasEnterpriseService, monthlyTotal } from '@/lib/pricing';
+import { monthlyTotal } from '@/lib/pricing';
 import type { Bracket, BracketValue, Tier } from '@/types';
 
 interface StickyConfigChipProps {
@@ -49,7 +49,6 @@ export function StickyConfigChip({
   const activeSlugs = [...selectedServices];
   if (activeSlugs.length === 0) return null;
 
-  const isEnterprise = hasEnterpriseService(activeSlugs, selectedBrackets);
   const tier = tiers.find((t) => t.slug === selectedTierSlug) ?? null;
   const total = tier
     ? monthlyTotal(activeSlugs, selectedBrackets, tier.slug, brackets)
@@ -72,14 +71,7 @@ export function StickyConfigChip({
         <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
           {tier ? `${tier.name} plan` : `${activeSlugs.length} service${activeSlugs.length === 1 ? '' : 's'}`}
         </span>
-        {isEnterprise && total === 0 ? (
-          <span className="text-sm font-semibold">Custom quote</span>
-        ) : isEnterprise ? (
-          <span className="text-sm font-mono font-semibold">
-            <span className="text-[10px] font-normal text-muted-foreground mr-0.5">From</span>
-            <AnimatedPrice amount={total} className="text-sm font-semibold" />
-          </span>
-        ) : total > 0 ? (
+        {total > 0 ? (
           <span className="text-sm">
             <AnimatedPrice amount={total} className="text-sm font-bold" />
             <span className="text-[10px] font-normal text-muted-foreground ml-1">/mo</span>
