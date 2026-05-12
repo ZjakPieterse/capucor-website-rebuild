@@ -10,7 +10,7 @@ const METRICS = [
 ];
 
 const CREDENTIALS = [
-  { name: 'SAICA', label: 'Member' },
+  { name: 'SAICA', label: 'AGA(SA)' },
   { name: 'Xero', label: 'Gold Partner' },
 ];
 

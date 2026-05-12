@@ -6,14 +6,12 @@ import type { Service, Tier } from '@/types';
 import { HeroSection } from '@/components/landing/HeroSection';
 import { SocialProofStrip } from '@/components/landing/SocialProofStrip';
 import { ProblemCards } from '@/components/landing/ProblemCards';
-import { WhyCapucor } from '@/components/landing/WhyCapucor';
 import { ServicePillars } from '@/components/landing/ServicePillars';
 import { HowItWorks } from '@/components/landing/HowItWorks';
 import { PackagesTeaser } from '@/components/landing/PackagesTeaser';
 import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
 import { OutcomeStories } from '@/components/landing/OutcomeStories';
 import { FaqAccordion } from '@/components/landing/FaqAccordion';
-import { ContactForm } from '@/components/landing/ContactForm';
 import { FinalCTA } from '@/components/landing/FinalCTA';
 
 export function generateMetadata(): Metadata {
@@ -80,7 +78,6 @@ export default async function HomePage() {
             url: siteConfig.url,
             description: siteConfig.description,
             areaServed: 'ZA',
-            priceRange: 'R725 – custom/month',
             sameAs: [
               siteConfig.links.facebook,
               siteConfig.links.instagram,
@@ -96,23 +93,19 @@ export default async function HomePage() {
       <SocialProofStrip />
       {/* 3. Problem */}
       <ProblemCards />
-      {/* 4. Outcomes */}
-      <WhyCapucor />
+      {/* 4. How the monthly finance system works (now carries the outcome line per step) */}
+      <HowItWorks />
       {/* 5. Services */}
       <ServicePillars />
-      {/* 6. How the monthly finance system works */}
-      <HowItWorks />
-      {/* 7. Packages */}
+      {/* 6. Packages */}
       <PackagesTeaser services={services} tiers={tiers} />
-      {/* 8. Tech stack */}
+      {/* 7. Tech stack */}
       <TechStackShowcase />
-      {/* 9. Client outcomes */}
+      {/* 8. Client outcomes — proof after pricing */}
       <OutcomeStories />
-      {/* 10. FAQ */}
+      {/* 9. FAQ */}
       <FaqAccordion />
-      {/* 11. Contact */}
-      <ContactForm />
-      {/* 12. Final CTA */}
+      {/* 10. Final CTA */}
       <FinalCTA />
     </>
   );

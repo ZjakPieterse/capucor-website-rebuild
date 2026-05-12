@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { TestimonialSpotlight } from './TestimonialSpotlight';
 import { TierComparison } from './TierComparison';
+import { RiskReducerStrip } from './RiskReducerStrip';
 import { cn } from '@/lib/utils';
 import { bracketPrice, hasEnterpriseService } from '@/lib/pricing';
 import { TIER_HIGHLIGHTS, TIER_CUMULATIVE_LABELS } from '@/config/tiers';
@@ -46,9 +47,11 @@ export function Step3Tiers({
       <div>
         <h2 className="text-xl font-semibold mb-1">Choose the depth of monthly support.</h2>
         <p className="text-sm text-muted-foreground">
-          Every plan includes your selected services, a dedicated finance team and core compliance support. Higher tiers add more frequent processing, reporting depth and advisory involvement.
+          Every plan includes your selected services, a dedicated finance team and SARS &amp; CIPC compliance. Higher tiers add more frequent processing, reporting depth and advisory involvement.
         </p>
       </div>
+
+      <RiskReducerStrip />
 
       <div className="grid sm:grid-cols-3 gap-4 sm:pt-3">
         {sortedTiers.map((tier) => {

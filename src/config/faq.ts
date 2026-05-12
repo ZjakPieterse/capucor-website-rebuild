@@ -59,4 +59,9 @@ export const faqs: FaqItem[] = [
     answer:
       'Yes. We can take over the full function or work alongside your internal team. The right setup depends on what is already in place, where the bottlenecks are, and how much review and reporting support you need.',
   },
+  {
+    question: 'Who actually does the work on my books?',
+    answer:
+      'A small, named team. Day-to-day processing is done by a bookkeeper assigned to your business so the same person sees your transactions month after month. Every month-end is reviewed and signed off by a SAICA-registered AGA(SA) accountant before anything reaches you or SARS. You always know who to email.',
+  },
 ];

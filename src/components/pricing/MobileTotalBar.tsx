@@ -76,7 +76,7 @@ export function MobileTotalBar({
             onClick={() => onGetQuote(isEnterprise ? 'enterprise' : 'signup')}
             className="shrink-0"
           >
-            {isEnterprise ? 'Get quote' : 'Sign up'}
+            Get quote
           </Button>
         ) : (
           <Button

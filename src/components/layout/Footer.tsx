@@ -130,7 +130,7 @@ export function Footer() {
           <div className="space-y-3">
             <p className="text-sm font-medium">Credentials</p>
             <div className="flex flex-wrap gap-2">
-              {['Xero Gold Partner', 'SAICA Member'].map((badge) => (
+              {['Xero Gold Partner', 'SAICA AGA(SA)'].map((badge) => (
                 <span
                   key={badge}
                   className="inline-block rounded-md border border-border px-2.5 py-1 text-xs font-medium text-muted-foreground"

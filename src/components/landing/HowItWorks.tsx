@@ -12,24 +12,28 @@ const STEPS = [
     number: '1',
     title: 'Collect & Collaborate',
     body: 'You know exactly what to send, where to send it, and by when. We make the monthly admin clear and repeatable, so both sides can deliver properly.',
+    deliverable: 'VAT201, EMP201, provisional tax and CIPC deadlines tracked through a structured workflow, not memory or last-minute panic.',
   },
   {
     icon: Cog,
     number: '2',
     title: 'Process & Reconcile',
     body: 'We capture, code and reconcile the month’s activity in Xero, including bank feeds, supplier invoices, payroll entries and key control accounts.',
+    deliverable: 'Your Xero ledger stays reconciled and decision-ready. When the bank, SARS or a funder needs a number, you are not scrambling to catch up.',
   },
   {
     icon: BarChart2,
     number: '3',
     title: 'Review & Report',
     body: 'A senior accountant checks the numbers before they reach you. You receive a clear monthly report showing performance, cash flow, debtors and anything that needs attention.',
+    deliverable: 'A concise monthly view of revenue, expenses, cash flow, debtors and anything unusual that deserves attention.',
   },
   {
     icon: MessageSquare,
     number: '4',
     title: 'Advise & Plan',
     body: 'We turn the report into useful business conversation: tax timing, cash pressure, margin movement, compliance risks and practical next steps.',
+    deliverable: 'Risks, opportunities and planning points raised early, while there is still time to act on them.',
   },
 ];
 
@@ -77,6 +81,10 @@ export function HowItWorks() {
                   <div className="w-full border-t border-primary/20 pt-5">
                     <h3 className="text-base font-semibold mb-2 leading-snug">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+                    <p className="mt-3 text-xs leading-relaxed text-primary/90">
+                      <span className="font-semibold uppercase tracking-wider text-[10px] mr-1.5">You get</span>
+                      {step.deliverable}
+                    </p>
                   </div>
                 </div>
               </ScrollReveal>
@@ -112,6 +120,10 @@ export function HowItWorks() {
                   <div className="flex-1 pt-2">
                     <h3 className="text-base font-semibold mb-1.5 leading-snug">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+                    <p className="mt-2.5 text-xs leading-relaxed text-primary/90">
+                      <span className="font-semibold uppercase tracking-wider text-[10px] mr-1.5">You get</span>
+                      {step.deliverable}
+                    </p>
                   </div>
                 </div>
               </ScrollReveal>
