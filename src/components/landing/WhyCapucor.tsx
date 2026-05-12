@@ -34,7 +34,7 @@ export function WhyCapucor() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="What you get"
-            title="Four outcomes your business can rely on every month."
+            title="Four outcomes you can rely on."
             subtitle="The point is not more reports. It is a finance rhythm where the books are current, deadlines are visible, reports are reviewed, and important issues are raised early."
           />
         </ScrollReveal>

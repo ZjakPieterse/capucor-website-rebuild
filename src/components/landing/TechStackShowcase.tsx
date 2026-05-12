@@ -46,7 +46,7 @@ const WORKFLOW_STEPS = ['Capture', 'Reconcile', 'Track', 'Report', 'Pay', 'Final
 
 export function TechStackShowcase() {
   return (
-    <section id="tech-stack" className="py-24 lg:py-32 bg-muted/30">
+    <section id="tech-stack" className="py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading

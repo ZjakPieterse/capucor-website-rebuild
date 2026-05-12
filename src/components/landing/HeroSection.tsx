@@ -270,7 +270,7 @@ export function HeroSection() {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
             >
-              An expert finance team that gets your business to work for you.
+              An expert finance team to help your business work for you.
             </motion.h1>
             <motion.p
               className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg"

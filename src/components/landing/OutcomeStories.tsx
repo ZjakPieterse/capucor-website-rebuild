@@ -43,12 +43,12 @@ const OUTCOMES: OutcomeCard[] = [
 
 export function OutcomeStories() {
   return (
-    <section className="py-24 lg:py-32">
+    <section className="py-24 lg:py-32 bg-muted/30">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
             eyebrow="Client outcomes"
-            title="What changes when the finance function is properly managed."
+            title="What changes when finance works properly."
             subtitle="Anonymised examples of the type of finance problems SME owners bring to us, and what changes once there is a proper monthly rhythm in place."
           />
         </ScrollReveal>

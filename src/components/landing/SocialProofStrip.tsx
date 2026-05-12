@@ -35,14 +35,14 @@ export function SocialProofStrip() {
             <Separator orientation="vertical" className="h-12 hidden md:block" />
 
             {/* Credentials */}
-            <div className="flex flex-wrap items-center justify-center gap-3.5">
+            <div className="flex flex-wrap items-center justify-center gap-3">
               {CREDENTIALS.map((c) => (
                 <div
                   key={c.name}
-                  className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card px-5 py-2.5"
+                  className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-6 py-3"
                 >
-                  <span className="text-base font-semibold">{c.name}</span>
-                  <span className="text-sm text-muted-foreground">{c.label}</span>
+                  <span className="text-lg font-semibold">{c.name}</span>
+                  <span className="text-base text-muted-foreground">{c.label}</span>
                 </div>
               ))}
             </div>

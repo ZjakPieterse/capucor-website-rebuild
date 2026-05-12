@@ -7,19 +7,16 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
-import { SectionHeading } from '@/components/ui/SectionHeading';
 import { faqs } from '@/config/faq';
 
 export function FaqAccordion() {
   return (
-    <section id="faq" className="py-24 lg:py-32 bg-muted/30">
+    <section id="faq" className="py-24 lg:py-32">
       <div className="max-w-3xl mx-auto px-6">
         <ScrollReveal>
-          <SectionHeading
-            eyebrow="FAQ"
-            title="Questions business owners usually ask before switching."
-            subtitle="Clear answers on pricing, contracts, systems, SARS queries and what we need from you each month."
-          />
+          <p className="text-sm font-medium uppercase tracking-widest text-primary text-center">
+            FAQ
+          </p>
         </ScrollReveal>
 
         <ScrollReveal className="mt-10">

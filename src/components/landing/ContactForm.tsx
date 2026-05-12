@@ -66,7 +66,7 @@ export function ContactForm() {
   return (
     <section
       id="contact"
-      className="py-24 lg:py-32"
+      className="py-24 lg:py-32 bg-muted/30"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
@@ -76,7 +76,7 @@ export function ContactForm() {
               align="left"
               eyebrow="Get in touch"
               title="Let's get your books in order."
-              subtitle="Send us a message and we'll come back to you within one business day. It's a conversation, not a sales pitch."
+              subtitle="Send us a message and we'll get back to you as soon as possible. Let's talk about how to make your finance function work better."
             />
             <a
               href={siteConfig.links.booking}
