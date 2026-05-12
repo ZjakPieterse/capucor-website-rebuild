@@ -55,7 +55,7 @@ export function ProblemCards() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="The problem"
-            title="Your business has outgrown its finance function."
+            title="Your business has outgrown its finance function"
             subtitle="Late submissions, unclear numbers, reactive accounting. While you focus on growth, the books fall behind. By the time you notice, the damage is done."
           />
         </ScrollReveal>

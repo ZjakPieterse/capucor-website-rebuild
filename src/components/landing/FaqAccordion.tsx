@@ -14,9 +14,9 @@ export function FaqAccordion() {
     <section id="faq" className="py-24 lg:py-32">
       <div className="max-w-3xl mx-auto px-6">
         <ScrollReveal>
-          <p className="text-sm font-medium uppercase tracking-widest text-primary text-center">
+          <h2 className="text-3xl font-semibold tracking-tight md:text-4xl text-center">
             FAQ
-          </p>
+          </h2>
         </ScrollReveal>
 
         <ScrollReveal className="mt-10">

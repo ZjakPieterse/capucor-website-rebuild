@@ -270,13 +270,13 @@ export function HeroSection() {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
             >
-              An expert finance team to help your business work for you.
+              Make your finance function work harder
             </motion.h1>
             <motion.p
               className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}
             >
-              Monthly accounting, payroll, tax and reporting handled by real accountants, with clean numbers, clear deadlines and practical advice built into one fixed monthly subscription.
+              Monthly accounting, payroll, tax, and reporting handled by real accountants. Clean numbers, clear deadlines, and practical advice built into one fixed monthly subscription.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-3"

@@ -48,7 +48,7 @@ export function OutcomeStories() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="Client outcomes"
-            title="What changes when finance works properly."
+            title="What changes when finance works properly"
             subtitle="Anonymised examples of the type of finance problems SME owners bring to us, and what changes once there is a proper monthly rhythm in place."
           />
         </ScrollReveal>

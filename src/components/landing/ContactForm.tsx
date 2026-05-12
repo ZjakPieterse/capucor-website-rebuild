@@ -75,7 +75,7 @@ export function ContactForm() {
             <SectionHeading
               align="left"
               eyebrow="Get in touch"
-              title="Let's get your books in order."
+              title="Let's get your books in order"
               subtitle="Send us a message and we'll get back to you as soon as possible. Let's talk about how to make your finance function work better."
             />
             <a
