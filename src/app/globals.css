@@ -113,43 +113,35 @@
   transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
 }
 
-/* ─── Problem card flip ──────────────────────────────────────────────────── */
+/* ─── Problem card hover ─────────────────────────────────────────────────── */
 .problem-card {
-  perspective: 1000px;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
 }
 
 .problem-card:hover {
-  transform: scale(1.03);
-  border-color: color-mix(in oklch, var(--primary) 60%, transparent);
-  box-shadow: 0 0 28px color-mix(in oklch, var(--primary) 18%, transparent);
+  transform: translateY(-4px);
+  border-color: color-mix(in oklch, var(--primary) 40%, transparent);
+  box-shadow: 0 12px 40px -8px color-mix(in oklch, var(--primary) 18%, transparent);
 }
 
-/*
- * Both faces share the same grid area so the container auto-sizes to
- * whichever face is tallest. height:100% fills the parent card so
- * shorter cards don't leave a gap inside their border.
- */
-.problem-card-inner {
-  display: grid;
-  grid-template-areas: "face";
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-}
+/* ─── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 
-.problem-card:hover .problem-card-inner {
-  transform: rotateY(180deg);
-}
+  .animate-marquee {
+    animation: none !important;
+  }
 
-.problem-card-face {
-  grid-area: face;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.problem-card-back {
-  transform: rotateY(180deg);
+  .feature-card:hover,
+  .problem-card:hover,
+  .outcome-card:hover {
+    transform: none !important;
+  }
 }

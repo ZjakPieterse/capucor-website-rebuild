@@ -8,39 +8,41 @@ const TOOLS = [
     name: 'Xero',
     tagline: 'Real-time ledger',
     benefit:
-      'Your numbers are current, not a month behind. Every transaction categorised and reconciled, so your management accounts are ready when you need them.',
+      'Your business records live in one cloud ledger that is processed, reconciled and ready for reporting.',
   },
   {
     name: 'Dext',
-    tagline: 'Auto-captured receipts',
+    tagline: 'Document capture',
     benefit:
-      'Snap a photo; the receipt is processed and matched automatically. No more shoebox accounting at year-end.',
+      'Supplier invoices and receipts are captured and pushed into the bookkeeping workflow instead of sitting in inboxes.',
   },
   {
     name: 'Syft',
-    tagline: 'Live dashboards',
+    tagline: 'Management reporting',
     benefit:
-      'Pull up revenue, expenses, or cash position whenever you need them. No waiting for someone to run a report.',
+      'Reports and dashboards turn the ledger into a clearer view of revenue, expenses, cash flow and performance.',
   },
   {
     name: 'Karbon',
-    tagline: 'Structured workflows',
+    tagline: 'Workflow control',
     benefit:
-      'VAT deadlines, EMP201s, CIPC returns: every submission tracked, assigned, and confirmed. No deadline missed.',
+      'Monthly tasks, compliance dates and client queries are tracked so work does not rely on memory or scattered emails.',
   },
   {
     name: 'SimplePay',
-    tagline: 'Compliant payroll',
+    tagline: 'Payroll processing',
     benefit:
-      'Accurate payslips, PAYE and UIF submissions, and IRP5 certificates: processed on time, every pay run.',
+      'Payslips, payroll calculations, EMP201 support and year-end payroll records stay structured and compliant.',
   },
   {
     name: 'Draftworx',
-    tagline: 'Professional financials',
+    tagline: 'Financial statements',
     benefit:
-      'Annual financial statements drafted and reviewed to the standard required by SARS, your bank, and potential funders.',
+      'Annual financial statements are prepared from clean records and reviewed for SARS, banks and stakeholders.',
   },
 ];
+
+const WORKFLOW_STEPS = ['Capture', 'Reconcile', 'Track', 'Report', 'Pay', 'Finalise'];
 
 export function TechStackShowcase() {
   return (
@@ -49,9 +51,22 @@ export function TechStackShowcase() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="Our tech stack"
-            title="The right tools, set up properly. Your numbers are always current."
-            subtitle="Each tool does one job well. Together, they mean your numbers are live, yours to access, and never sitting in someone's spreadsheet."
+            title="Modern finance tools, configured into one monthly workflow."
+            subtitle="The software is not the service. The service is how we set it up, monitor it and use it every month to keep your records, deadlines, payroll and reports under control."
           />
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.1}>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
+            {WORKFLOW_STEPS.map((step, i) => (
+              <span key={step} className="flex items-center gap-3">
+                <span className="font-medium uppercase tracking-wider">{step}</span>
+                {i < WORKFLOW_STEPS.length - 1 && (
+                  <span className="text-primary/60" aria-hidden>·</span>
+                )}
+              </span>
+            ))}
+          </div>
         </ScrollReveal>
 
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -60,7 +75,6 @@ export function TechStackShowcase() {
               <div className="rounded-xl border border-border bg-card p-6 h-full transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-lg hover:border-primary/20">
                 {/* Tool name badge */}
                 <div className="mb-4 inline-flex items-center rounded-lg border border-primary/30 bg-primary/8 px-3 py-1.5">
-                  {/* [EDITABLE] swap text with SVG logo from public/logos/tools/ */}
                   <span className="text-sm font-semibold text-primary">{tool.name}</span>
                 </div>
 

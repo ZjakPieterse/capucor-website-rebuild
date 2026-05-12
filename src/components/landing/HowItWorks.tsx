@@ -10,26 +10,30 @@ const STEPS = [
   {
     icon: Inbox,
     number: '1',
+    label: 'Client input',
     title: 'Collect & Collaborate',
-    body: 'You get a structured monthly process that tells you exactly what to provide and when. We take over from there, and you can focus on growing your business.',
+    body: 'You know exactly what to send, where to send it, and by when. We make the monthly admin clear and repeatable, so both sides can deliver properly.',
   },
   {
     icon: Cog,
     number: '2',
+    label: 'Capucor processing',
     title: 'Process & Reconcile',
-    body: 'Your books are closed, reconciled, and up to date by the time the month ends. Every bank feed, supplier invoice, and payroll entry is captured and coded correctly.',
+    body: 'We capture, code and reconcile the month’s activity in Xero, including bank feeds, supplier invoices, payroll entries and key control accounts.',
   },
   {
     icon: BarChart2,
     number: '3',
+    label: 'Quality review',
     title: 'Review & Report',
-    body: 'You receive a management report that tells you exactly where the business stands. Before it lands, every number has been checked and anything worth your attention is flagged.',
+    body: 'A senior accountant checks the numbers before they reach you. You receive a clear monthly report showing performance, cash flow, debtors and anything that needs attention.',
   },
   {
     icon: MessageSquare,
     number: '4',
+    label: 'Owner conversation',
     title: 'Advise & Plan',
-    body: 'You leave each month clear on what the numbers mean and what needs to happen next. We use your financials to surface opportunities, flag risks, and help you make better decisions.',
+    body: 'We turn the report into useful business conversation: tax timing, cash pressure, margin movement, compliance risks and practical next steps.',
   },
 ];
 
@@ -40,8 +44,8 @@ export function HowItWorks() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="How the monthly finance system works"
-            title="A monthly rhythm that keeps you in control."
-            subtitle="Our FinTeam solution works best when there is clear collaboration between your business and our team. You provide the information we need, and we turn that into accurate records, useful reports, and practical advice you can use to make better decisions."
+            title="A monthly rhythm that keeps your business in control."
+            subtitle="Great finance work needs a clear monthly rhythm. You provide the documents, approvals and answers we need. We process, review, report and advise from there. So the month closes properly and your business stays in control."
           />
         </ScrollReveal>
 
@@ -75,6 +79,9 @@ export function HowItWorks() {
 
                   {/* Content */}
                   <div className="w-full border-t border-primary/20 pt-5">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-primary mb-1.5">
+                      {step.label}
+                    </div>
                     <h3 className="text-base font-semibold mb-2 leading-snug">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
                   </div>
@@ -110,6 +117,9 @@ export function HowItWorks() {
 
                   {/* Content */}
                   <div className="flex-1 pt-2">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-primary mb-1">
+                      {step.label}
+                    </div>
                     <h3 className="text-base font-semibold mb-1.5 leading-snug">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
                   </div>
@@ -123,7 +133,7 @@ export function HowItWorks() {
       {/* Bottom CTA */}
       <ScrollReveal delay={0.4}>
         <div className="mt-16 text-center">
-          <p className="text-sm text-muted-foreground mb-6">Ready to put this system to work for your business?</p>
+          <p className="text-sm text-muted-foreground mb-6">Ready to put a proper monthly finance rhythm in place?</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/pricing"
@@ -139,7 +149,7 @@ export function HowItWorks() {
               className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               <Calendar className="h-4 w-4" />
-              Book a call
+              Book a 15-minute fit call
             </a>
           </div>
         </div>

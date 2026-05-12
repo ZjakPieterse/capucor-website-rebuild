@@ -15,18 +15,18 @@ export function CalculatorPreview() {
           </div>
 
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">
-            Get an exact price before you speak to anyone.
+            Build your finance subscription before the sales call.
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
-            Pick your services and bracket. You&apos;ll see an exact monthly price on the spot.
-            No contact form, no callback — just a number.
+            Pick your services, choose your size bracket and see the monthly fee immediately.
+            No quote request. No waiting. No surprise pricing conversation.
           </p>
 
           <Link
             href="/pricing"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
           >
-            See your exact price
+            See your monthly fee
             <ArrowRight className="h-4 w-4" />
           </Link>
         </ScrollReveal>

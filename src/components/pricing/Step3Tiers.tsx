@@ -44,9 +44,9 @@ export function Step3Tiers({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Choose your plan</h2>
+        <h2 className="text-xl font-semibold mb-1">Choose the depth of monthly support.</h2>
         <p className="text-sm text-muted-foreground">
-          All plans include a dedicated finance team, SARS &amp; CIPC compliance, and core monthly financial services. Upgrade or downgrade at any time.
+          Every plan includes your selected services, a dedicated finance team and core compliance support. Higher tiers add more frequent processing, reporting depth and advisory involvement.
         </p>
       </div>
 
@@ -164,16 +164,16 @@ export function Step3Tiers({
       {selectedTier && onGetQuote && (
         <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <p className="font-semibold text-sm">Your quote is set.</p>
+            <p className="font-semibold text-sm">Your subscription estimate is ready.</p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              See the full breakdown in the summary panel on the right.
+              Review the breakdown, then send it through and we&apos;ll confirm the best setup for your business.
             </p>
           </div>
           <Button
             onClick={() => onGetQuote(isEnterprise ? 'enterprise' : 'signup')}
             className="shrink-0"
           >
-            {isEnterprise ? 'Get a Custom Quote →' : 'Get Started →'}
+            {isEnterprise ? 'Get a custom quote →' : 'Get started →'}
           </Button>
         </div>
       )}

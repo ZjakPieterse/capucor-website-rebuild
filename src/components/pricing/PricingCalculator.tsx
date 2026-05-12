@@ -25,7 +25,7 @@ const TRUST_ITEMS = [
   'SARS Registered',
   'Fixed Monthly Pricing',
   'No Lock-in Contracts',
-  'Dedicated Consultant',
+  'Dedicated Finance Team',
   "Cancel with 30 Days’ Notice",
 ];
 
@@ -107,7 +107,9 @@ function InHouseComparison() {
           <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
             For perspective
           </p>
-          <h2 className="text-xl font-bold tracking-tight">What in-house would cost.</h2>
+          <h2 className="text-xl font-bold tracking-tight">
+            Why a subscription finance team can make sense before hiring in-house.
+          </h2>
         </div>
         <div className="grid sm:grid-cols-3 gap-3">
           <div className="rounded-xl border border-border bg-card p-5">
@@ -138,7 +140,10 @@ function InHouseComparison() {
             </p>
           </div>
         </div>
-        <p className="text-xs text-muted-foreground text-center mt-5 max-w-md mx-auto leading-relaxed">
+        <p className="text-xs text-muted-foreground text-center mt-5 max-w-xl mx-auto leading-relaxed">
+          Hiring in-house can make sense later. Our role is to give you structure, reporting and compliance cover before that fixed overhead is justified.
+        </p>
+        <p className="text-[11px] text-muted-foreground/70 text-center mt-2 max-w-md mx-auto leading-relaxed">
           Indicative South African market figures. Your actual hire costs vary by experience, sector, and benefits.
         </p>
       </div>
@@ -215,7 +220,7 @@ function BottomCTA() {
     <section className="py-16 border-t border-border text-center">
       <p className="text-lg font-semibold mb-1">Not ready to commit?</p>
       <p className="text-sm text-muted-foreground mb-6">
-        Book a free 15-minute call and we&rsquo;ll walk you through which services fit your business.
+        Book a 15-minute fit call and we&rsquo;ll walk you through which services fit your business.
       </p>
       <a
         href={siteConfig.links.booking}
@@ -223,7 +228,7 @@ function BottomCTA() {
         rel="noopener noreferrer"
         className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-2.5 text-sm font-medium hover:border-primary/60 hover:bg-muted/40 transition-colors"
       >
-        Book a free call →
+        Book a 15-minute fit call →
       </a>
     </section>
   );
@@ -306,10 +311,10 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
           </span>
         </div>
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 max-w-2xl mx-auto">
-          Know your numbers before you sign anything.
+          Know your monthly finance cost before you sign anything.
         </h1>
         <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-          Pick your services, set your size, see your fee. One fixed monthly subscription. No quote process, no surprises.
+          Pick your services, choose your business size and select the level of support you need. The calculator shows your monthly subscription immediately, before any sales conversation.
         </p>
       </section>
 

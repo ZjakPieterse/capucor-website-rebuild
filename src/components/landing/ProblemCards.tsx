@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { BookOpen, AlertCircle, Unplug, Clock, CheckCircle2, CalendarCheck, Link2, Zap, ArrowRight } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -8,41 +9,41 @@ const PROBLEMS = [
   {
     icon: BookOpen,
     title: 'Messy, outdated books',
-    body: 'Your financials are weeks behind. When you need a number for the bank, a funder, or a decision, no one can give you a straight answer.',
+    body: 'Your financials are weeks behind. When the bank, a funder, SARS or your own management team needs a number, the answer takes too long.',
     solution: {
       icon: CheckCircle2,
-      title: 'Real-time books. Always ready.',
-      body: 'Reconciled weekly, automated, and live. Pull a clean P&L or balance sheet any time. No waiting, no chasing, no surprises.',
+      title: 'Current books. Clear answers.',
+      body: 'We keep your Xero ledger reconciled and decision-ready, so important numbers are not buried in bank feeds, inboxes or spreadsheets.',
     },
   },
   {
     icon: AlertCircle,
-    title: 'Surprise tax bills',
-    body: 'Provisional tax, EMP201s, VAT201s: SARS penalties don\'t care that you forgot. And your accountant is nowhere to be found when you need them.',
+    title: 'Deadline pressure',
+    body: 'VAT, EMP201, provisional tax, CIPC and payroll dates create constant background pressure. SARS penalties don\'t wait for admin to catch up.',
     solution: {
       icon: CalendarCheck,
-      title: 'Every deadline. On time.',
-      body: 'We track every VAT201, EMP201, and provisional tax date. Submissions go out before they\'re due. SARS penalties stay someone else\'s problem.',
+      title: 'Deadlines tracked properly.',
+      body: 'Your compliance dates are managed through a structured workflow with clear ownership, review points and filing status.',
     },
   },
   {
     icon: Unplug,
     title: 'Disconnected tools',
-    body: 'Spreadsheets, emails, a bank statement: all in different places, none of them talking. Cash flow, debtors, and VAT liability are invisible until you dig.',
+    body: 'Receipts, invoices, payroll, bank transactions and reports sit in different places, making cash flow and VAT exposure harder to see.',
     solution: {
       icon: Link2,
-      title: 'One live view. Everything connected.',
-      body: 'Bank, invoices, and accounting synced in one place. Your cash flow, debtors, and VAT exposure visible the moment you need them.',
+      title: 'One connected finance workflow.',
+      body: 'We connect the tools properly so capture, processing, reconciliation and reporting work as one monthly system.',
     },
   },
   {
     icon: Clock,
-    title: 'No time for decisions',
-    body: 'You are spending your week chasing debtor payments and sorting receipts instead of running the business.',
+    title: 'Too much owner involvement',
+    body: 'You spend time chasing slips, checking payments, answering finance questions and trying to make sense of reports instead of running the business.',
     solution: {
       icon: Zap,
-      title: 'Finance handled. Focus reclaimed.',
-      body: 'We own the admin, the follow-ups, and the filings. Your week stays on strategy, not spreadsheets.',
+      title: 'A finance rhythm you can rely on.',
+      body: 'You know what to provide, when to provide it, and what you will receive back each month, with Capucor owning the finance process from there.',
     },
   },
 ];
@@ -62,38 +63,51 @@ export function ProblemCards() {
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {PROBLEMS.map((problem, i) => (
             <ScrollReveal key={problem.title} delay={i * 0.08} className="h-full">
-              <div className="problem-card h-full rounded-xl border border-border bg-card overflow-hidden">
-                <div className="problem-card-inner">
+              <div className="problem-card h-full rounded-xl border border-border bg-card p-6 flex flex-col">
 
-                  {/* Front face — Problem */}
-                  <div className="problem-card-face p-6 flex flex-col">
-                    <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10">
-                      <problem.icon className="h-5 w-5 text-destructive" />
-                    </div>
-                    <h3 className="text-base font-semibold mb-2">{problem.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{problem.body}</p>
+                {/* Problem */}
+                <div>
+                  <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10">
+                    <problem.icon className="h-5 w-5 text-destructive" />
                   </div>
-
-                  {/* Back face — Solution */}
-                  <div className="problem-card-face problem-card-back p-6 flex flex-col justify-between">
-                    <div>
-                      <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                        <problem.solution.icon className="h-5 w-5 text-primary" />
-                      </div>
-                      <h3 className="text-base font-semibold mb-2">{problem.solution.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{problem.solution.body}</p>
-                    </div>
-                    <a href="/pricing" className="mt-4 text-xs font-medium text-primary flex items-center gap-1 hover:underline">
-                      <span>Capucor takes care of this</span>
-                      <ArrowRight className="h-3 w-3" />
-                    </a>
+                  <div className="text-[10px] font-semibold uppercase tracking-wider text-destructive/80 mb-1.5">
+                    Problem
                   </div>
-
+                  <h3 className="text-base font-semibold mb-2">{problem.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{problem.body}</p>
                 </div>
+
+                {/* Divider */}
+                <div className="my-5 border-t border-border" aria-hidden />
+
+                {/* Fix */}
+                <div>
+                  <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                    <problem.solution.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="text-[10px] font-semibold uppercase tracking-wider text-primary mb-1.5">
+                    Capucor fixes this by
+                  </div>
+                  <h3 className="text-base font-semibold mb-2">{problem.solution.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{problem.solution.body}</p>
+                </div>
+
               </div>
             </ScrollReveal>
           ))}
         </div>
+
+        <ScrollReveal delay={0.3}>
+          <div className="mt-12 flex justify-center">
+            <Link
+              href="#how-it-works"
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+            >
+              See how the monthly system works
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

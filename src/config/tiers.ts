@@ -41,3 +41,12 @@ export const PACKAGE_COMMON_ITEMS = [
   { text: 'SARS & CIPC compliance', tooltip: 'Tax returns and annual filings done each year. Nothing to remember.' },
   { text: 'Direct access to your consultant', tooltip: 'A named person who knows your file. Call, email, or message when something comes up.' },
 ];
+
+export const TIER_BUYER_FIT: Record<string, string> = {
+  basic: 'For businesses that need the essentials done properly.',
+  pro: 'For businesses that want monthly visibility and a more active finance rhythm.',
+  premium: 'For businesses that want closer advisory, live KPIs and deeper monthly planning.',
+};
+
+export const TIER_MOST_POPULAR_NOTE =
+  'Most SMEs choose Pro because it balances monthly reporting with fixed pricing.';

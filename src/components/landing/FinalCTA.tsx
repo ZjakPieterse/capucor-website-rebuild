@@ -9,11 +9,11 @@ export function FinalCTA() {
       <div className="max-w-3xl mx-auto px-6 text-center">
         <ScrollReveal>
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">
-            Ready to get your finances sorted?
+            Ready for a finance function that keeps pace with your business?
           </h2>
           <p className="text-lg text-muted-foreground mb-10">
-            See an exact price in minutes, or book a no-pressure discovery call to talk through your
-            situation first.
+            Build your subscription in minutes, or book a short fit call and we&apos;ll help you
+            decide what your business actually needs.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -32,7 +32,7 @@ export function FinalCTA() {
               className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg border border-input bg-input/30 px-6 py-3 text-sm font-semibold hover:bg-input/50 transition-all hover:scale-[1.03]"
             >
               <Calendar className="h-4 w-4" />
-              Book a call
+              Book a 15-minute fit call
             </a>
           </div>
         </ScrollReveal>

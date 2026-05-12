@@ -66,9 +66,9 @@ function FinanceCommandCentre() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <div className="text-sm font-bold tracking-tight">Finance Overview</div>
-          <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,.32)' }} suppressHydrationWarning>
-            {MONTH_FULL[new Date().getMonth()]} {new Date().getFullYear()}
+          <div className="text-sm font-bold tracking-tight">Finance Command Centre</div>
+          <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,.55)' }} suppressHydrationWarning>
+            {dates.closeMonth} close complete. Three items flagged for review.
           </div>
         </div>
         <div
@@ -113,6 +113,9 @@ function FinanceCommandCentre() {
             />
           </div>
           <div className="text-[10px] text-muted-foreground mt-1">of 12 months</div>
+          <div className="text-[10px] mt-1 font-medium" style={{ color: '#eab308' }}>
+            Watch: below 6-month target
+          </div>
         </motion.div>
 
         {/* Debtor Days */}
@@ -154,6 +157,7 @@ function FinanceCommandCentre() {
               {dates.vatDays} days
             </span>
           </div>
+          <div className="text-[10px] text-muted-foreground mt-1.5">Prepared before deadline</div>
         </motion.div>
 
         {/* Monthly Close */}
@@ -167,9 +171,10 @@ function FinanceCommandCentre() {
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: '#2ED889' }} />
             <span className="text-xs font-semibold" suppressHydrationWarning>
-              {dates.closeMonth}: complete
+              {dates.closeMonth}: reviewed
             </span>
           </div>
+          <div className="text-[10px] text-muted-foreground mt-1.5">Senior accountant sign-off</div>
         </motion.div>
 
         {/* Payroll */}
@@ -188,9 +193,10 @@ function FinanceCommandCentre() {
               transition={{ duration: 2, repeat: Infinity }}
             />
             <span className="text-xs font-semibold" style={{ color: '#2ED889' }}>
-              Submitted
+              EMP201 submitted
             </span>
           </div>
+          <div className="text-[10px] text-muted-foreground mt-1.5">Payslips delivered</div>
         </motion.div>
 
         {/* Management Report */}
@@ -207,6 +213,7 @@ function FinanceCommandCentre() {
               Ready for review
             </span>
           </div>
+          <div className="text-[10px] text-muted-foreground mt-1.5">3 insights flagged</div>
         </motion.div>
 
         {/* SARS / CIPC Compliance — full width */}
@@ -263,13 +270,13 @@ export function HeroSection() {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
             >
-              Accounting support that feels like part of your team.
+              Your numbers, deadlines, payroll and reports, handled like an in-house finance team.
             </motion.h1>
             <motion.p
               className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}
             >
-              We combine expert accountants, cloud software, and a fixed monthly subscription to give SME owners clean numbers, fewer surprises, and better financial control.
+              We combine real accountants, Xero-led systems and a fixed monthly subscription so your books stay current, SARS deadlines stay under control, and you always know where the business stands.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-3"
@@ -283,7 +290,7 @@ export function HeroSection() {
                 render={<a href={siteConfig.links.booking} target="_blank" rel="noopener noreferrer" />}
                 variant="outline" size="lg" className="gap-2"
               >
-                <Calendar className="h-4 w-4" /> Book a Call
+                <Calendar className="h-4 w-4" /> Book a 15-minute fit call
               </Button>
             </motion.div>
           </div>

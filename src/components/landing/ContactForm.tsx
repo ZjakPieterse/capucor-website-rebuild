@@ -212,7 +212,7 @@ function SuccessState() {
         className="gap-2"
       >
         <Calendar className="h-4 w-4" />
-        Book a Call
+        Book a 15-minute fit call
       </Button>
     </div>
   );

@@ -17,8 +17,8 @@ export function FaqAccordion() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="FAQ"
-            title="Common questions."
-            subtitle="Something not covered here? Book a call and we'll walk you through it."
+            title="Questions business owners usually ask before switching."
+            subtitle="Clear answers on pricing, contracts, systems, SARS queries and what we need from you each month."
           />
         </ScrollReveal>
 

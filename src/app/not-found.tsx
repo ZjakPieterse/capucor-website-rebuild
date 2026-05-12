@@ -23,7 +23,7 @@ export default function NotFound() {
             />
           }
         >
-          Book a Call
+          Book a 15-minute fit call
         </Button>
       </div>
     </div>

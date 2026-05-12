@@ -114,9 +114,9 @@ export function Step1Services({ services, selected, onToggle, onNext }: Step1Ser
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Which services does your business need?</h2>
+        <h2 className="text-xl font-semibold mb-1">What should our finance team take off your plate?</h2>
         <p className="text-sm text-muted-foreground">
-          Pick the services that apply to your business. Each one is priced independently, then combined into a single monthly fee.
+          Choose the services you want Capucor to manage. Each service is priced separately, then combined into one fixed monthly subscription.
         </p>
       </div>
 
@@ -224,7 +224,7 @@ export function Step1Services({ services, selected, onToggle, onNext }: Step1Ser
           rel="noopener noreferrer"
           className="text-primary underline underline-offset-2 hover:no-underline"
         >
-          Book a free 15-min call →
+          Book a 15-minute fit call →
         </a>
       </p>
 

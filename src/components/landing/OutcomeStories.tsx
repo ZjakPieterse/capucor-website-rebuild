@@ -7,33 +7,37 @@ interface OutcomeCard {
   label: string;
   before: string;
   after: string;
-  metric: string;
+  metricValue: string;
+  metricLabel: string;
 }
 
 const OUTCOMES: OutcomeCard[] = [
   {
-    label: 'Professional services business · 2 directors',
+    label: 'Professional services business · 2 directors · VAT registered',
     before:
-      'Books three months behind. VAT201 filed late once, triggering a SARS penalty. Accountant unreachable at year-end — financial statements took six weeks to finalise.',
+      'Books three months behind. VAT201 filed late once, triggering a SARS penalty. Accountant unreachable at year-end. Financial statements took six weeks to finalise.',
     after:
       'Monthly close completed by the 10th. Zero late filings across 12 months. Year-end took four days. The records were already clean.',
-    metric: '12 months. Zero late filings.',
+    metricValue: '12 months',
+    metricLabel: 'Zero late filings',
   },
   {
-    label: 'Retail business · 8 employees',
+    label: 'Retail business · 8 employees · monthly payroll',
     before:
       'Payroll calculated manually in spreadsheets each month. IRP5 certificates issued six weeks late. One SARS penalty for an EMP201 error that went unnoticed for two cycles.',
     after:
       'Payroll processed through SimplePay every month. IRP5s filed before the May deadline. When SARS queried the prior-year error, clean records meant it was resolved without escalation.',
-    metric: 'First clean payroll year-end.',
+    metricValue: 'First clean',
+    metricLabel: 'Payroll year-end',
   },
   {
-    label: 'Product business · R3–5M annual turnover',
+    label: 'Product business · R3–5M turnover · stock and VAT pressure',
     before:
       'No management accounts. Cash decisions made by checking the bank balance. Surprised by a R40,000 VAT liability the month before a planned equipment purchase.',
     after:
       'Monthly P&L and balance sheet delivered by the 15th. Cash runway tracked every month. Seasonal dips visible in the P&L two months before they hit the bank balance.',
-    metric: 'Monthly P&L. Every month. No chasing.',
+    metricValue: 'Monthly P&L',
+    metricLabel: 'Delivered by the 15th',
   },
 ];
 
@@ -44,8 +48,8 @@ export function OutcomeStories() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="Client outcomes"
-            title="What changes when your finances are finally sorted."
-            subtitle="Anonymised examples of what we typically walk into with a new client, and what the same business looks like twelve months later."
+            title="What changes when the finance function is properly managed."
+            subtitle="Anonymised examples of the type of finance problems SME owners bring to us, and what changes once there is a proper monthly rhythm in place."
           />
         </ScrollReveal>
 
@@ -75,7 +79,12 @@ export function OutcomeStories() {
 
                 {/* Metric */}
                 <div className="px-6 pb-6 border-t border-border pt-4">
-                  <p className="text-sm font-semibold text-foreground">{card.metric}</p>
+                  <p className="text-2xl font-bold tracking-tight text-foreground leading-none">
+                    {card.metricValue}
+                  </p>
+                  <p className="mt-1.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    {card.metricLabel}
+                  </p>
                 </div>
 
               </div>

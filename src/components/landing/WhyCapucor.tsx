@@ -8,22 +8,22 @@ const OUTCOMES = [
   {
     icon: BookCheck,
     title: 'Clean, current books',
-    body: 'Your Xero ledger is reconciled every month. Every transaction coded, every bank account matched. Ask us for any number at any time and you will get a straight answer.',
+    body: 'Your Xero ledger stays reconciled and decision-ready. When the bank, SARS, a funder or your own management team needs a number, you are not scrambling to catch up.',
   },
   {
     icon: CalendarCheck,
-    title: 'On-time compliance, every period',
-    body: 'VAT201s, EMP201s, provisional tax, and CIPC annual returns: filed on the correct dates, every cycle. No penalties, no last-minute scrambling.',
+    title: 'Compliance under control',
+    body: 'VAT201, EMP201, provisional tax, income tax and CIPC deadlines are tracked through a structured workflow, not memory, inboxes or last-minute panic.',
   },
   {
     icon: BarChart2,
-    title: 'Monthly management reports',
-    body: 'A concise management account pack delivered by the 15th of each month: revenue, expenses, cash flow, and debtors. In one place, every time.',
+    title: 'Monthly reports that explain what changed',
+    body: 'You receive a concise monthly view of revenue, expenses, cash flow, debtors and anything unusual that deserves attention.',
   },
   {
     icon: Lightbulb,
-    title: 'Proactive advisory included',
-    body: 'Your accountant reviews your numbers and raises issues before they become problems: tax structuring, cash-flow timing, B-BBEE certificates. All included in your subscription.',
+    title: 'Advisory that starts with your numbers',
+    body: 'We review what the numbers are saying and raise the risks, opportunities and planning points worth discussing, from tax timing to cash pressure.',
   },
 ];
 
@@ -34,8 +34,8 @@ export function WhyCapucor() {
         <ScrollReveal>
           <SectionHeading
             eyebrow="What you get"
-            title="Four outcomes, every month, without fail."
-            subtitle="Every month, your books are clean, your filings are done, and your accountant has already flagged anything worth discussing. Same cycle, every time."
+            title="Four outcomes your business can rely on every month."
+            subtitle="The point is not more reports. It is a finance rhythm where the books are current, deadlines are visible, reports are reviewed, and important issues are raised early."
           />
         </ScrollReveal>
 

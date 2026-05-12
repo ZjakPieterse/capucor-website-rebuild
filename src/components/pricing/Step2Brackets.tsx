@@ -37,9 +37,9 @@ export function Step2Brackets({
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-semibold mb-1">How big is your business?</h2>
+        <h2 className="text-xl font-semibold mb-1">Choose the size bracket that matches the work we&apos;ll manage.</h2>
         <p className="text-sm text-muted-foreground">
-          Each service has flexible packages priced to match your business size and monthly workload. Select the range that fits your current operation and your monthly fee is calculated from there.
+          Each service is priced according to the workload behind it. Select the range that best reflects your current business, and your monthly fee will update from there.
         </p>
       </div>
 
@@ -111,7 +111,7 @@ export function Step2Brackets({
       </div>
 
       <p className="text-xs text-muted-foreground -mt-2">
-        Between brackets? Pick the higher one. You can move down at any billing cycle.
+        Between brackets? Choose the higher one for now. We can adjust your subscription at the next billing cycle if the workload changes.
       </p>
 
       <div className="flex justify-between pt-2">

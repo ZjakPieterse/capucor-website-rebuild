@@ -8,7 +8,8 @@ const SERVICES = [
   {
     icon: BarChart2,
     title: 'Accounting',
-    pitch: 'Financial statements, tax returns, and CIPC compliance. Done properly, and on time.',
+    pitch: 'Annual financials, tax and statutory compliance handled properly and on time.',
+    bestFor: 'Companies that need AFS, income tax, VAT and CIPC responsibilities managed by professionals.',
     bullets: [
       'Annual financial statements',
       'Income tax and provisional tax',
@@ -16,11 +17,13 @@ const SERVICES = [
       'CIPC annual return filings',
     ],
     href: '/accounting',
+    ctaLabel: 'View accounting support',
   },
   {
     icon: BookMarked,
     title: 'Bookkeeping',
-    pitch: 'Real-time books, reconciled monthly and ready to make decisions from.',
+    pitch: 'Current Xero records and monthly management accounts you can actually use.',
+    bestFor: 'Businesses that want their ledger processed, reconciled and ready for decisions every month.',
     bullets: [
       'Xero business software included',
       'Transaction processing and categorisation',
@@ -28,12 +31,14 @@ const SERVICES = [
       'Monthly management accounts',
     ],
     href: '/bookkeeping',
+    ctaLabel: 'View bookkeeping support',
     featured: true,
   },
   {
     icon: Users,
     title: 'Payroll',
-    pitch: 'Accurate, compliant payroll for staff teams of any size.',
+    pitch: 'Accurate payroll, payslips and SARS/UIF compliance without spreadsheet risk.',
+    bestFor: 'Employers that want payroll handled correctly, confidentially and on time.',
     bullets: [
       'Payroll processing and payslips',
       'PAYE and UIF submissions',
@@ -41,6 +46,7 @@ const SERVICES = [
       'IRP5 certificates',
     ],
     href: '/payroll',
+    ctaLabel: 'View payroll support',
   },
 ];
 
@@ -67,7 +73,12 @@ export function ServicePillars() {
                 </div>
 
                 <h3 className="text-xl font-semibold mb-2">{svc.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-5">{svc.pitch}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{svc.pitch}</p>
+
+                <p className="text-xs leading-relaxed mb-5">
+                  <span className="font-semibold text-foreground">Best for: </span>
+                  <span className="text-muted-foreground">{svc.bestFor}</span>
+                </p>
 
                 <ul className="space-y-2 mb-6">
                   {svc.bullets.map((b) => (
@@ -84,7 +95,7 @@ export function ServicePillars() {
                   href={svc.href}
                   className="text-sm font-medium text-primary hover:underline underline-offset-4"
                 >
-                  Read more →
+                  {svc.ctaLabel} →
                 </a>
               </div>
             </ScrollReveal>

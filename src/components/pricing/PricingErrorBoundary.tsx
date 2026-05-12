@@ -58,7 +58,7 @@ export function PricingUnavailable() {
         }
         className="gap-2"
       >
-        Book a Call
+        Book a 15-minute fit call
       </Button>
     </div>
   );

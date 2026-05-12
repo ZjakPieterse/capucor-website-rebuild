@@ -4,7 +4,13 @@ import { Button } from '@/components/ui/button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { cn } from '@/lib/utils';
-import { TIER_HIGHLIGHTS, TIER_CUMULATIVE_LABELS, PACKAGE_COMMON_ITEMS } from '@/config/tiers';
+import {
+  TIER_HIGHLIGHTS,
+  TIER_CUMULATIVE_LABELS,
+  PACKAGE_COMMON_ITEMS,
+  TIER_BUYER_FIT,
+  TIER_MOST_POPULAR_NOTE,
+} from '@/config/tiers';
 import type { Service, Tier } from '@/types';
 
 interface PackagesTeaserProps {
@@ -30,8 +36,8 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
         <ScrollReveal>
           <SectionHeading
             eyebrow="Packages"
-            title="One subscription. Full financial cover."
-            subtitle="One flat monthly fee. All the compliance covered. Adjust your tier as your business grows."
+            title="Choose the level of finance support your business needs now."
+            subtitle="Start with the services you need, then choose the depth of monthly support. Your subscription can grow as the business becomes more complex."
           />
         </ScrollReveal>
 
@@ -81,8 +87,15 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
 
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-1">{tier.name}</h3>
-                  {tier.tagline && (
+                  {TIER_BUYER_FIT[tier.slug] ? (
+                    <p className="text-sm text-muted-foreground">{TIER_BUYER_FIT[tier.slug]}</p>
+                  ) : tier.tagline ? (
                     <p className="text-sm text-muted-foreground">{tier.tagline}</p>
+                  ) : null}
+                  {isMiddle && (
+                    <p className="mt-3 text-xs leading-relaxed text-primary/90">
+                      {TIER_MOST_POPULAR_NOTE}
+                    </p>
                   )}
                 </div>
 
