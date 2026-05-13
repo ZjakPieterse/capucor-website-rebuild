@@ -10,7 +10,6 @@ import {
 import { MagneticButton } from '@/components/ui/MagneticButton';
 import { motion } from 'motion/react';
 import { BarChart2, BookMarked, Users, ArrowRight, ArrowLeft } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import type { Bracket, BracketValue, Service } from '@/types';
 
 const SERVICE_ICONS: Record<string, React.ElementType> = {

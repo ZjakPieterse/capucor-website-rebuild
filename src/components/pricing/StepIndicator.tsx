@@ -22,7 +22,7 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
         {/* Connection Line */}
         <div className="absolute top-5 left-0 w-full h-px bg-white/10" />
         
-        {STEPS.map((step, i) => {
+        {STEPS.map((step) => {
           const isDone = step.number < currentStep;
           const isActive = step.number === currentStep;
 

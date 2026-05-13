@@ -2,7 +2,6 @@
 
 import { Quote } from 'lucide-react';
 import type { Testimonial } from '@/types';
-import { cn } from '@/lib/utils';
 
 interface TestimonialSpotlightProps {
   testimonial: Testimonial;

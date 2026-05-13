@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { Landmark, ReceiptText, ClipboardCheck, FileBarChart, ScrollText, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence, useScroll } from 'motion/react';
+import { Landmark, ReceiptText, ClipboardCheck, FileBarChart, ScrollText } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { cn } from '@/lib/utils';
 

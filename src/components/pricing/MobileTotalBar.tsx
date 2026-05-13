@@ -2,11 +2,9 @@
 
 import { useCallback } from 'react';
 import { ChevronUp, ArrowRight } from 'lucide-react';
-import { motion } from 'motion/react';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { monthlyTotal } from '@/lib/pricing';
-import { cn } from '@/lib/utils';
 import type { Bracket, BracketValue, CalculatorStep, Tier } from '@/types';
 
 interface MobileTotalBarProps {

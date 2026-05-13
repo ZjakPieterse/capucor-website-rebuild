@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  TrendingUp, TrendingDown, CheckCircle2, AlertCircle, 
-  ChevronRight, Calendar, DollarSign, PieChart, 
+  TrendingUp, 
+  ChevronRight, DollarSign, PieChart, 
   BarChart3, Activity, Users, Wallet
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -155,11 +155,16 @@ function ExpensesSlide() {
             </filter>
           </defs>
           {(() => {
-            let cum = 0;
+            const startAngles: number[] = [];
+            let total = 0;
+            EXP_DATA.forEach((e) => {
+              startAngles.push(total);
+              total += (e.pct / 100) * 360;
+            });
+
             return EXP_DATA.map((e, i) => {
               const sweep = (e.pct / 100) * 360;
-              const start = cum;
-              cum += sweep;
+              const start = startAngles[i];
               
               const cx = 82, cy = 82, R = 68, ri = 46;
               const a1 = start + 1.2, a2 = start + sweep - 1.2;

@@ -2,7 +2,6 @@
 
 import { motion } from 'motion/react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { cn } from '@/lib/utils';
 
 const TOOLS = [
   {
@@ -125,7 +124,7 @@ export function TechStackShowcase() {
           className="mt-20 p-8 rounded-[32px] bg-white/5 border border-white/10 text-center"
         >
           <p className="text-sm text-white/40 max-w-2xl mx-auto italic">
-            "The value isn't the cloud ledger; it's the professional hands that keep it clean, the senior eyes that review the numbers, and the advisor who tells you what they mean."
+            &ldquo;The value isn&apos;t the cloud ledger; it&apos;s the professional hands that keep it clean, the senior eyes that review the numbers, and the advisor who tells you what they mean.&rdquo;
           </p>
         </motion.div>
       </div>

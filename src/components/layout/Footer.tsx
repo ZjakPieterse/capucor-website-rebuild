@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { siteConfig } from '@/config/site';
-import { Separator } from '@/components/ui/separator';
 
 function IconFacebook({ className }: { className?: string }) {
   return (
@@ -135,7 +134,7 @@ export function Footer() {
   );
 }
 
-function SocialLink({ href, icon: Icon }: { href: string; icon: any }) {
+function SocialLink({ href, icon: Icon }: { href: string; icon: React.ElementType }) {
   return (
     <a
       href={href}

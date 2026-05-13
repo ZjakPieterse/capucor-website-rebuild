@@ -2,10 +2,9 @@
 
 import { Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BadgeCheck, Users2, Shield, MessageSquare, Clock, ArrowRight, ShieldCheck } from 'lucide-react';
+import { BadgeCheck, Clock, ShieldCheck } from 'lucide-react';
 import { usePricingState } from '@/hooks/usePricingState';
 import { PACKAGE_COMMON_ITEMS } from '@/config/tiers';
-import { siteConfig } from '@/config/site';
 import { StepIndicator } from './StepIndicator';
 import { Step1Services } from './Step1Services';
 import { Step2Brackets } from './Step2Brackets';
@@ -14,7 +13,6 @@ import { Step4Activate } from './Step4Activate';
 import { MobileTotalBar } from './MobileTotalBar';
 import { StickyConfigChip } from './StickyConfigChip';
 import type { PricingData, Testimonial } from '@/types';
-import { MagneticButton } from '@/components/ui/MagneticButton';
 import { cn } from '@/lib/utils';
 
 interface PricingCalculatorProps {
@@ -30,7 +28,7 @@ const TRUST_ITEMS = [
   "Cancel with 30 Days’ Notice",
 ];
 
-const INCLUDED_ICONS: React.ElementType[] = [Users2, Shield, MessageSquare];
+
 
 function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorProps) {
   const { services, brackets, tiers } = data;

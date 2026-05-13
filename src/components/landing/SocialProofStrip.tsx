@@ -2,7 +2,6 @@
 
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import { motion } from 'motion/react';
-import { cn } from '@/lib/utils';
 
 const METRICS = [
   { number: 175, suffix: '+', label: 'Businesses supported' },

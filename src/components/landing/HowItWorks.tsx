@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react';
 import { Inbox, Cog, BarChart2, MessageSquare, ArrowRight, Calendar, CheckCircle2 } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { siteConfig } from '@/config/site';
@@ -165,7 +165,7 @@ export function HowItWorks() {
   );
 }
 
-function StepNode({ step, index, scrollYProgress }: { step: any; index: number; scrollYProgress: any }) {
+function StepNode({ step, index, scrollYProgress }: { step: (typeof STEPS)[0]; index: number; scrollYProgress: MotionValue<number> }) {
   const threshold = index / (STEPS.length - 1);
   const isActive = useTransform(scrollYProgress, [threshold - 0.1, threshold, threshold + 0.1], [0.3, 1, 0.3]);
   const scale = useTransform(scrollYProgress, [threshold - 0.1, threshold, threshold + 0.1], [0.8, 1.2, 0.8]);
@@ -187,7 +187,7 @@ function StepNode({ step, index, scrollYProgress }: { step: any; index: number; 
   );
 }
 
-function StepContent({ step, index, scrollYProgress }: { step: any; index: number; scrollYProgress: any }) {
+function StepContent({ step, index, scrollYProgress }: { step: (typeof STEPS)[0]; index: number; scrollYProgress: MotionValue<number> }) {
   const threshold = index / (STEPS.length - 1);
   const opacity = useTransform(scrollYProgress, [threshold - 0.15, threshold, threshold + 0.15], [0, 1, 0]);
   const y = useTransform(scrollYProgress, [threshold - 0.15, threshold, threshold + 0.15], [20, 0, -20]);

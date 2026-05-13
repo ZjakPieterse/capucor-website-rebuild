@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, Lock, ShieldCheck, ArrowRight, Sparkles, Star, Shield } from 'lucide-react';
+import { Loader2, ArrowRight, Sparkles, Shield } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ConsentCheckbox } from '@/components/ui/ConsentCheckbox';
@@ -13,10 +13,8 @@ import {
   SubscriptionRequestSchema,
 } from '@/lib/validations';
 import { z } from 'zod';
-import { formatZAR, cn } from '@/lib/utils';
-import { bracketPrice, monthlyTotal } from '@/lib/pricing';
+import { monthlyTotal } from '@/lib/pricing';
 import type { Bracket, BracketValue, Service, Tier } from '@/types';
-import { motion } from 'motion/react';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 
 const VAT_RATE = 0.15;
@@ -150,7 +148,7 @@ export function Step4Activate({
       <div className="text-center">
         <h2 className="text-2xl font-bold text-white mb-3">Activate Subscription</h2>
         <p className="text-white/40 text-sm leading-relaxed">
-          Finalize your details to move to the secure payment page. We'll be ready to start within 24 hours.
+          Finalize your details to move to the secure payment page. We&apos;ll be ready to start within 24 hours.
         </p>
       </div>
 

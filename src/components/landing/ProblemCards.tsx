@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { 
   BookOpen, AlertCircle, Unplug, Clock, CheckCircle2, 
   CalendarCheck, Link2, Zap, ArrowRight 
@@ -153,7 +153,7 @@ export function ProblemCards() {
   );
 }
 
-function TiltCard({ item, isResolved, index }: { item: any; isResolved: boolean; index: number }) {
+function TiltCard({ item, isResolved, index }: { item: (typeof PROBLEMS)[0]; isResolved: boolean; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
