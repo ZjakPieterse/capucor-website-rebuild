@@ -459,19 +459,39 @@ function CashFlowSlide() {
     </div>
   );
 }
-
 // ── Main Component ────────────────────────────────────────────────────────────────
 
 export function PremiumDashboard() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const slide = SLIDES[activeIdx];
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const startCycle = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % SLIDES.length);
     }, 7000);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+    
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
   };
 
   useEffect(() => {
@@ -482,7 +502,18 @@ export function PremiumDashboard() {
   }, []);
 
   return (
-    <div className="relative group">
+    <motion.div 
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{
+        rotateX: tilt.x,
+        rotateY: tilt.y,
+      }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30, restDelta: 0.001 }}
+      style={{ perspective: 1000 }}
+      className="relative group"
+    >
       {/* Background Glows (linked to active slide color) */}
       <div className="absolute inset-0 -z-10 opacity-30 blur-[80px] transition-all duration-1000 pointer-events-none">
         <div 
@@ -491,7 +522,7 @@ export function PremiumDashboard() {
         />
       </div>
 
-      <div className="w-full max-w-[480px] bg-[#070c1a]/80 backdrop-blur-3xl rounded-[32px] border border-white/10 shadow-[0_32px_80px_rgba(0,0,0,0.6)] p-6 overflow-hidden">
+      <div className="w-full max-w-[480px] bg-[#070c1a]/80 backdrop-blur-3xl rounded-[32px] border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.7)] p-6 overflow-hidden">
         {/* Top Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
@@ -584,6 +615,6 @@ export function PremiumDashboard() {
           <ChevronRight className="w-4 h-4 text-white/10" />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

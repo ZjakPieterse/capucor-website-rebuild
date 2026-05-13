@@ -44,34 +44,29 @@
   --popover-foreground: #f8fafc;
 
   /* Neutrals */
-  --secondary:        rgba(30, 41, 59, 0.7);
+  --secondary:        rgba(15, 23, 42, 0.7);
   --secondary-foreground: #f8fafc;
-  --muted:            rgba(30, 41, 59, 0.4);
-  --muted-foreground: #94a3b8;
-  --border:           rgba(255, 255, 255, 0.1);
-  --input:            rgba(255, 255, 255, 0.05);
+  --muted:            rgba(15, 23, 42, 0.4);
+  --muted-foreground: #64748b;
+  --border:           rgba(255, 255, 255, 0.08);
+  --input:            rgba(255, 255, 255, 0.04);
   --ring:             #22d3ee;
 
   /* Accent — The Capucor Signature */
   --primary:          #4ade80; /* Emerald */
-  --primary-foreground: #060a14;
-  --accent:           #22d3ee; /* Cyan */
-  --accent-foreground: #060a14;
+  --primary-foreground: #020617;
+  --accent:           #0ea5e9; /* Deep Sky Blue */
+  --accent-foreground: #f8fafc;
 
-  /* Semantic */
-  --destructive:      #ef4444;
-  --success:          #4ade80;
-  --warning:          #fb923c;
-
-  /* Brand Accents */
+  /* Brand Accents (Zen Palette) */
+  --brand-teal:       #14b8a6;
   --brand-cyan:       #22d3ee;
   --brand-emerald:    #4ade80;
-  --brand-purple:     #a78bfa;
-  --brand-orange:     #fb923c;
-  --brand-pink:       #f472b6;
-  --brand-navy:       #7ba8f5;
+  --brand-indigo:     #6366f1;
+  --brand-deep:       #0f172a;
+  --brand-navy:       #1e293b;
 
-  --radius: 1rem;
+  --radius: 1.25rem;
 }
 
 @layer base {
@@ -80,21 +75,46 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, rgba(74, 222, 128, 0.03) 0%, transparent 50%);
+    background-attachment: fixed;
   }
   html {
     @apply font-sans;
   }
 }
 
-/* ─── Premium Glassmorphism ──────────────────────────────────────────────── */
+/* ─── Premium Glassmorphism (Zen) ────────────────────────────────────────── */
 .glass-panel {
-  background: rgba(7, 12, 26, 0.7);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
-    0 0 0 1px rgba(255, 255, 255, 0.02) inset,
-    0 20px 50px rgba(0, 0, 0, 0.5);
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── Typography Utilities ────────────────────────────────────────────────── */
+.text-balance {
+  text-wrap: balance;
+}
+
+.font-heading {
+  font-family: var(--font-sans);
+  letter-spacing: -0.04em;
+}
+
+.font-thin-heading {
+  font-weight: 200;
+  letter-spacing: -0.02em;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.4) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* ─── Marquee carousel ────────────────────────────────────────────────────── */

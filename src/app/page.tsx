@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { siteConfig } from '@/config/site';
-import type { Service, Tier } from '@/types';
+import type { Service, Tier, Bracket } from '@/types';
 
 import { HeroSection } from '@/components/landing/HeroSection';
 import { SocialProofStrip } from '@/components/landing/SocialProofStrip';
-import { ProblemCards } from '@/components/landing/ProblemCards';
+import { FinancialNoise } from '@/components/landing/FinancialNoise';
 import { ServicePillars } from '@/components/landing/ServicePillars';
 import { HowItWorks } from '@/components/landing/HowItWorks';
-import { PackagesTeaser } from '@/components/landing/PackagesTeaser';
+import { PricingStudio } from '@/components/pricing/PricingStudio';
 import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
 import { OutcomeStories } from '@/components/landing/OutcomeStories';
 import { FaqAccordion } from '@/components/landing/FaqAccordion';
@@ -34,11 +34,12 @@ export function generateMetadata(): Metadata {
 async function getLandingData(): Promise<{
   services: Service[];
   tiers: Tier[];
+  brackets: Bracket[];
 }> {
   try {
     const supabase = await createSupabaseServerClient();
 
-    const [servicesRes, tiersRes] = await Promise.all([
+    const [servicesRes, tiersRes, bracketsRes] = await Promise.all([
       supabase
         .from('services')
         .select('*')
@@ -51,19 +52,26 @@ async function getLandingData(): Promise<{
         .eq('active', true)
         .order('display_order')
         .returns<Tier[]>(),
+      supabase
+        .from('brackets')
+        .select('*')
+        .eq('active', true)
+        .order('display_order')
+        .returns<Bracket[]>(),
     ]);
 
     return {
       services: servicesRes.data ?? [],
       tiers: tiersRes.data ?? [],
+      brackets: bracketsRes.data ?? [],
     };
   } catch {
-    return { services: [], tiers: [] };
+    return { services: [], tiers: [], brackets: [] };
   }
 }
 
 export default async function HomePage() {
-  const { services, tiers } = await getLandingData();
+  const { services, brackets, tiers } = await getLandingData();
 
   return (
     <>
@@ -87,25 +95,31 @@ export default async function HomePage() {
         }}
       />
 
-      {/* 1. Hero */}
+      {/* A. The Hero: "The First Five Seconds" */}
       <HeroSection />
-      {/* 2. Floating trust banner (stats + partners + credentials, overlaps the hero/reality transition) */}
+
+      {/* Social Proof Interlude */}
       <SocialProofStrip />
-      {/* 3. Problem */}
-      <ProblemCards />
-      {/* 4. How the monthly finance system works (now carries the outcome line per step) */}
-      <HowItWorks />
-      {/* 5. Services */}
+
+      {/* B. The Conflict: "The Financial Noise" */}
+      <FinancialNoise />
+
+      {/* C. The Solution: "The Capucor Flow" */}
       <ServicePillars />
-      {/* 6. Packages */}
-      <PackagesTeaser services={services} tiers={tiers} />
-      {/* 7. Tech stack */}
+
+      {/* Narrative Bridge: How it Works */}
+      <HowItWorks />
+
+      {/* D. The Grand Finale: "The Pricing Studio" */}
+      <PricingStudio 
+        brackets={brackets} 
+        tiers={tiers} 
+      />
+
+      {/* Trust & Proof */}
       <TechStackShowcase />
-      {/* 8. Client outcomes — proof after pricing */}
       <OutcomeStories />
-      {/* 9. FAQ */}
       <FaqAccordion />
-      {/* 10. Final CTA */}
       <FinalCTA />
     </>
   );

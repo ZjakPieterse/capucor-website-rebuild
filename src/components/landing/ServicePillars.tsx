@@ -1,6 +1,7 @@
 'use client';
 
-import { BarChart2, BookMarked, Users, CheckCircle2 } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { BarChart2, BookMarked, Users, CheckCircle2, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { cn } from '@/lib/utils';
@@ -10,120 +11,64 @@ import Link from 'next/link';
 const SERVICES = [
   {
     icon: BarChart2,
-    title: 'Accounting',
-    pitch: 'Annual financials and statutory compliance handled properly and on time.',
-    bestFor: 'Companies that need AFS, income tax, VAT and CIPC managed by professionals.',
+    title: 'Tax & Compliance',
+    pitch: 'Precision filing and strategic tax planning to keep you clean with SARS.',
+    metric: '99.9% Compliance Rating',
     bullets: [
-      'Annual financial statements',
-      'Income tax & provisional tax',
-      'VAT201 reporting',
-      'CIPC annual return filings',
+      'Corporate Income Tax',
+      'VAT201 & EMP201 Submissions',
+      'Provisional Tax Planning',
+      'CIPC Annual Returns',
     ],
-    accent: 'var(--brand-purple)',
-    href: '/accounting',
-  },
-  {
-    icon: BookMarked,
-    title: 'Bookkeeping',
-    pitch: 'Current Xero records and monthly management accounts you can actually use.',
-    bestFor: 'Businesses that want their ledger processed, reconciled and ready for decisions.',
-    bullets: [
-      'Xero business software included',
-      'Transaction categorisation',
-      'Monthly bank reconciliations',
-      'Management accounts',
-    ],
-    accent: 'var(--brand-emerald)',
-    href: '/bookkeeping',
-    featured: true,
+    accent: '#22d3ee',
+    className: 'lg:col-span-2',
   },
   {
     icon: Users,
     title: 'Payroll',
-    pitch: 'Accurate payroll, payslips and SARS/UIF compliance without spreadsheet risk.',
-    bestFor: 'Employers that want payroll handled correctly, confidentially and on time.',
+    pitch: 'Accurate, confidential payroll that runs like clockwork.',
+    metric: 'Zero Deadline Failures',
     bullets: [
-      'Payroll processing & payslips',
-      'PAYE and UIF submissions',
-      'COIDA compliance',
-      'IRP5 certificates',
+      'Monthly Payslips',
+      'UIF & PAYE Submissions',
+      'COIDA Compliance',
+      'IRP5 Generation',
     ],
-    accent: 'var(--brand-cyan)',
-    href: '/payroll',
+    accent: '#4ade80',
+    className: 'lg:col-span-1',
+  },
+  {
+    icon: BookMarked,
+    title: 'Strategic Advisory',
+    pitch: 'Real-time management accounts and CFO-level insights for growth.',
+    metric: 'Board-Ready Reporting',
+    bullets: [
+      'Xero Ledger Management',
+      'Monthly Management Packs',
+      'Cash Flow Forecasting',
+      'Financial Strategy fit calls',
+    ],
+    accent: '#6366f1',
+    className: 'lg:col-span-3',
   },
 ];
 
 export function ServicePillars() {
   return (
-    <section id="services" className="relative py-24 lg:py-40 bg-[#060a14] overflow-hidden">
+    <section id="services" className="relative py-24 lg:py-40 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-3xl mb-16 lg:mb-24">
           <SectionHeading
-            eyebrow="Disciplines"
-            title="Three core functions. One subscription."
-            subtitle="We handle the back-office complexity so you can focus on front-office growth."
+            eyebrow="The Capucor Flow"
+            title="Sovereign Control. Minimal Input."
+            subtitle="We've engineered the back-office complexity out of your business."
             align="left"
           />
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
           {SERVICES.map((svc, i) => (
-            <motion.div
-              key={svc.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.6 }}
-              className={cn(
-                "group relative p-8 rounded-[40px] bg-[#070c1a]/80 backdrop-blur-3xl border border-white/10 overflow-hidden",
-                svc.featured && "lg:scale-105 border-white/20 shadow-[0_32px_64px_rgba(0,0,0,0.4)]"
-              )}
-            >
-              {/* Subtle hover background glow */}
-              <div 
-                className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
-                style={{ backgroundColor: svc.accent }}
-              />
-
-              <div className="relative z-10">
-                <div 
-                  className="mb-8 w-14 h-14 rounded-2xl flex items-center justify-center border transition-transform duration-500 group-hover:scale-110"
-                  style={{ backgroundColor: `${svc.accent}15`, borderColor: `${svc.accent}33` }}
-                >
-                  <svc.icon className="w-7 h-7" style={{ color: svc.accent }} />
-                </div>
-
-                <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">{svc.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed mb-8">{svc.pitch}</p>
-
-                <div className="mb-8">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-4">Core Inclusions</div>
-                  <ul className="space-y-3">
-                    {svc.bullets.map((b) => (
-                      <li key={b} className="flex items-center gap-3 text-sm text-white/70">
-                        <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: svc.accent }} />
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="pt-6 border-t border-white/5">
-                  <Link
-                    href={svc.href}
-                    className="group/btn inline-flex items-center gap-2 text-sm font-bold text-white"
-                  >
-                    Explore {svc.title}
-                    <motion.span
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      <ArrowRight className="w-4 h-4" />
-                    </motion.span>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
+            <BentoCard key={svc.title} svc={svc} index={i} />
           ))}
         </div>
 
@@ -137,7 +82,7 @@ export function ServicePillars() {
           <MagneticButton>
             <Link
               href="/pricing"
-              className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-8 py-4 text-sm font-bold text-[#060a14] hover:bg-emerald-400 transition-all shadow-[0_20px_40px_rgba(74,222,128,0.2)]"
+              className="inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-sm font-bold text-black hover:bg-white/90 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
             >
               Build your subscription
               <ArrowRight className="h-4 w-4" />
@@ -149,19 +94,69 @@ export function ServicePillars() {
   );
 }
 
-const ArrowRight = ({ className }: { className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width="24" 
-    height="24" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2.5" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-  </svg>
-);
+function BentoCard({ svc, index }: { svc: typeof SERVICES[0]; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.6 }}
+      className={cn(
+        "group relative p-8 lg:p-10 rounded-[40px] bg-[#0f172a]/40 backdrop-blur-xl border border-white/5 overflow-hidden transition-all duration-500 hover:border-white/20",
+        svc.className
+      )}
+    >
+      {/* Spotlight Effect */}
+      <motion.div 
+        className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        animate={{
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, ${svc.accent}15, transparent 40%)`
+        }}
+      />
+
+      <div className="relative z-10">
+        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-12">
+          <div className="flex-1">
+            <div 
+              className="mb-6 w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
+              style={{ backgroundColor: `${svc.accent}10`, borderColor: `${svc.accent}20` }}
+            >
+              <svc.icon className="w-7 h-7" style={{ color: svc.accent }} />
+            </div>
+            <h3 className="text-3xl font-bold text-white mb-3 tracking-tighter">{svc.title}</h3>
+            <p className="text-white/50 text-base leading-relaxed max-w-md">{svc.pitch}</p>
+          </div>
+
+          <div className="shrink-0">
+            <div 
+              className="px-4 py-2 rounded-full border text-[10px] font-bold uppercase tracking-widest transition-all duration-500 group-hover:bg-white group-hover:text-black group-hover:border-white"
+              style={{ color: svc.accent, borderColor: `${svc.accent}30` }}
+            >
+              {svc.metric}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-x-12 gap-y-4 mb-12">
+          {svc.bullets.map((b) => (
+            <div key={b} className="flex items-center gap-3 text-sm text-white/40 group-hover:text-white/70 transition-colors">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: svc.accent }} />
+              {b}
+            </div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
