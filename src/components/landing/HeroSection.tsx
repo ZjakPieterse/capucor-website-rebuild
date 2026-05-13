@@ -55,28 +55,18 @@ const VAT_STATUS_STYLES: Record<VatStatus, { bg: string; color: string }> = {
   red:   { bg: 'rgba(239,68,68,.15)',   color: '#ef4444' },
 };
 
-// ── Chaos items (more variety, all looping via CSS) ──────────────────────────────
-const CHAOS_ITEMS: Array<{
-  floatClass: string;
-  style: React.CSSProperties;
-  Icon: typeof FileSpreadsheet;
-  iconSize: string;
-  color: string;
-  label: string;
-  labelColor: string;
-}> = [
-  { floatClass: 'chaos-float-a', style: { top: '6%',  left: '5%'   }, Icon: FileSpreadsheet, iconSize: 'w-10 h-10', color: 'text-destructive',      label: 'ERR_SYNC', labelColor: 'text-destructive/80' },
-  { floatClass: 'chaos-float-b', style: { top: '72%', left: '10%'  }, Icon: Receipt,         iconSize: 'w-8 h-8',   color: 'text-yellow-500',       label: 'UNPAID',   labelColor: 'text-yellow-500/80' },
-  { floatClass: 'chaos-float-c', style: { top: '24%', right: '6%'  }, Icon: Calculator,      iconSize: 'w-12 h-12', color: 'text-destructive',      label: 'R -45,210', labelColor: 'text-destructive/80' },
-  { floatClass: 'chaos-float-d', style: { top: '74%', right: '14%' }, Icon: FileText,        iconSize: 'w-9 h-9',   color: 'text-muted-foreground', label: 'LATE',     labelColor: 'text-muted-foreground/80' },
-  { floatClass: 'chaos-float-a', style: { top: '50%', left: '2%'   }, Icon: FileWarning,     iconSize: 'w-9 h-9',   color: 'text-destructive',      label: 'OVERDUE',  labelColor: 'text-destructive/80' },
-  { floatClass: 'chaos-float-c', style: { top: '4%',  right: '40%' }, Icon: Mail,            iconSize: 'w-8 h-8',   color: 'text-yellow-500',       label: 'UNREAD',   labelColor: 'text-yellow-500/80' },
-  { floatClass: 'chaos-float-b', style: { top: '44%', right: '3%'  }, Icon: Receipt,         iconSize: 'w-7 h-7',   color: 'text-muted-foreground', label: 'MISSING',  labelColor: 'text-muted-foreground/80' },
-  { floatClass: 'chaos-float-d', style: { top: '86%', left: '42%'  }, Icon: FileSpreadsheet, iconSize: 'w-8 h-8',   color: 'text-destructive',      label: 'CONFLICT', labelColor: 'text-destructive/80' },
-  { floatClass: 'chaos-float-b', style: { top: '15%', left: '20%'  }, Icon: FileWarning,     iconSize: 'w-6 h-6',   color: 'text-destructive',      label: 'REF_04X',  labelColor: 'text-destructive/60' },
-  { floatClass: 'chaos-float-a', style: { top: '65%', right: '25%' }, Icon: Receipt,         iconSize: 'w-5 h-5',   color: 'text-yellow-500',       label: 'EXPENSE?', labelColor: 'text-yellow-500/60' },
-  { floatClass: 'chaos-float-c', style: { top: '35%', left: '15%'  }, Icon: FileText,        iconSize: 'w-8 h-8',   color: 'text-destructive',      label: 'VOID',     labelColor: 'text-destructive/80' },
-  { floatClass: 'chaos-float-d', style: { top: '10%', right: '15%' }, Icon: Calculator,      iconSize: 'w-10 h-10', color: 'text-yellow-600',       label: '??.00',    labelColor: 'text-yellow-600/70' },
+// ── Chaos items (More realistic mini-docs) ──────────────────────────────────────
+const CHAOS_ITEMS = [
+  { id: 1, type: 'invoice',  label: 'INV-2024-001', detail: 'R 45,210.00', status: 'OVERDUE',  color: '#ef4444', icon: FileText,        x: '10%', y: '15%', rot: -15, float: 'chaos-float-a' },
+  { id: 2, type: 'receipt',  label: 'Lunch Expense', detail: 'Missing Tax',   status: 'FLAGGED',  color: '#f59e0b', icon: Receipt,         x: '65%', y: '10%', rot: 12,  float: 'chaos-float-b' },
+  { id: 3, type: 'sheet',    label: 'Payroll_Draft', detail: 'Formula Err',   status: 'CONFLICT', color: '#ef4444', icon: FileSpreadsheet, x: '82%', y: '40%', rot: -8,  float: 'chaos-float-c' },
+  { id: 4, type: 'alert',    label: 'SARS Notice',   detail: 'Action Req',    status: 'URGENT',   color: '#ef4444', icon: FileWarning,     x: '15%', y: '75%', rot: 10,  float: 'chaos-float-d' },
+  { id: 5, type: 'receipt',  label: 'Uber Trip',     detail: 'Uncategorized', status: 'MISSING',  color: '#71717a', icon: Receipt,         x: '45%', y: '60%', rot: -20, float: 'chaos-float-a' },
+  { id: 6, type: 'invoice',  label: 'Supplier X',    detail: 'Duplicate',     status: 'REVIEW',   color: '#f59e0b', icon: FileText,        x: '75%', y: '80%', rot: 5,   float: 'chaos-float-b' },
+  { id: 7, type: 'sheet',    label: 'Bank_Rec_Final',detail: 'Out of Bal',    status: 'ERROR',    color: '#ef4444', icon: FileSpreadsheet, x: '5%',  y: '45%', rot: 18,  float: 'chaos-float-c' },
+  { id: 8, type: 'alert',    label: 'Bank Sync',     detail: 'Conn Lost',     status: 'DISCONN',  color: '#ef4444', icon: Calculator,      x: '35%', y: '5%',  rot: -5,  float: 'chaos-float-d' },
+  { id: 9, type: 'receipt',  label: 'Hardware Store',detail: 'R 1,250.00',    status: 'UNPAID',   color: '#f59e0b', icon: Receipt,         x: '85%', y: '12%', rot: 25,  float: 'chaos-float-a' },
+  { id: 10,type: 'invoice',  label: 'Rent April',    detail: 'Pending',       status: 'WAITING',  color: '#71717a', icon: FileText,        x: '55%', y: '85%', rot: -12, float: 'chaos-float-b' },
 ];
 
 // ── Finance Command Centre ────────────────────────────────────────────────────────
@@ -90,56 +80,70 @@ function FinanceCommandCentre() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 15%',
-        end: '+=80%',
+        start: 'top 20%',
+        end: '+=100%',
         pin: true,
         scrub: 1,
         anticipatePin: 1,
       },
     });
 
-    // Chaos items fade out, get pulled toward centre
+    // 1. CHAOS PHASE (already active at start)
+
+    // 2. SORTING PHASE - Items move to a grid and align
+    tl.to('.chaos-item', {
+      x: (i) => `${(i % 5) * 20 + 10}%`,
+      y: (i) => `${Math.floor(i / 5) * 35 + 25}%`,
+      rotation: 0,
+      scale: 0.95,
+      duration: 1,
+      ease: 'power2.inOut',
+    }, 0.2);
+
+    // 3. CONVERSION PHASE - Items disappear as dashboard appears
     tl.to('.chaos-item', {
       opacity: 0,
-      scale: 0.1,
-      y: (i) => (i % 2 === 0 ? -40 : 40),
-      x: (i) => (i % 3 === 0 ? -40 : 40),
-      duration: 1.2,
-      stagger: 0.04,
-      ease: 'power2.in',
-    }, 0);
+      scale: 0.5,
+      y: (i) => Math.floor(i / 5) * 35 + 50, // drop down
+      duration: 0.8,
+      stagger: {
+        each: 0.05,
+        from: 'center'
+      },
+      ease: 'back.in(2)',
+    }, 1.2);
 
     // Glowing core flares then collapses
     tl.to('.chaos-core', {
-      scale: 2.5,
+      scale: 3,
       opacity: 0,
       duration: 1,
       ease: 'power2.out',
-    }, 0.5);
+    }, 1.2);
 
     // Tiles pop in
     tl.fromTo('.fcc-tile',
-      { opacity: 0, scale: 0.9, y: 20 },
+      { opacity: 0, scale: 0.8, y: 30, filter: 'blur(10px)' },
       {
         opacity: 1,
         scale: 1,
         y: 0,
+        filter: 'blur(0px)',
         duration: 1.2,
-        stagger: 0.08,
-        ease: 'back.out(1.4)',
+        stagger: 0.1,
+        ease: 'expo.out',
         onComplete: () => {
-          // Add breathing animation after they've assembled
           gsap.set('.fcc-tile', { className: 'fcc-tile rounded-xl border border-border bg-background/40 p-3.5 fcc-breathe' });
         },
       },
-      0.7,
+      1.4,
     );
 
     // Header fades in
     tl.fromTo('.fcc-header',
-      { opacity: 0, y: -15 },
+      { opacity: 0, y: -20 },
       { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
-      0.7,
+      1.4,
     );
 
     return () => {
@@ -154,18 +158,35 @@ function FinanceCommandCentre() {
     >
       {/* ── Chaos State Overlay ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
-        <div className="chaos-core absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-primary/40 blur-2xl" />
+        <div className="chaos-core absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-primary/20 blur-[100px]" />
         {CHAOS_ITEMS.map((item, i) => (
           <div
-            key={i}
-            className={`chaos-item absolute ${item.floatClass}`}
-            style={item.style}
+            key={item.id}
+            className={`chaos-item absolute ${item.float}`}
+            style={{
+              left: item.x,
+              top: item.y,
+              rotate: `${item.rot}deg`,
+            }}
           >
-            <div className={`flex flex-col items-center ${item.color}`}>
-              <item.Icon className={`${item.iconSize} mb-1 opacity-70`} />
-              <span className={`text-[10px] font-mono font-bold tracking-tighter ${item.labelColor}`}>
-                {item.label}
-              </span>
+            <div className="flex items-center gap-3 bg-background/60 backdrop-blur-md border border-white/10 rounded-lg p-2.5 shadow-xl min-w-[140px]">
+              <div className="p-2 rounded-md bg-white/5" style={{ color: item.color }}>
+                <item.icon className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold tracking-tight text-white/90 leading-none mb-1">
+                  {item.label}
+                </span>
+                <span className="text-[9px] font-medium text-white/50 leading-none">
+                  {item.detail}
+                </span>
+              </div>
+              <div
+                className="ml-auto px-1.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter"
+                style={{ backgroundColor: `${item.color}20`, color: item.color }}
+              >
+                {item.status}
+              </div>
             </div>
           </div>
         ))}
@@ -360,10 +381,10 @@ export function HeroSection() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
 
           {/* Copy */}
-          <div>
+          <div className="lg:pt-10">
             <motion.p
               className="text-sm font-medium uppercase tracking-widest mb-4"
               style={{ color: 'var(--brand-navy)' }}
@@ -422,9 +443,12 @@ export function HeroSection() {
 
           {/* Dashboard */}
           <motion.div
+            className="relative lg:min-h-[600px] flex items-start"
             initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.25 }}
           >
-            <FinanceCommandCentre />
+            <div className="w-full sticky top-32">
+              <FinanceCommandCentre />
+            </div>
           </motion.div>
         </div>
       </div>
