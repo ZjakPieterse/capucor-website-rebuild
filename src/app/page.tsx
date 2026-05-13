@@ -71,7 +71,7 @@ async function getLandingData(): Promise<{
 }
 
 export default async function HomePage() {
-  const { services, brackets, tiers } = await getLandingData();
+  const { brackets, tiers } = await getLandingData();
 
   return (
     <>

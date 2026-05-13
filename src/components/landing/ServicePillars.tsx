@@ -1,90 +1,87 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { BarChart2, BookMarked, Users, CheckCircle2, ArrowRight } from 'lucide-react';
+import { useRef, useState, type MouseEvent } from 'react';
+import Link from 'next/link';
+import { ArrowRight, BarChart3, Landmark, LineChart, ShieldCheck, Users } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { cn } from '@/lib/utils';
 import { MagneticButton } from '@/components/ui/MagneticButton';
-import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 const SERVICES = [
   {
-    icon: BarChart2,
-    title: 'Tax & Compliance',
-    pitch: 'Precision filing and strategic tax planning to keep you clean with SARS.',
-    metric: '99.9% Compliance Rating',
-    bullets: [
-      'Corporate Income Tax',
-      'VAT201 & EMP201 Submissions',
-      'Provisional Tax Planning',
-      'CIPC Annual Returns',
-    ],
+    icon: ShieldCheck,
+    title: 'Tax Compliance',
+    pitch: 'VAT, income tax, payroll tax, and filings tracked against a live control calendar.',
+    metric: 'Deadline risk down',
     accent: '#22d3ee',
-    className: 'lg:col-span-2',
+    className: 'lg:col-span-5 lg:min-h-[360px]',
+    visual: 'shield',
   },
   {
     icon: Users,
     title: 'Payroll',
-    pitch: 'Accurate, confidential payroll that runs like clockwork.',
-    metric: 'Zero Deadline Failures',
-    bullets: [
-      'Monthly Payslips',
-      'UIF & PAYE Submissions',
-      'COIDA Compliance',
-      'IRP5 Generation',
-    ],
-    accent: '#4ade80',
-    className: 'lg:col-span-1',
+    pitch: 'Payslips, PAYE, UIF, IRP5s, and employee changes handled with a locked monthly cadence.',
+    metric: 'Payroll locked',
+    accent: '#2dd4bf',
+    className: 'lg:col-span-3 lg:min-h-[360px]',
+    visual: 'people',
   },
   {
-    icon: BookMarked,
+    icon: LineChart,
     title: 'Strategic Advisory',
-    pitch: 'Real-time management accounts and CFO-level insights for growth.',
-    metric: 'Board-Ready Reporting',
-    bullets: [
-      'Xero Ledger Management',
-      'Monthly Management Packs',
-      'Cash Flow Forecasting',
-      'Financial Strategy fit calls',
-    ],
-    accent: '#6366f1',
-    className: 'lg:col-span-3',
+    pitch: 'Cash runway, margin pressure, hiring plans, and capex decisions translated into operator math.',
+    metric: 'Growth signal live',
+    accent: '#4ade80',
+    className: 'lg:col-span-4 lg:row-span-2',
+    visual: 'growth',
+  },
+  {
+    icon: BarChart3,
+    title: 'Real-Time Reporting',
+    pitch: 'One reporting layer for revenue, costs, receivables, tax exposure, and monthly close status.',
+    metric: '24h decision data',
+    accent: '#38bdf8',
+    className: 'lg:col-span-8 lg:min-h-[330px]',
+    visual: 'reporting',
   },
 ];
 
 export function ServicePillars() {
   return (
-    <section id="services" className="relative py-24 lg:py-40 bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="max-w-3xl mb-16 lg:mb-24">
+    <section id="services" className="relative overflow-hidden bg-[#07111f] py-24 lg:py-40">
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,0.14),transparent_30%),radial-gradient(circle_at_90%_60%,rgba(45,212,191,0.12),transparent_28%)]" />
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <div className="mb-16 max-w-3xl lg:mb-24">
           <SectionHeading
-            eyebrow="The Capucor Flow"
-            title="Sovereign Control. Minimal Input."
-            subtitle="We've engineered the back-office complexity out of your business."
+            eyebrow="The Solution"
+            title="Four operating systems. One finance brain."
+            subtitle="No bloated retainers. No generic checklist. Just the functions founders need to stay ahead of the numbers."
             align="left"
           />
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
-          {SERVICES.map((svc, i) => (
-            <BentoCard key={svc.title} svc={svc} index={i} />
+        <div className="grid gap-5 lg:grid-cols-12 lg:auto-rows-fr">
+          {SERVICES.map((svc, index) => (
+            <BentoTile key={svc.title} svc={svc} index={index} />
           ))}
         </div>
 
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          className="mt-20 flex flex-col items-center gap-6"
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 flex flex-col items-center gap-6"
         >
           <div className="h-px w-24 bg-white/10" />
-          <p className="text-white/30 text-sm font-medium">Ready to simplify your finance function?</p>
+          <p className="text-sm font-medium text-white/35">Price the exact finance layer your company needs.</p>
           <MagneticButton>
             <Link
-              href="/pricing"
-              className="inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-sm font-bold text-black hover:bg-white/90 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
+              href="#pricing"
+              className="glow-button inline-flex items-center gap-2 rounded-2xl bg-cyan-200 px-8 py-4 text-sm font-black text-[#06111f] transition-all hover:bg-white"
             >
-              Build your subscription
+              Open pricing studio
               <ArrowRight className="h-4 w-4" />
             </Link>
           </MagneticButton>
@@ -94,69 +91,129 @@ export function ServicePillars() {
   );
 }
 
-function BentoCard({ svc, index }: { svc: typeof SERVICES[0]; index: number }) {
+function BentoTile({ svc, index }: { svc: (typeof SERVICES)[number]; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    setMousePos({ x: event.clientX - rect.left, y: event.clientY - rect.top });
   };
 
   return (
     <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.6 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ delay: index * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        "group relative p-8 lg:p-10 rounded-[40px] bg-[#0f172a]/40 backdrop-blur-xl border border-white/5 overflow-hidden transition-all duration-500 hover:border-white/20",
+        'group glass-tile relative overflow-hidden rounded-[2rem] p-7 transition-all duration-500 hover:-translate-y-1 hover:border-white/20 sm:p-9',
         svc.className
       )}
     >
-      {/* Spotlight Effect */}
-      <motion.div 
-        className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         animate={{
-          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, ${svc.accent}15, transparent 40%)`
+          background: `radial-gradient(520px circle at ${mousePos.x}px ${mousePos.y}px, ${svc.accent}24, transparent 42%)`,
         }}
       />
-
-      <div className="relative z-10">
-        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-12">
-          <div className="flex-1">
-            <div 
-              className="mb-6 w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
-              style={{ backgroundColor: `${svc.accent}10`, borderColor: `${svc.accent}20` }}
-            >
-              <svc.icon className="w-7 h-7" style={{ color: svc.accent }} />
+      <div className="relative z-10 flex h-full flex-col justify-between gap-10">
+        <div>
+          <div className="mb-8 flex items-start justify-between gap-6">
+            <div className="grid h-14 w-14 place-items-center rounded-2xl border border-white/10 bg-white/[0.04]">
+              <svc.icon className="h-7 w-7" style={{ color: svc.accent }} />
             </div>
-            <h3 className="text-3xl font-bold text-white mb-3 tracking-tighter">{svc.title}</h3>
-            <p className="text-white/50 text-base leading-relaxed max-w-md">{svc.pitch}</p>
-          </div>
-
-          <div className="shrink-0">
-            <div 
-              className="px-4 py-2 rounded-full border text-[10px] font-bold uppercase tracking-widest transition-all duration-500 group-hover:bg-white group-hover:text-black group-hover:border-white"
-              style={{ color: svc.accent, borderColor: `${svc.accent}30` }}
-            >
+            <span className="rounded-full border border-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white/35">
               {svc.metric}
-            </div>
+            </span>
           </div>
+          <h3 className="text-3xl font-black tracking-[-0.05em] text-white lg:text-4xl">{svc.title}</h3>
+          <p className="mt-4 max-w-xl text-sm leading-6 text-white/45 sm:text-base">{svc.pitch}</p>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-x-12 gap-y-4 mb-12">
-          {svc.bullets.map((b) => (
-            <div key={b} className="flex items-center gap-3 text-sm text-white/40 group-hover:text-white/70 transition-colors">
-              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: svc.accent }} />
-              {b}
-            </div>
-          ))}
-        </div>
+        <TileVisual type={svc.visual} accent={svc.accent} />
       </div>
     </motion.div>
+  );
+}
+
+function TileVisual({ type, accent }: { type: string; accent: string }) {
+  if (type === 'shield') {
+    return (
+      <div className="relative h-28 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+        <motion.div
+          className="absolute left-6 top-6 grid h-16 w-16 place-items-center rounded-2xl border bg-white/[0.04]"
+          style={{ borderColor: `${accent}33` }}
+          whileHover={{ rotate: [0, -8, 8, 0], scale: 1.05 }}
+          transition={{ duration: 0.6 }}
+        >
+          <ShieldCheck className="h-8 w-8" style={{ color: accent }} />
+        </motion.div>
+        <motion.div className="absolute bottom-8 left-28 right-8 h-2 rounded-full bg-white/5" whileHover={{ scaleX: 1.04 }}>
+          <motion.div className="h-full rounded-full" style={{ width: '78%', backgroundColor: accent }} />
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (type === 'growth') {
+    return (
+      <div className="relative h-48 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+        <div className="absolute inset-x-5 bottom-5 flex h-28 items-end gap-3">
+          {[35, 48, 42, 70, 84].map((height, index) => (
+            <motion.div
+              key={height}
+              className="flex-1 rounded-t-xl bg-gradient-to-t from-emerald-500/25 to-emerald-300"
+              initial={{ height: 18 }}
+              whileInView={{ height }}
+              whileHover={{ height: height + 10 }}
+              transition={{ delay: index * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            />
+          ))}
+        </div>
+        <motion.div
+          className="absolute right-6 top-6 h-4 w-4 rounded-full bg-emerald-300"
+          animate={{ scale: [1, 1.8, 1], opacity: [0.45, 1, 0.45] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </div>
+    );
+  }
+
+  if (type === 'reporting') {
+    return (
+      <div className="grid grid-cols-3 gap-3">
+        {['Revenue', 'Costs', 'Runway'].map((label, index) => (
+          <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="mb-5 text-[10px] font-black uppercase tracking-widest text-white/30">{label}</div>
+            <motion.div
+              className="h-2 rounded-full"
+              style={{ backgroundColor: accent }}
+              initial={{ width: '30%' }}
+              whileInView={{ width: `${62 + index * 11}%` }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-3 rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+      {[0, 1, 2].map((item) => (
+        <motion.div
+          key={item}
+          className="h-10 w-10 rounded-full border border-white/10 bg-white/[0.04]"
+          whileHover={{ y: -6 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        />
+      ))}
+      <Landmark className="ml-auto h-7 w-7" style={{ color: accent }} />
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, ReactNode } from 'react';
-import { motion, useSpring, useMotionValue } from 'motion/react';
+import { useEffect, useRef, type ReactNode } from 'react';
+import { motion, useMotionValue, useSpring } from 'motion/react';
 import { cn } from '@/lib/utils';
 
 export function MagneticButton({
@@ -12,41 +12,54 @@ export function MagneticButton({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-
-
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
+  const springConfig = { damping: 18, stiffness: 180, mass: 0.12 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const { clientX, clientY } = e;
-    const { height, width, left, top } = ref.current.getBoundingClientRect();
-    const centerX = left + width / 2;
-    const centerY = top + height / 2;
-    
-    // Magnetic pull distance
-    x.set((clientX - centerX) * 0.3);
-    y.set((clientY - centerY) * 0.3);
-  };
+  useEffect(() => {
+    const activationRadius = 50;
 
-  const handleMouseLeave = () => {
+    const handlePointerMove = (event: PointerEvent) => {
+      if (!ref.current) return;
 
-    x.set(0);
-    y.set(0);
-  };
+      const rect = ref.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const nearestX = Math.max(rect.left, Math.min(event.clientX, rect.right));
+      const nearestY = Math.max(rect.top, Math.min(event.clientY, rect.bottom));
+      const edgeDistance = Math.hypot(event.clientX - nearestX, event.clientY - nearestY);
+
+      if (edgeDistance <= activationRadius) {
+        x.set((event.clientX - centerX) * 0.18);
+        y.set((event.clientY - centerY) * 0.18);
+      } else {
+        x.set(0);
+        y.set(0);
+      }
+    };
+
+    const handlePointerLeave = () => {
+      x.set(0);
+      y.set(0);
+    };
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerleave', handlePointerLeave);
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerleave', handlePointerLeave);
+    };
+  }, [x, y]);
 
   return (
     <motion.div
       ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => {}}
-      onMouseLeave={handleMouseLeave}
       style={{ x: springX, y: springY }}
-      className={cn("relative inline-flex", className)}
+      className={cn('relative inline-flex will-change-transform', className)}
     >
       {children}
     </motion.div>
