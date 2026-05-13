@@ -32,7 +32,7 @@ export function Navbar() {
     <header 
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-500",
-        scrolled ? "bg-[#060a14]/80 backdrop-blur-xl border-b border-white/5 py-3" : "bg-transparent py-5"
+        scrolled ? "bg-[#050505]/80 backdrop-blur-xl border-b border-white/5 py-3" : "bg-transparent py-5"
       )}
     >
       <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -76,7 +76,7 @@ export function Navbar() {
           <MagneticButton>
             <Link
               href="/pricing"
-              className="inline-flex items-center justify-center rounded-xl bg-white text-black px-6 py-2.5 text-xs font-bold uppercase tracking-widest hover:bg-white/90 transition-all shadow-[0_10px_20px_rgba(255,255,255,0.1)]"
+              className="inline-flex items-center justify-center rounded-full bg-[#2DD4BF] text-[#03100f] px-6 py-2.5 text-xs font-bold uppercase tracking-widest hover:bg-[#5eead4] transition-all shadow-[0_0_24px_rgba(45,212,191,0.18)]"
             >
               Get Started
             </Link>
@@ -93,7 +93,7 @@ export function Navbar() {
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </SheetTrigger>
-            <SheetContent side="right" className="w-full bg-[#060a14] border-white/10">
+            <SheetContent side="right" className="w-full bg-[#050505] border-white/10">
               <SheetHeader>
                 <SheetTitle className="text-left text-white/20 uppercase tracking-[0.3em] text-[10px]">Navigation</SheetTitle>
               </SheetHeader>
@@ -102,7 +102,7 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-3xl font-bold text-white hover:text-emerald-400 transition-colors"
+                    className="text-3xl font-bold text-white hover:text-[#2DD4BF] transition-colors"
                     onClick={() => setOpen(false)}
                   >
                     {item.label}
@@ -111,7 +111,7 @@ export function Navbar() {
                 <div className="pt-8 border-t border-white/10 flex flex-col gap-4">
                    <Link
                      href="/pricing"
-                     className="w-full py-4 rounded-2xl bg-emerald-500 text-[#060a14] text-center font-bold"
+                     className="w-full py-4 rounded-2xl bg-[#2DD4BF] text-[#03100f] text-center font-bold"
                      onClick={() => setOpen(false)}
                    >
                      Build Subscription
