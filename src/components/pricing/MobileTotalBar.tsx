@@ -1,12 +1,12 @@
 'use client';
 
 import { useCallback } from 'react';
-import { ChevronUp } from 'lucide-react';
+import { ChevronUp, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Button } from '@/components/ui/button';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { monthlyTotal } from '@/lib/pricing';
+import { cn } from '@/lib/utils';
 import type { Bracket, BracketValue, CalculatorStep, Tier } from '@/types';
 
 interface MobileTotalBarProps {
@@ -42,55 +42,48 @@ export function MobileTotalBar({
   }, [summaryAnchorId]);
 
   if (activeSlugs.length === 0) return null;
-
-  // Hide the bar entirely on Step 4 — the user is filling the activation form
-  // and the form's own submit button is what they need.
   if (currentStep === 4) return null;
 
   return (
     <div
-      role="region"
-      aria-label="Subscription total"
-      className="fixed inset-x-0 bottom-0 z-40 lg:hidden border-t border-border bg-background/80 backdrop-blur-xl saturate-150 shadow-[0_-8px_32px_-12px_rgba(0,0,0,0.3)]"
+      className="fixed inset-x-0 bottom-0 z-40 lg:hidden bg-[#060a14]/80 backdrop-blur-3xl border-t border-white/5"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-            {tier ? `${tier.name} plan · excl. VAT` : 'Running total · excl. VAT'}
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20 mb-1">
+            {tier ? tier.name : 'Running Total'}
           </p>
           {total > 0 ? (
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0.5 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="font-mono font-bold text-lg leading-tight"
-            >
-              <AnimatedPrice amount={total} className="text-lg font-bold" />
-              <span className="text-xs font-normal text-muted-foreground ml-1">/mo</span>
-            </motion.div>
+            <div className="flex items-baseline gap-2">
+               <span className="text-xl font-bold text-white font-mono">
+                 <AnimatedPrice amount={total} />
+               </span>
+               <span className="text-[10px] font-bold text-white/20 uppercase tracking-widest">/mo</span>
+            </div>
           ) : (
-            <p className="text-sm text-muted-foreground">Pick a tier to see the total</p>
+            <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Choose Depth</p>
           )}
         </div>
 
         {selectedTierSlug ? (
           <MagneticButton>
-            <Button size="sm" onClick={onActivate} className="shrink-0 shadow-lg shadow-primary/20">
+            <button 
+              onClick={onActivate} 
+              className="px-6 py-3 rounded-xl bg-emerald-500 text-[#060a14] font-bold text-xs uppercase tracking-widest flex items-center gap-2 shadow-[0_10px_20px_rgba(74,222,128,0.2)]"
+            >
               Activate
-            </Button>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </MagneticButton>
         ) : (
-          <MagneticButton>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={scrollToSummary}
-              className="shrink-0 gap-1 border-primary/20 hover:bg-primary/5"
-            >
-              <ChevronUp className="h-4 w-4" />
-              View summary
-            </Button>
-          </MagneticButton>
+          <button
+            onClick={scrollToSummary}
+            className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-emerald-400"
+          >
+            Summary
+            <ChevronUp className="w-3 h-3" />
+          </button>
         )}
       </div>
     </div>

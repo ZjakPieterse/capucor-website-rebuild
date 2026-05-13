@@ -1,215 +1,220 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Landmark, ReceiptText, ClipboardCheck, FileBarChart, ScrollText } from 'lucide-react';
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { useRef, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import { Landmark, ReceiptText, ClipboardCheck, FileBarChart, ScrollText, ArrowRight } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
 import { cn } from '@/lib/utils';
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-interface DayStop {
-  day: number;
-  icon: typeof Landmark;
-  title: string;
-  body: string;
-}
-
-const DAY_STOPS: DayStop[] = [
+const DAY_STOPS = [
   {
     day: 1,
     icon: Landmark,
-    title: 'Bank feeds pulled, transactions classified',
-    body: 'Xero pulls the previous month’s bank activity overnight. By the time the new month starts, your bookkeeper is already categorising and reconciling. Nothing waits a quarter to be sorted out.',
+    title: 'Bank Reconciliation',
+    body: 'The month starts with a clean slate. Bank feeds are pulled, transactions are classified, and your ledger is aligned. No backlog, no guessing.',
+    accent: '#22d3ee',
   },
   {
     day: 7,
     icon: ReceiptText,
-    title: 'Payroll, EMP201 and UIF handled',
-    body: 'Payslips are generated and approved. EMP201 is calculated, submitted and paid. UIF and PAYE move on the dates SARS expects, not the dates you remembered.',
+    title: 'Compliance Filing',
+    body: 'Payroll is closed and approved. EMP201 is calculated, submitted, and paid. We handle the SARS deadline so you don\'t have to remember it.',
+    accent: '#4ade80',
   },
   {
     day: 15,
     icon: ClipboardCheck,
-    title: 'Senior review, then your management report',
-    body: 'A SAICA-registered AGA(SA) accountant signs off on the month before anything reaches you. You receive a concise P&L, balance sheet and cash position, with the items worth a conversation flagged at the top.',
+    title: 'Senior Sign-off',
+    body: 'A SAICA-registered AGA(SA) accountant reviews your books. You receive a management pack showing performance, cash flow, and debtors.',
+    accent: '#a78bfa',
   },
   {
     day: 25,
     icon: FileBarChart,
-    title: 'VAT201 prepared and submitted',
-    body: 'VAT is calculated from the reconciled ledger, not from invoice piles. You see the figure before it is submitted, and the SARS confirmation gets logged in your file the same day.',
+    title: 'VAT Submission',
+    body: 'VAT is calculated directly from your reconciled ledger. No piles of slips. You see the final figure, we file the confirmation.',
+    accent: '#fb923c',
   },
   {
     day: 30,
     icon: ScrollText,
-    title: 'Next month already on the schedule',
-    body: 'Provisional tax, CIPC returns, IRP5 windows: everything that is approaching in the next 60 days is already on a workflow, with you and your bookkeeper assigned to it.',
+    title: 'Strategic Close',
+    body: 'The month closes with a conversation. We discuss planning points, tax timing, and risks for the next 60 days. You stay in control.',
+    accent: '#f472b6',
   },
 ];
 
-
 export function OutcomeStories() {
   const containerRef = useRef<HTMLElement>(null);
-  const calendarRef = useRef<HTMLDivElement>(null);
-  const dayRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [highlight, setHighlight] = useState({ left: 0, width: 0, ready: false });
 
-  useGSAP(() => {
-    const scrubArea = containerRef.current?.querySelector<HTMLElement>('.day-scrub-area');
-    if (!scrubArea) return;
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
 
-    const trigger = ScrollTrigger.create({
-      trigger: scrubArea,
-      start: 'top top',
-      end: `+=${DAY_STOPS.length * 28}%`,
-      pin: true,
-      scrub: 0.5,
-      anticipatePin: 1,
-      onUpdate: (self) => {
-        const idx = Math.min(
-          DAY_STOPS.length - 1,
-          Math.floor(self.progress * DAY_STOPS.length),
-        );
-        setActiveIndex(idx);
-      },
-    });
-
-    return () => {
-      trigger.kill();
-    };
-  }, { scope: containerRef });
-
-  useEffect(() => {
-    const update = () => {
-      const node = dayRefs.current[activeIndex];
-      const container = calendarRef.current;
-      if (!node || !container) return;
-      const cRect = container.getBoundingClientRect();
-      const nRect = node.getBoundingClientRect();
-      setHighlight({
-        left: nRect.left - cRect.left,
-        width: nRect.width,
-        ready: true,
-      });
-    };
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, [activeIndex]);
-
-  const active = DAY_STOPS[activeIndex];
+  // Calculate active index based on scroll
+  scrollYProgress.on('change', (v) => {
+    const idx = Math.min(DAY_STOPS.length - 1, Math.floor(v * DAY_STOPS.length));
+    if (idx !== activeIndex) setActiveIndex(idx);
+  });
 
   return (
-    <section ref={containerRef} className="bg-muted/30 border-t border-border overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 py-24 lg:py-32">
-        <ScrollReveal>
-          <SectionHeading
-            eyebrow="A month with Capucor"
-            title="What actually happens between the 1st and the 30th"
-            subtitle="Most accounting firms surface once a year, at audit time. We work to the month. Scroll through what that rhythm looks like in practice."
+    <section ref={containerRef} className="relative bg-[#060a14] min-h-[400vh]">
+      {/* Sticky Content */}
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+        
+        {/* Background elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] blur-[160px] opacity-20 transition-all duration-1000"
+            style={{ backgroundColor: DAY_STOPS[activeIndex].accent }}
           />
-        </ScrollReveal>
-      </div>
+        </div>
 
-      {/* Pinned calendar UI */}
-      <div className="day-scrub-area min-h-screen flex flex-col justify-center">
-        <div className="max-w-5xl mx-auto px-6 w-full">
+        <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            
+            {/* Left: The Narrative */}
+            <div>
+              <SectionHeading
+                eyebrow="Rhythm of the month"
+                title="When the month closes, you stay in control"
+                subtitle="Most accountants surface once a year. We work to the month, every month."
+                align="left"
+              />
 
-          <p className="text-center text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-6">
-            A typical Capucor month
-          </p>
-
-          {/* Calendar (horizontal pills with gliding highlight) */}
-          <div ref={calendarRef} className="relative">
-            {/* Track */}
-            <div
-              aria-hidden
-              className="absolute left-[6%] right-[6%] top-1/2 -translate-y-1/2 h-px bg-border"
-            />
-            {/* Gliding highlight */}
-            <motion.div
-              aria-hidden
-              className="calendar-highlight absolute top-1/2 -translate-y-1/2 rounded-full"
-              initial={false}
-              animate={{
-                left: highlight.left,
-                width: highlight.width,
-                opacity: highlight.ready ? 1 : 0,
-              }}
-              transition={{ type: 'spring', stiffness: 220, damping: 30 }}
-              style={{ height: 'calc(100% + 4px)' }}
-            />
-            {/* Day pills */}
-            <div className="relative flex justify-between items-center gap-2">
-              {DAY_STOPS.map((stop, i) => {
-                const isActive = i === activeIndex;
-                return (
-                  <div
-                    key={stop.day}
-                    ref={(el) => { dayRefs.current[i] = el; }}
-                    data-active={isActive}
-                    className={cn(
-                      'day-pill relative z-10 inline-flex flex-col items-center justify-center rounded-full border bg-card px-4 py-3 sm:px-6 sm:py-4 min-w-[78px] sm:min-w-[110px]',
-                      isActive
-                        ? 'border-transparent text-primary-foreground'
-                        : 'border-border text-muted-foreground',
-                    )}
+              <div className="mt-12 space-y-8">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
                   >
-                    <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest leading-none mb-1">
-                      Day
-                    </span>
-                    <span className="font-mono text-xl sm:text-2xl font-bold leading-none">
-                      {stop.day}
-                    </span>
+                    <div 
+                      className="inline-flex h-16 w-16 items-center justify-center rounded-3xl mb-8 bg-white/5 border border-white/10 shadow-2xl"
+                      style={{ color: DAY_STOPS[activeIndex].accent }}
+                    >
+                      {(() => {
+                        const Icon = DAY_STOPS[activeIndex].icon;
+                        return <Icon className="w-8 h-8" />;
+                      })()}
+                    </div>
+                    
+                    <div className="flex items-center gap-4 mb-4">
+                      <span className="font-mono text-5xl font-bold text-white/10">Day {DAY_STOPS[activeIndex].day}</span>
+                      <div className="h-px flex-1 bg-white/5" />
+                    </div>
+                    
+                    <h3 className="text-3xl lg:text-5xl font-bold text-white mb-6 tracking-tight">
+                      {DAY_STOPS[activeIndex].title}
+                    </h3>
+                    <p className="text-white/50 text-lg lg:text-xl leading-relaxed max-w-lg">
+                      {DAY_STOPS[activeIndex].body}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+
+                <div className="flex items-center gap-2">
+                  {DAY_STOPS.map((_, i) => (
+                    <div 
+                      key={i}
+                      className={cn(
+                        "h-1.5 rounded-full transition-all duration-500",
+                        i === activeIndex ? "w-12 bg-white" : "w-2 bg-white/10"
+                      )}
+                      style={i === activeIndex ? { backgroundColor: DAY_STOPS[i].accent } : {}}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right: The High-Fidelity Calendar Visual */}
+            <div className="relative">
+               <motion.div 
+                 className="relative aspect-square max-w-[500px] mx-auto bg-[#070c1a]/50 backdrop-blur-3xl rounded-[48px] border border-white/10 p-8 shadow-2xl overflow-hidden"
+                 initial={{ rotateY: 10, rotateX: 10 }}
+                 animate={{ rotateY: 0, rotateX: 0 }}
+                 transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
+               >
+                  {/* Calendar Grid */}
+                  <div className="grid grid-cols-7 gap-3 h-full">
+                    {Array.from({ length: 30 }).map((_, i) => {
+                      const dayNum = i + 1;
+                      const stop = DAY_STOPS.find(s => s.day === dayNum);
+                      const isCurrentStop = stop && DAY_STOPS.indexOf(stop) === activeIndex;
+                      const isPastStop = stop && DAY_STOPS.indexOf(stop) < activeIndex;
+                      
+                      return (
+                        <div 
+                          key={i}
+                          className={cn(
+                            "relative aspect-square rounded-xl border flex items-center justify-center text-[10px] font-mono transition-all duration-700",
+                            isCurrentStop 
+                              ? "bg-white border-white scale-110 shadow-[0_0_30px_rgba(255,255,255,0.3)] z-20" 
+                              : isPastStop
+                                ? "bg-white/20 border-white/20 text-white/40"
+                                : "bg-white/5 border-white/5 text-white/10"
+                          )}
+                          style={isCurrentStop ? { backgroundColor: stop.accent, borderColor: stop.accent, color: '#060a14' } : {}}
+                        >
+                           {dayNum}
+                           {stop && !isCurrentStop && (
+                             <div 
+                               className="absolute -top-1 -right-1 w-2 h-2 rounded-full" 
+                               style={{ backgroundColor: stop.accent }}
+                             />
+                           )}
+                        </div>
+                      );
+                    })}
                   </div>
-                );
-              })}
+
+                  {/* Glass overlays */}
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#070c1a] via-transparent to-transparent opacity-60" />
+                  
+                  {/* Floating Metric Card */}
+                  <AnimatePresence>
+                     <motion.div 
+                       key={activeIndex}
+                       initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                       animate={{ opacity: 1, y: 0, scale: 1 }}
+                       exit={{ opacity: 0, y: -40, scale: 0.9 }}
+                       className="absolute bottom-10 left-10 right-10 p-6 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-3xl shadow-2xl"
+                     >
+                        <div className="flex items-center gap-4">
+                           <div 
+                             className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10"
+                             style={{ color: DAY_STOPS[activeIndex].accent }}
+                           >
+                              {(() => {
+                                const Icon = DAY_STOPS[activeIndex].icon;
+                                return <Icon className="w-5 h-5" />;
+                              })()}
+                           </div>
+                           <div>
+                              <div className="text-[9px] font-bold uppercase tracking-widest text-white/30 mb-0.5">Live Outcome</div>
+                              <div className="text-sm font-bold text-white tracking-tight">{DAY_STOPS[activeIndex].title}</div>
+                           </div>
+                           <div className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/20 text-[9px] font-bold text-emerald-400">
+                             <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                             FILED
+                           </div>
+                        </div>
+                     </motion.div>
+                  </AnimatePresence>
+               </motion.div>
             </div>
           </div>
-
-          {/* Glassmorphic panel with active day narrative */}
-          <div className="calendar-panel mt-10 lg:mt-12 rounded-2xl p-8 lg:p-10 min-h-[260px] relative overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active.day}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-col sm:flex-row gap-6 sm:gap-8"
-              >
-                <div className="flex-shrink-0">
-                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 border border-primary/30">
-                    <active.icon className="h-7 w-7 text-primary" />
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-primary mb-2">
-                    {String(activeIndex + 1).padStart(2, '0')} of {DAY_STOPS.length} · Day {active.day}
-                  </p>
-                  <h3 className="text-2xl lg:text-3xl font-bold tracking-tight mb-3 leading-tight">
-                    {active.title}
-                  </h3>
-                  <p className="text-base text-muted-foreground leading-relaxed">
-                    {active.body}
-                  </p>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Scroll hint */}
-          <p className="mt-8 text-center text-xs text-muted-foreground">
-            Keep scrolling to move through the month.
-          </p>
+        </div>
+        
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+           <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20">The Monthly Timeline</div>
+           <div className="w-px h-12 bg-gradient-to-b from-white/20 to-transparent" />
         </div>
       </div>
     </section>

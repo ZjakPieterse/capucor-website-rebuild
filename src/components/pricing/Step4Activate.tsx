@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, Lock, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Loader2, Lock, ShieldCheck, ArrowRight, Sparkles, Star, Shield } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ConsentCheckbox } from '@/components/ui/ConsentCheckbox';
@@ -14,20 +13,19 @@ import {
   SubscriptionRequestSchema,
 } from '@/lib/validations';
 import { z } from 'zod';
-import { formatZAR } from '@/lib/utils';
+import { formatZAR, cn } from '@/lib/utils';
 import { bracketPrice, monthlyTotal } from '@/lib/pricing';
 import type { Bracket, BracketValue, Service, Tier } from '@/types';
+import { motion } from 'motion/react';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 
 const VAT_RATE = 0.15;
 
-// Local form schema — strips the calculator config bits that come from
-// component props (services, brackets, tierSlug) so the form only validates
-// what the user types.
 const FormSchema = z.object({
   fullName: z.string().min(1, 'Name is required').max(100),
   email: z.string().email('Enter a valid email address'),
   business: BusinessDetailsSchema,
-  website: z.string().max(0).optional(), // honeypot
+  website: z.string().max(0).optional(),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
@@ -46,12 +44,11 @@ const SECTORS = [
   'Professional services',
   'Retail / e-commerce',
   'Hospitality / food',
-  'Manufacturing / industrial',
-  'Construction / trades',
+  'Manufacturing',
+  'Construction',
   'Health / wellness',
   'Tech / software',
-  'Property / real estate',
-  'Logistics / transport',
+  'Property',
   'Other',
 ];
 
@@ -72,7 +69,6 @@ export function Step4Activate({
   const activeServices = services.filter((s) => selectedServices.has(s.slug));
   const tier = tiers.find((t) => t.slug === selectedTier) ?? null;
 
-  // Sanitise brackets — strip any 'enterprise' values (Step 4 is self-serve only)
   const integerBrackets: Record<string, number> = {};
   for (const [slug, value] of Object.entries(selectedBrackets)) {
     if (typeof value === 'number') integerBrackets[slug] = value;
@@ -100,25 +96,21 @@ export function Step4Activate({
     },
   });
 
-   const selectedSector = useWatch({
+  const selectedSector = useWatch({
     control,
     name: 'business.sector',
   });
 
   async function onSubmit(values: FormValues) {
     if (!consentGiven) {
-      setConsentError('You must consent before activating.');
+      setConsentError('Consent is required to activate.');
       return;
     }
     setConsentError('');
     setServerError(null);
 
-    if (!tier) {
-      setServerError('Please choose a package before activating.');
-      return;
-    }
+    if (!tier) return;
 
-    // Build the canonical request that matches SubscriptionRequestSchema.
     const payload = {
       services: activeServiceSlugs,
       brackets: integerBrackets,
@@ -130,12 +122,9 @@ export function Step4Activate({
       website: values.website ?? '',
     };
 
-    // Validate one more time client-side against the canonical schema
-    // before sending — protects against state drift if the user manipulates
-    // the calculator in another tab.
     const parsed = SubscriptionRequestSchema.safeParse(payload);
     if (!parsed.success) {
-      setServerError(parsed.error.issues[0]?.message ?? 'Invalid details. Please check your inputs.');
+      setServerError(parsed.error.issues[0]?.message ?? 'Check your inputs.');
       return;
     }
 
@@ -146,251 +135,206 @@ export function Step4Activate({
         body: JSON.stringify(parsed.data),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? 'Could not start checkout. Please try again.');
+      if (!res.ok) throw new Error(data.error ?? 'Checkout failed.');
 
-      // Paystack-style: server returns a hosted checkout URL. We redirect.
-      // (Stub mode returns /onboarding?ref=... so the rest of the flow
-      // can be demoed end-to-end before Paystack is live.)
       if (typeof data.authorizationUrl === 'string') {
         window.location.assign(data.authorizationUrl);
-      } else {
-        throw new Error('Checkout URL missing in response.');
       }
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setServerError(err instanceof Error ? err.message : 'Something went wrong.');
     }
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
-      <div>
-        <h2 className="text-xl font-semibold mb-1">Activate your subscription.</h2>
-        <p className="text-sm text-muted-foreground">
-          A few details so we can prepare your books from day one. You&rsquo;ll be billed via Paystack on a secure South African payment page.
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-12 max-w-4xl mx-auto" noValidate>
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-white mb-3">Activate Subscription</h2>
+        <p className="text-white/40 text-sm leading-relaxed">
+          Finalize your details to move to the secure payment page. We'll be ready to start within 24 hours.
         </p>
       </div>
 
-      {/* Subscription summary */}
-      <div className="rounded-xl border border-primary/25 bg-primary/[0.04] p-5">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-primary mb-3">
-          Your subscription
-        </p>
-        <ul className="space-y-2 mb-4">
-          {activeServices.map((svc) => {
-            const sel = integerBrackets[svc.slug];
-            const bracket = brackets.find((b) => b.service_slug === svc.slug && b.ordinal === sel);
-            const price = bracket && tier ? bracketPrice(bracket, tier.slug) : 0;
-            return (
-              <li key={svc.slug} className="flex items-center justify-between text-sm">
-                <span>
-                  {svc.name}
-                  {bracket?.label ? (
-                    <span className="text-muted-foreground"> · {bracket.label}</span>
-                  ) : null}
-                </span>
-                <span className="font-mono text-sm">{formatZAR(price)}</span>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="border-t border-primary/20 pt-3 space-y-1.5 text-sm">
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span>Subtotal</span>
-            <span className="font-mono">{formatZAR(monthlyZAR)}</span>
-          </div>
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span>VAT (15%)</span>
-            <span className="font-mono">{formatZAR(vatZAR)}</span>
-          </div>
-          <div className="flex items-baseline justify-between pt-2 border-t border-primary/15">
-            <span className="font-semibold">Total monthly charge</span>
-            <span className="font-mono font-bold text-lg">
-              <AnimatedPrice amount={totalChargeZAR} />
-            </span>
-          </div>
-          {tier && (
-            <p className="text-[11px] text-muted-foreground pt-1">
-              {tier.name} tier · billed monthly in arrears · cancel any time with 30 days notice
-            </p>
-          )}
+      <div className="grid lg:grid-cols-12 gap-12">
+        {/* Left: Form */}
+        <div className="lg:col-span-7 space-y-10">
+          <section className="space-y-6">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Account Holder</div>
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="fullName" className="text-xs font-bold text-white/60">Full Name</Label>
+                <Input
+                  id="fullName"
+                  className="bg-white/5 border-white/5 focus:border-emerald-500/50 text-white h-12"
+                  {...register('fullName')}
+                />
+                {errors.fullName && <p className="text-[10px] text-red-400 font-bold uppercase tracking-wider">{errors.fullName.message}</p>}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-xs font-bold text-white/60">Email Address</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  className="bg-white/5 border-white/5 focus:border-emerald-500/50 text-white h-12"
+                  {...register('email')}
+                />
+                {errors.email && <p className="text-[10px] text-red-400 font-bold uppercase tracking-wider">{errors.email.message}</p>}
+              </div>
+            </div>
+          </section>
+
+          <section className="space-y-6">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Business Details</div>
+            <div className="space-y-2">
+              <Label htmlFor="legalName" className="text-xs font-bold text-white/60">Registered Name</Label>
+              <Input
+                id="legalName"
+                placeholder="e.g. Acme Solutions (Pty) Ltd"
+                className="bg-white/5 border-white/5 focus:border-emerald-500/50 text-white h-12"
+                {...register('business.legalName')}
+              />
+              {errors.business?.legalName && <p className="text-[10px] text-red-400 font-bold uppercase tracking-wider">{errors.business.legalName.message}</p>}
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="cipcNumber" className="text-xs font-bold text-white/60">CIPC Number (Optional)</Label>
+                <Input id="cipcNumber" placeholder="2020/123456/07" className="bg-white/5 border-white/5 focus:border-emerald-500/50 text-white h-12" {...register('business.cipcNumber')} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="vatNumber" className="text-xs font-bold text-white/60">VAT Number (Optional)</Label>
+                <Input id="vatNumber" placeholder="4xxxxxxxxx" className="bg-white/5 border-white/5 focus:border-emerald-500/50 text-white h-12" {...register('business.vatNumber')} />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <Label className="text-xs font-bold text-white/60">Industry Sector</Label>
+              <div className="flex flex-wrap gap-2">
+                {SECTORS.map((s) => {
+                  const isSelected = selectedSector === s;
+                  return (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setValue('business.sector', s, { shouldValidate: true })}
+                      className={cn(
+                        "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all",
+                        isSelected 
+                          ? "bg-emerald-500 text-[#060a14]" 
+                          : "bg-white/5 border border-white/5 text-white/40 hover:border-white/20"
+                      )}
+                    >
+                      {s}
+                    </button>
+                  );
+                })}
+              </div>
+              {errors.business?.sector && <p className="text-[10px] text-red-400 font-bold uppercase tracking-wider">{errors.business.sector.message}</p>}
+            </div>
+          </section>
+        </div>
+
+        {/* Right: Summary */}
+        <div className="lg:col-span-5">
+           <div className="sticky top-24 p-8 rounded-[40px] bg-white/5 border border-white/10 backdrop-blur-3xl">
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20 mb-6">Subscription Summary</div>
+              
+              <div className="space-y-6 mb-8">
+                 {activeServices.map((svc) => {
+                    const sel = integerBrackets[svc.slug];
+                    const bracket = brackets.find((b) => b.service_slug === svc.slug && b.ordinal === sel);
+                    const price = bracket && tier ? bracketPrice(bracket, tier.slug) : 0;
+                    return (
+                      <div key={svc.slug} className="flex justify-between items-start">
+                        <div>
+                          <div className="text-xs font-bold text-white mb-1">{svc.name}</div>
+                          <div className="text-[10px] text-white/30 uppercase tracking-widest">{bracket?.label}</div>
+                        </div>
+                        <div className="text-xs font-bold text-white/60 font-mono">{formatZAR(price)}</div>
+                      </div>
+                    );
+                 })}
+              </div>
+
+              <div className="space-y-3 pt-6 border-t border-white/5">
+                 <div className="flex justify-between text-xs font-bold text-white/20 uppercase tracking-widest">
+                    <span>Base Monthly</span>
+                    <span className="font-mono">{formatZAR(monthlyZAR)}</span>
+                 </div>
+                 <div className="flex justify-between text-xs font-bold text-white/20 uppercase tracking-widest">
+                    <span>VAT (15%)</span>
+                    <span className="font-mono">{formatZAR(vatZAR)}</span>
+                 </div>
+                 <div className="flex justify-between items-baseline pt-4 border-t border-white/10">
+                    <span className="text-sm font-bold text-white uppercase tracking-[0.2em]">Total</span>
+                    <div className="text-2xl font-bold text-emerald-400 font-mono">
+                      <AnimatedPrice amount={totalChargeZAR} />
+                    </div>
+                 </div>
+              </div>
+
+              <div className="mt-10 space-y-4">
+                 <div className="flex items-center gap-3 text-[10px] font-bold text-white/20 uppercase tracking-widest">
+                    <Shield className="w-4 h-4 text-emerald-500/40" />
+                    Secure Checkout by Paystack
+                 </div>
+                 <div className="flex items-center gap-3 text-[10px] font-bold text-white/20 uppercase tracking-widest">
+                    <Sparkles className="w-4 h-4 text-emerald-500/40" />
+                    Month-to-Month Flexibility
+                 </div>
+              </div>
+           </div>
         </div>
       </div>
 
-      {/* Account */}
-      <fieldset className="space-y-4">
-        <legend className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-          Account
-        </legend>
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="fullName" className="mb-1.5 block text-sm">Full name</Label>
-            <Input
-              id="fullName"
-              type="text"
-              autoComplete="name"
-              aria-invalid={errors.fullName ? 'true' : undefined}
-              {...register('fullName')}
-            />
-            {errors.fullName && (
-              <p className="mt-1 text-xs text-destructive">{errors.fullName.message}</p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="email" className="mb-1.5 block text-sm">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              autoComplete="email"
-              aria-invalid={errors.email ? 'true' : undefined}
-              {...register('email')}
-            />
-            {errors.email && (
-              <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
-            )}
-          </div>
+      <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-6 pt-12 border-t border-white/5">
+        <MagneticButton>
+          <button 
+            type="button"
+            onClick={onBack}
+            className="text-white/40 font-bold text-sm hover:text-white transition-colors"
+          >
+            ← Back to package
+          </button>
+        </MagneticButton>
+
+        <div className="flex flex-col items-end gap-6">
+           <ConsentCheckbox
+             checked={consentGiven}
+             onCheckedChange={(val) => {
+               setConsentGiven(val);
+               if (val) setConsentError('');
+             }}
+             className="text-white/40 text-[10px] font-bold uppercase tracking-widest"
+           />
+           {consentError && <p className="text-[10px] text-red-400 font-bold uppercase tracking-wider">{consentError}</p>}
+           
+           <MagneticButton>
+             <button 
+               type="submit" 
+               disabled={isSubmitting}
+               className="inline-flex items-center gap-3 px-12 py-5 rounded-2xl bg-emerald-500 text-[#060a14] font-bold text-sm hover:bg-emerald-400 transition-all shadow-[0_20px_40px_rgba(74,222,128,0.3)] disabled:opacity-20"
+             >
+               {isSubmitting ? (
+                 <>
+                   <Loader2 className="h-4 w-4 animate-spin" />
+                   Securing...
+                 </>
+               ) : (
+                 <>
+                   Secure Checkout
+                   <ArrowRight className="w-4 h-4" />
+                 </>
+               )}
+             </button>
+           </MagneticButton>
         </div>
-      </fieldset>
-
-      {/* Business details */}
-      <fieldset className="space-y-4">
-        <legend className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-          Business details
-        </legend>
-
-        <div>
-          <Label htmlFor="legalName" className="mb-1.5 block text-sm">Registered business name</Label>
-          <Input
-            id="legalName"
-            type="text"
-            placeholder="e.g. Cape Town Roastery (Pty) Ltd"
-            aria-invalid={errors.business?.legalName ? 'true' : undefined}
-            {...register('business.legalName')}
-          />
-          {errors.business?.legalName && (
-            <p className="mt-1 text-xs text-destructive">{errors.business.legalName.message}</p>
-          )}
-        </div>
-
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="cipcNumber" className="mb-1.5 block text-sm">
-              CIPC registration number
-              <span className="ml-1.5 text-[10px] font-normal text-muted-foreground">(optional)</span>
-            </Label>
-            <Input
-              id="cipcNumber"
-              type="text"
-              placeholder="2020/123456/07"
-              {...register('business.cipcNumber')}
-            />
-          </div>
-          <div>
-            <Label htmlFor="vatNumber" className="mb-1.5 block text-sm">
-              VAT number
-              <span className="ml-1.5 text-[10px] font-normal text-muted-foreground">(if registered)</span>
-            </Label>
-            <Input
-              id="vatNumber"
-              type="text"
-              inputMode="numeric"
-              placeholder="4xxxxxxxxx"
-              aria-invalid={errors.business?.vatNumber ? 'true' : undefined}
-              {...register('business.vatNumber')}
-            />
-            {errors.business?.vatNumber && (
-              <p className="mt-1 text-xs text-destructive">{errors.business.vatNumber.message}</p>
-            )}
-          </div>
-        </div>
-
-        <div>
-          <Label className="mb-2 block text-sm">Sector</Label>
-          <div className="flex flex-wrap gap-2">
-            {SECTORS.map((s) => {
-              const isSelected = selectedSector === s;
-              return (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => setValue('business.sector', s, { shouldValidate: true })}
-                  className={
-                    'rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ' +
-                    (isSelected
-                      ? 'border-primary bg-primary/15 text-primary'
-                      : 'border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground')
-                  }
-                >
-                  {s}
-                </button>
-              );
-            })}
-          </div>
-          {errors.business?.sector && (
-            <p className="mt-1.5 text-xs text-destructive">{errors.business.sector.message}</p>
-          )}
-        </div>
-      </fieldset>
-
-      {/* Honeypot */}
-      <input
-        type="text"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden
-        className="hidden"
-        {...register('website')}
-      />
-
-      {/* Consent */}
-      <ConsentCheckbox
-        checked={consentGiven}
-        onCheckedChange={(val) => {
-          setConsentGiven(val);
-          if (val) setConsentError('');
-        }}
-        error={consentError}
-      />
-
-      {/* Trust strip */}
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground border-t border-border pt-4">
-        <span className="flex items-center gap-1.5">
-          <Lock className="h-3.5 w-3.5 text-primary" />
-          Card details handled by Paystack on its own secure page
-        </span>
-        <span className="flex items-center gap-1.5">
-          <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-          Cancel any time with 30 days notice
-        </span>
-        <span className="flex items-center gap-1.5">
-          <Sparkles className="h-3.5 w-3.5 text-primary" />
-          Handover call booked right after checkout
-        </span>
       </div>
 
       {serverError && (
-        <p className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md p-3">
+        <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-2xl p-4 text-center font-bold">
           {serverError}
         </p>
       )}
-
-      <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
-        <Button type="button" variant="outline" onClick={onBack} disabled={isSubmitting}>
-          ← Back to package
-        </Button>
-        <Button type="submit" disabled={isSubmitting} className="gap-2">
-          {isSubmitting ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Securing checkout...
-            </>
-          ) : (
-            <>
-              Continue to secure checkout
-              <ArrowRight className="h-4 w-4" />
-            </>
-          )}
-        </Button>
-      </div>
     </form>
   );
 }

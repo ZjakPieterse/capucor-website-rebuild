@@ -2,93 +2,77 @@
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import type { CalculatorStep } from '@/types';
+import { Check } from 'lucide-react';
 
 interface StepIndicatorProps {
   currentStep: CalculatorStep;
 }
 
 const STEPS = [
-  { number: 1, label: 'Select services' },
-  { number: 2, label: 'Your business' },
-  { number: 3, label: 'Choose package' },
-  { number: 4, label: 'Activate' },
+  { number: 1, label: 'Services' },
+  { number: 2, label: 'Business Size' },
+  { number: 3, label: 'Support Level' },
+  { number: 4, label: 'Finalize' },
 ] as const;
 
 export function StepIndicator({ currentStep }: StepIndicatorProps) {
   return (
-    <nav aria-label="Calculator progress" className="mb-8">
-      <ol className="flex items-start gap-0">
+    <nav aria-label="Calculator progress" className="max-w-2xl mx-auto">
+      <div className="relative flex justify-between">
+        {/* Connection Line */}
+        <div className="absolute top-5 left-0 w-full h-px bg-white/10" />
+        
         {STEPS.map((step, i) => {
           const isDone = step.number < currentStep;
           const isActive = step.number === currentStep;
 
           return (
-            <li
-              key={step.number}
-              className={cn('flex items-start', i === STEPS.length - 1 ? '' : 'flex-1')}
-            >
-              <div className="flex flex-col items-center shrink-0">
-                <motion.div
-                  initial={false}
-                  animate={{
-                    borderColor: isDone || isActive ? 'var(--brand-primary)' : 'var(--border)',
-                    backgroundColor: isDone ? 'var(--brand-primary)' : isActive ? 'color-mix(in oklch, var(--brand-primary) 10%, transparent)' : 'transparent',
-                    color: isDone ? 'var(--brand-primary-foreground)' : isActive ? 'var(--brand-primary)' : 'var(--muted-foreground)',
-                    scale: isActive ? 1.15 : 1,
-                  }}
-                  className={cn(
-                    'relative h-8 w-8 rounded-full border-2 flex items-center justify-center text-sm font-semibold transition-all duration-300'
-                  )}
-                  aria-current={isActive ? 'step' : undefined}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="glow"
-                      className="absolute inset-0 rounded-full ring-4 ring-primary/20"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  )}
-                  {isActive && (
-                    <span
-                      aria-hidden
-                      className="absolute inset-0 rounded-full ring-2 ring-primary/30 animate-pulse"
-                    />
-                  )}
-                  <span className="relative z-10">{isDone ? '✓' : step.number}</span>
-                </motion.div>
-                <span
-                  className={cn(
-                    'mt-2 text-[10px] sm:text-xs font-medium text-center max-w-[80px] leading-tight transition-colors duration-300',
-                    isActive ? 'text-foreground' : 'text-muted-foreground'
-                  )}
-                >
-                  {step.label}
-                </span>
-              </div>
-
-              {i < STEPS.length - 1 && (
-                <div className="flex-1 h-[2px] mt-4 mx-2 sm:mx-3 bg-border relative overflow-hidden rounded-full">
-                  <motion.div
-                    className="absolute inset-0 bg-primary origin-left"
-                    initial={false}
-                    animate={{ scaleX: isDone ? 1 : 0 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            <div key={step.number} className="relative z-10 flex flex-col items-center group">
+              {/* Node */}
+              <motion.div
+                initial={false}
+                animate={{
+                  backgroundColor: isDone ? '#4ade80' : isActive ? '#060a14' : '#060a14',
+                  borderColor: isDone ? '#4ade80' : isActive ? '#4ade80' : 'rgba(255,255,255,0.1)',
+                  scale: isActive ? 1.2 : 1,
+                }}
+                className={cn(
+                  "w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500",
+                  isActive && "shadow-[0_0_20px_rgba(74,222,128,0.4)]"
+                )}
+              >
+                {isDone ? (
+                  <Check className="w-5 h-5 text-[#060a14] stroke-[3]" />
+                ) : (
+                  <span className={cn(
+                    "font-mono font-bold text-sm",
+                    isActive ? "text-emerald-400" : "text-white/20"
+                  )}>
+                    {step.number}
+                  </span>
+                )}
+                
+                {isActive && (
+                  <motion.div 
+                    layoutId="nodeGlow"
+                    className="absolute inset-0 rounded-full bg-emerald-400/20 blur-md"
                   />
-                  {isActive && (
-                    <motion.div
-                      className="absolute inset-0 bg-primary/30 origin-left"
-                      animate={{ x: ['-100%', '200%'] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                    />
-                  )}
-                </div>
-              )}
-            </li>
+                )}
+              </motion.div>
+
+              {/* Label */}
+              <div className="mt-4 flex flex-col items-center">
+                 <span className={cn(
+                   "text-[10px] font-bold uppercase tracking-widest transition-colors duration-500",
+                   isActive ? "text-emerald-400" : isDone ? "text-white/60" : "text-white/20"
+                 )}>
+                   {step.label}
+                 </span>
+              </div>
+            </div>
           );
         })}
-      </ol>
+      </div>
     </nav>
   );
 }

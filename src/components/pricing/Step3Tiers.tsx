@@ -1,15 +1,14 @@
 'use client';
 
-import { ArrowRight, Check } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ArrowRight, Check, ArrowLeft, Star } from 'lucide-react';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { TestimonialSpotlight } from './TestimonialSpotlight';
 import { TierComparison } from './TierComparison';
 import { RiskReducerStrip } from './RiskReducerStrip';
 import { cn } from '@/lib/utils';
 import { bracketPrice } from '@/lib/pricing';
-import { useCursorGlow } from '@/hooks/useCursorGlow';
 import { MagneticButton } from '@/components/ui/MagneticButton';
+import { motion, AnimatePresence } from 'motion/react';
 import { TIER_HIGHLIGHTS, TIER_CUMULATIVE_LABELS } from '@/config/tiers';
 import type { TierHighlightItem } from '@/config/tiers';
 import type { Bracket, Service, Tier, BracketValue, Testimonial } from '@/types';
@@ -41,24 +40,24 @@ export function Step3Tiers({
 }: Step3TiersProps) {
   const sortedTiers = [...tiers].sort((a, b) => a.display_order - b.display_order);
   const activeServices = services.filter((s) => selectedServices.has(s.slug));
-  const containerRef = useCursorGlow<HTMLDivElement>();
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-semibold mb-1">Choose the depth of monthly support.</h2>
-        <p className="text-sm text-muted-foreground">
-          Every plan includes your selected services, a dedicated finance team and SARS &amp; CIPC compliance. Higher tiers add more frequent processing, reporting depth and advisory involvement.
+    <div className="space-y-12">
+      <div className="text-center max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold text-white mb-3">Choose your depth of support</h2>
+        <p className="text-white/40 text-sm leading-relaxed">
+          Every plan includes your selected functions and a dedicated finance team. Higher tiers add more frequent processing and strategic advisory.
         </p>
       </div>
 
       <RiskReducerStrip />
 
-      <div ref={containerRef} className="cursor-glow grid sm:grid-cols-3 gap-4 sm:pt-3">
-        {sortedTiers.map((tier) => {
+      <div className="grid sm:grid-cols-3 gap-6">
+        {sortedTiers.map((tier, i) => {
           const isSelected = selectedTier === tier.slug;
+          const isFeatured = i === 1; // Growth is usually middle
 
-          // Compute per-service prices for this tier (enterprise paths removed)
+          // Compute total
           const regularTotal = activeServices.reduce((sum, svc) => {
             const sel = selectedBrackets[svc.slug];
             if (typeof sel !== 'number') return sum;
@@ -74,94 +73,120 @@ export function Step3Tiers({
             ? [{ text: cumulativeLabel, services: [], tooltip: '' }, ...filteredItems]
             : filteredItems;
 
+          const accentColor = isFeatured ? 'var(--brand-emerald)' : 'var(--brand-cyan)';
+
           return (
-            <button
+            <motion.div
               key={tier.slug}
-              type="button"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
               onClick={() => onTierSelect(tier.slug)}
-              aria-pressed={isSelected}
               className={cn(
-                'rounded-xl border-2 p-6 text-left transition-all duration-150 outline-none w-full relative',
-                'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-                isSelected
-                  ? 'border-primary bg-primary/10 backdrop-blur-md shadow-lg shadow-primary/10'
-                  : 'border-border bg-card/40 backdrop-blur-md hover:border-primary/40 hover:bg-muted/20'
+                "group relative p-8 rounded-[40px] border transition-all duration-500 cursor-pointer flex flex-col",
+                isSelected 
+                  ? "bg-white/10 border-white/30 shadow-[0_40px_80px_rgba(0,0,0,0.4)] z-10" 
+                  : "bg-white/5 border-white/5 hover:border-white/10"
               )}
             >
-              <div className="mb-4">
-                <div className="font-semibold text-base">{tier.name}</div>
-                {tier.tagline && (
-                  <div className="text-xs text-muted-foreground mt-0.5">{tier.tagline}</div>
-                )}
-              </div>
+               {isFeatured && (
+                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-emerald-500 text-[#060a14] text-[10px] font-bold uppercase tracking-widest shadow-xl">
+                   Recommended
+                 </div>
+               )}
 
-              {/* Price display */}
-              <div className="mb-4">
-                <AnimatedPrice amount={regularTotal} size="lg" />
-                <div className="text-xs text-muted-foreground mt-0.5">/month</div>
-              </div>
+               <div className="mb-6">
+                 <h3 className="text-xl font-bold text-white mb-1 tracking-tight">{tier.name}</h3>
+                 <p className="text-[10px] font-bold uppercase tracking-widest text-white/30">{tier.tagline}</p>
+               </div>
 
-              {/* Inclusions */}
-              {tierInclusions.length > 0 && (
-                <ul className="space-y-1.5 mb-4">
-                  {tierInclusions.map((item) => (
-                    <li key={item.text} className="flex items-start gap-2 text-xs">
-                      <Check className="h-3.5 w-3.5 shrink-0 mt-0.5 text-primary" />
-                      <span className="text-muted-foreground">{item.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+               <div className="mb-8">
+                 <div className="flex items-baseline gap-2">
+                   <span className="text-3xl font-bold text-white tracking-tighter">
+                     <AnimatedPrice amount={regularTotal} size="lg" />
+                   </span>
+                   <span className="text-xs text-white/20 font-bold uppercase tracking-widest">/mo</span>
+                 </div>
+               </div>
 
-              {isSelected && (
-                <div className="text-xs font-semibold text-primary flex items-center gap-1">
-                  <Check className="h-3.5 w-3.5" /> Selected
-                </div>
-              )}
-            </button>
+               <div className="flex-1 space-y-4 mb-8">
+                 {tierInclusions.map((item) => (
+                   <div key={item.text} className="flex items-start gap-3">
+                     <Check className="w-4 h-4 shrink-0 mt-0.5" style={{ color: isSelected ? accentColor : 'rgba(255,255,255,0.2)' }} />
+                     <span className="text-xs text-white/50 leading-relaxed">{item.text}</span>
+                   </div>
+                 ))}
+               </div>
+
+               {isSelected && (
+                 <motion.div 
+                   initial={{ opacity: 0, scale: 0.9 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-emerald-400"
+                 >
+                    <Check className="w-3 h-3" /> Selected Depth
+                 </motion.div>
+               )}
+            </motion.div>
           );
         })}
       </div>
 
-      <TierComparison
-        tiers={tiers}
-        brackets={brackets}
-        selectedServices={selectedServices}
-        selectedBrackets={selectedBrackets}
-      />
+      <div className="pt-12">
+        <TierComparison
+          tiers={tiers}
+          brackets={brackets}
+          selectedServices={selectedServices}
+          selectedBrackets={selectedBrackets}
+        />
+      </div>
 
-      {selectedTier && (
-        <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <p className="font-semibold text-sm">Your subscription is ready.</p>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              A few details, then a secure Paystack checkout. You can cancel any time with 30 days notice.
-            </p>
-          </div>
-          <MagneticButton>
-            <Button onClick={onActivate} className="shrink-0 gap-2">
-              Activate
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </MagneticButton>
-        </div>
-      )}
+      <AnimatePresence>
+        {selectedTier && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-10 rounded-[40px] bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-3xl flex flex-col md:flex-row items-center justify-between gap-8"
+          >
+            <div className="flex items-center gap-6">
+               <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center border border-emerald-500/40 text-emerald-400">
+                  <Star className="w-7 h-7 fill-emerald-400/20" />
+               </div>
+               <div>
+                  <h3 className="text-xl font-bold text-white mb-1">Configuration Complete</h3>
+                  <p className="text-white/40 text-sm">Your subscription is ready. Secure activation takes 60 seconds.</p>
+               </div>
+            </div>
+            <MagneticButton>
+              <button 
+                onClick={onActivate} 
+                className="inline-flex items-center gap-2 px-10 py-4 rounded-2xl bg-emerald-500 text-[#060a14] font-bold text-sm hover:bg-emerald-400 transition-all shadow-[0_20px_40px_rgba(74,222,128,0.2)]"
+              >
+                Activate Subscription
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </MagneticButton>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {testimonial && (
-        <div className="pt-4">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-3">
-            From a Capucor client
-          </p>
-          <TestimonialSpotlight testimonial={testimonial} />
-        </div>
-      )}
-
-      <div className="flex justify-start pt-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-12 border-t border-white/5">
         <MagneticButton>
-          <Button variant="outline" onClick={onBack}>
-            ← Back
-          </Button>
+          <button 
+            onClick={onBack}
+            className="inline-flex items-center gap-2 text-white/40 font-bold text-sm hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </button>
         </MagneticButton>
+
+        {testimonial && (
+           <div className="max-w-md">
+             <div className="text-[10px] font-bold uppercase tracking-widest text-white/20 mb-3">Client Feedback</div>
+             <TestimonialSpotlight testimonial={testimonial} />
+           </div>
+        )}
       </div>
     </div>
   );

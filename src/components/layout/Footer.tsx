@@ -43,122 +43,107 @@ const company = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-card">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div className="md:col-span-1 space-y-4">
+    <footer className="relative bg-[#060a14] border-t border-white/5 overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-emerald-500/5 blur-[120px] rounded-[100%] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 py-20 lg:py-32 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-24">
+          
+          {/* Brand & Narrative */}
+          <div className="md:col-span-5 space-y-8">
             <Link href="/" className="hover:opacity-80 transition-opacity block">
               <Image
                 src="/brand/logo-dark.png"
                 alt="Capucor Business Solutions"
-                height={28}
-                width={140}
-                className="h-7 w-auto"
+                height={32}
+                width={160}
+                className="h-8 w-auto brightness-0 invert"
                 style={{ width: 'auto' }}
               />
             </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {siteConfig.tagline}
+            <p className="text-lg text-white/40 leading-relaxed max-w-sm">
+              We help ambitious businesses move from reactive scrambling to proactive growth through a professional monthly finance rhythm.
             </p>
-            <div className="flex gap-2">
-              <a
-                href={siteConfig.links.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <IconFacebook className="h-5 w-5" />
-              </a>
-              <a
-                href={siteConfig.links.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <IconInstagram className="h-5 w-5" />
-              </a>
-              <a
-                href={siteConfig.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <IconLinkedIn className="h-5 w-5" />
-              </a>
+            <div className="flex gap-4">
+              <SocialLink href={siteConfig.links.facebook} icon={IconFacebook} />
+              <SocialLink href={siteConfig.links.instagram} icon={IconInstagram} />
+              <SocialLink href={siteConfig.links.linkedin} icon={IconLinkedIn} />
             </div>
           </div>
 
-          {/* Services */}
-          <div className="space-y-3">
-            <p className="text-sm font-medium">Services</p>
-            <ul className="space-y-2">
-              {services.map((item) => (
-                <li key={item.label}>
-                  <Link
-                    href={item.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div className="space-y-3">
-            <p className="text-sm font-medium">Company</p>
-            <ul className="space-y-2">
-              {company.map((item) => (
-                <li key={item.label}>
-                  <Link
-                    href={item.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Credentials */}
-          <div className="space-y-3">
-            <p className="text-sm font-medium">Credentials</p>
-            <div className="flex flex-wrap gap-2">
-              {['Xero Gold Partner', 'SAICA Member'].map((badge) => (
-                <span
-                  key={badge}
-                  className="inline-block rounded-md border border-border px-2.5 py-1 text-xs font-medium text-muted-foreground"
-                >
-                  {badge}
-                </span>
-              ))}
+          {/* Links Grid */}
+          <div className="md:col-span-7 grid grid-cols-2 lg:grid-cols-3 gap-12">
+            <div className="space-y-6">
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Services</p>
+              <ul className="space-y-4">
+                {services.map((item) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className="text-sm font-medium text-white/50 hover:text-white transition-colors">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed pt-2">
-              POPIA compliant. Your data is always yours.
-            </p>
+
+            <div className="space-y-6">
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Company</p>
+              <ul className="space-y-4">
+                {company.map((item) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className="text-sm font-medium text-white/50 hover:text-white transition-colors">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="col-span-2 lg:col-span-1 space-y-6">
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Credentials</p>
+              <div className="flex flex-wrap gap-3">
+                {['Xero Gold Partner', 'SAICA Member'].map((badge) => (
+                  <span
+                    key={badge}
+                    className="inline-block rounded-xl border border-white/5 bg-white/5 px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white/40"
+                  >
+                    {badge}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs text-white/20 leading-relaxed italic">
+                POPIA compliant. Your financial data is encrypted and handled by SAICA registered professionals.
+              </p>
+            </div>
           </div>
         </div>
 
-        <Separator className="my-8" />
-
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+        <div className="mt-20 pt-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6 text-[10px] font-bold uppercase tracking-widest text-white/20">
           <p>
-            &copy; {new Date().getFullYear()} Capucor Business Solutions. All
-            rights reserved.
+            &copy; {new Date().getFullYear()} Capucor Business Solutions.
           </p>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-foreground transition-colors">
+          <div className="flex gap-8">
+            <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
+            <span className="text-white/5 italic lowercase tracking-normal">Built for the next generation of business.</span>
           </div>
         </div>
       </div>
     </footer>
+  );
+}
+
+function SocialLink({ href, icon: Icon }: { href: string; icon: any }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
+    >
+      <Icon className="w-5 h-5" />
+    </a>
   );
 }

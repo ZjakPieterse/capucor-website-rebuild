@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BadgeCheck, Users2, Shield, MessageSquare, ChevronDown, Clock } from 'lucide-react';
+import { BadgeCheck, Users2, Shield, MessageSquare, Clock, ArrowRight, ShieldCheck } from 'lucide-react';
 import { usePricingState } from '@/hooks/usePricingState';
 import { PACKAGE_COMMON_ITEMS } from '@/config/tiers';
 import { siteConfig } from '@/config/site';
@@ -14,6 +14,8 @@ import { Step4Activate } from './Step4Activate';
 import { MobileTotalBar } from './MobileTotalBar';
 import { StickyConfigChip } from './StickyConfigChip';
 import type { PricingData, Testimonial } from '@/types';
+import { MagneticButton } from '@/components/ui/MagneticButton';
+import { cn } from '@/lib/utils';
 
 interface PricingCalculatorProps {
   data: PricingData;
@@ -29,209 +31,6 @@ const TRUST_ITEMS = [
 ];
 
 const INCLUDED_ICONS: React.ElementType[] = [Users2, Shield, MessageSquare];
-
-const FAQ_GROUPS: { label: string; items: { q: string; a: string }[] }[] = [
-  {
-    label: 'Contract & flexibility',
-    items: [
-      {
-        q: 'Do you require a long-term contract?',
-        a: 'No lock-in. Our subscriptions run month-to-month and can be cancelled with 30 days’ written notice.',
-      },
-      {
-        q: 'Can I change my plan after signing up?',
-        a: 'Yes. You can upgrade or downgrade your tier, or add and remove services, at any time. Changes take effect from the start of the next billing month.',
-      },
-      {
-        q: 'What happens if my business grows?',
-        a: 'We adjust your bracket when your business grows. If you move into a higher size range mid-year, we’ll update your subscription at the next billing date. No penalty, no back-billing.',
-      },
-    ],
-  },
-  {
-    label: 'Pricing',
-    items: [
-      {
-        q: 'How is my monthly price calculated?',
-        a: 'Your price is based on the services you select and the size of your business. Each service has its own size brackets: number of employees for payroll, monthly transactions for bookkeeping, turnover for accounting. Pick your bracket in Step 2 and your price calculates immediately.',
-      },
-      {
-        q: 'Are prices inclusive of VAT?',
-        a: 'No. All prices shown on this calculator exclude VAT (15%). VAT is added to your monthly invoice.',
-      },
-      {
-        q: 'What is enterprise pricing?',
-        a: 'Enterprise pricing is for businesses outside our standard brackets: high transaction volumes, multiple entities, or unusual structures. We’ll put together a price that fits what you actually need.',
-      },
-    ],
-  },
-  {
-    label: 'What’s included',
-    items: [
-      {
-        q: 'What is the difference between accounting and bookkeeping?',
-        a: 'Bookkeeping keeps your records current: reconciling transactions, processing invoices, and maintaining your Xero ledger. Accounting uses those records to produce financial statements, file your taxes with SARS, and report on how the business is tracking. Most clients take both.',
-      },
-    ],
-  },
-  {
-    label: 'Getting started',
-    items: [
-      {
-        q: 'How do I get started after choosing a plan?',
-        a: 'Fill in the form at the end of Step 3. We’ll be in touch within one business day to confirm your services, answer any questions, and get you set up.',
-      },
-    ],
-  },
-];
-
-function TrustBar() {
-  return (
-    <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-      {TRUST_ITEMS.map((item) => (
-        <div key={item} className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <BadgeCheck className="h-3.5 w-3.5 text-primary shrink-0" />
-          {item}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function InHouseComparison() {
-  return (
-    <section className="py-12 border-t border-border">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-8">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-            For perspective
-          </p>
-          <h2 className="text-xl font-bold tracking-tight">
-            Why a subscription finance team can make sense before hiring in-house.
-          </h2>
-        </div>
-        <div className="grid sm:grid-cols-3 gap-3">
-          <div className="rounded-xl border border-border bg-card p-5">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-              Bookkeeper on staff
-            </p>
-            <p className="font-mono text-xl font-bold mt-1">R 15&ndash;25k</p>
-            <p className="text-xs text-muted-foreground mt-1 leading-snug">
-              per month plus benefits, software, leave cover
-            </p>
-          </div>
-          <div className="rounded-xl border border-border bg-card p-5">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-              Year-end accountant
-            </p>
-            <p className="font-mono text-xl font-bold mt-1">R 18&ndash;30k</p>
-            <p className="text-xs text-muted-foreground mt-1 leading-snug">
-              once-off for AFS and tax submissions
-            </p>
-          </div>
-          <div className="rounded-xl border-2 border-primary/40 bg-primary/[0.03] p-5">
-            <p className="text-[10px] uppercase tracking-wider text-primary font-semibold">
-              With Capucor
-            </p>
-            <p className="font-mono text-xl font-bold mt-1">From R 1,575</p>
-            <p className="text-xs text-muted-foreground mt-1 leading-snug">
-              per month, both included, Xero included
-            </p>
-          </div>
-        </div>
-        <p className="text-xs text-muted-foreground text-center mt-5 max-w-xl mx-auto leading-relaxed">
-          Hiring in-house can make sense later. Our role is to give you structure, reporting and compliance cover before that fixed overhead is justified.
-        </p>
-        <p className="text-[11px] text-muted-foreground/70 text-center mt-2 max-w-md mx-auto leading-relaxed">
-          Indicative South African market figures. Your actual hire costs vary by experience, sector, and benefits.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function IncludedInEveryPlan() {
-  return (
-    <section className="py-16 border-t border-border">
-      <div className="text-center mb-10">
-        <p className="text-xs font-medium uppercase tracking-widest text-primary mb-2">Every Plan</p>
-        <h2 className="text-2xl font-bold tracking-tight">What&rsquo;s included across all tiers</h2>
-        <p className="text-sm text-muted-foreground mt-2 max-w-xl mx-auto">
-          Every plan includes these three things, regardless of price.
-        </p>
-      </div>
-      <div className="grid sm:grid-cols-3 gap-6">
-        {PACKAGE_COMMON_ITEMS.map((item, i) => {
-          const Icon = INCLUDED_ICONS[i] ?? Shield;
-          return (
-            <div
-              key={item.text}
-              className="rounded-xl border border-border bg-card p-6 flex flex-col gap-3"
-            >
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                <Icon className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm">{item.text}</p>
-                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.tooltip}</p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function FAQSection() {
-  return (
-    <section className="py-16 border-t border-border">
-      <div className="text-center mb-10">
-        <p className="text-xs font-medium uppercase tracking-widest text-primary mb-2">FAQ</p>
-        <h2 className="text-2xl font-bold tracking-tight">Common questions</h2>
-      </div>
-      <div className="max-w-2xl mx-auto space-y-8">
-        {FAQ_GROUPS.map((group) => (
-          <div key={group.label}>
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 px-1">
-              {group.label}
-            </p>
-            <div className="divide-y divide-border rounded-xl border border-border bg-card/40">
-              {group.items.map(({ q, a }) => (
-                <details key={q} className="group p-4">
-                  <summary className="flex cursor-pointer items-center justify-between gap-4 list-none text-sm font-medium select-none">
-                    {q}
-                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
-                  </summary>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function BottomCTA() {
-  return (
-    <section className="py-16 border-t border-border text-center">
-      <p className="text-lg font-semibold mb-1">Not ready to commit?</p>
-      <p className="text-sm text-muted-foreground mb-6">
-        Book a 15-minute fit call and we&rsquo;ll walk you through which services fit your business.
-      </p>
-      <a
-        href={siteConfig.links.booking}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-2.5 text-sm font-medium hover:border-primary/60 hover:bg-muted/40 transition-colors"
-      >
-        Book a 15-minute fit call →
-      </a>
-    </section>
-  );
-}
 
 function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorProps) {
   const { services, brackets, tiers } = data;
@@ -253,168 +52,177 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 pb-24 lg:pb-0">
-      {/* Hero */}
-      <section className="relative pt-10 sm:pt-14 pb-8 text-center overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none"
-        >
+    <div className="bg-[#060a14] min-h-screen">
+      {/* Cinematic Hero */}
+      <section className="relative pt-20 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">
+        {/* Background Gradients */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-emerald-500/5 to-transparent" />
           <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 h-[400px] w-[500px] rounded-full bg-primary/8 blur-[100px]"
-            animate={{ scale: [1, 1.1, 1], opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute top-1/4 right-[10%] h-[250px] w-[250px] rounded-full blur-[80px]"
-            style={{ background: 'color-mix(in oklch, var(--brand-cyan) 12%, transparent)' }}
-            animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.8, 0.5] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            animate={{ opacity: [0.1, 0.2, 0.1] }}
+            transition={{ duration: 5, repeat: Infinity }}
+            className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-cyan-500/10 blur-[120px] rounded-full" 
           />
         </div>
 
-        <motion.div
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 mb-5"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Clock className="h-3 w-3 text-primary" />
-          <span className="text-xs font-medium text-foreground">
-            About 2 minutes to a final price
-          </span>
-        </motion.div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-8"
+          >
+            <Clock className="w-3 h-3" />
+            2-Minute Configuration
+          </motion.div>
 
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 max-w-2xl mx-auto flex flex-wrap justify-center gap-x-[0.25em]">
-          {"Know your monthly finance cost before you sign anything.".split(' ').map((word, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 + i * 0.05, ease: 'easeOut' }}
-            >
-              {word}
-            </motion.span>
-          ))}
-        </h1>
-
-        <motion.p
-          className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-        >
-          Pick your services, choose your business size and select the level of support you need. The calculator shows your monthly subscription immediately, before any sales conversation.
-        </motion.p>
+          <h1 className="text-4xl lg:text-7xl font-bold text-white mb-8 tracking-tighter leading-[1.1] max-w-4xl mx-auto">
+            Build your <span className="text-white/40 italic">exact</span> finance subscription.
+          </h1>
+          
+          <p className="text-lg lg:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed">
+            Pick your services, business size, and support level. The configuration engine shows your transparent monthly fee immediately.
+          </p>
+        </div>
       </section>
 
-      {/* Calculator */}
-      <div
-        id="pricing-summary"
-        className="max-w-4xl mx-auto py-8 border-t border-border"
-      >
-        <StepIndicator currentStep={state.step} />
+      {/* Main Configuration Hub */}
+      <div className="max-w-7xl mx-auto px-6 pb-40">
+        <div className="relative glass-panel rounded-[48px] p-8 lg:p-12 border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.4)]">
+          <div id="pricing-summary">
+            <StepIndicator currentStep={state.step} />
 
-        <div className="relative min-h-[500px]">
-          <AnimatePresence mode="wait">
-            {state.step === 1 && (
-              <motion.div
-                key="step1"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Step1Services
-                  services={services}
-                  selected={state.selectedServices}
-                  onToggle={toggleService}
-                  onNext={() => {
-                    if (canProceedStep1) setStep(2);
-                  }}
-                />
-              </motion.div>
-            )}
+            <div className="mt-12 min-h-[500px]">
+              <AnimatePresence mode="wait">
+                {state.step === 1 && (
+                  <motion.div
+                    key="step1"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Step1Services
+                      services={services}
+                      selected={state.selectedServices}
+                      onToggle={toggleService}
+                      onNext={() => { if (canProceedStep1) setStep(2); }}
+                    />
+                  </motion.div>
+                )}
 
-            {state.step === 2 && (
-              <motion.div
-                key="step2"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Step2Brackets
-                  services={services}
-                  brackets={brackets}
-                  selectedServices={state.selectedServices}
-                  selectedBrackets={state.selectedBrackets}
-                  onBracketChange={setBracket}
-                  onBack={() => setStep(1)}
-                  onNext={() => {
-                    if (canProceedStep2) setStep(3);
-                  }}
-                  canProceed={canProceedStep2}
-                />
-              </motion.div>
-            )}
+                {state.step === 2 && (
+                  <motion.div
+                    key="step2"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Step2Brackets
+                      services={services}
+                      brackets={brackets}
+                      selectedServices={state.selectedServices}
+                      selectedBrackets={state.selectedBrackets}
+                      onBracketChange={setBracket}
+                      onBack={() => setStep(1)}
+                      onNext={() => { if (canProceedStep2) setStep(3); }}
+                      canProceed={canProceedStep2}
+                    />
+                  </motion.div>
+                )}
 
-            {state.step === 3 && (
-              <motion.div
-                key="step3"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Step3Tiers
-                  services={services}
-                  brackets={brackets}
-                  tiers={tiers}
-                  selectedServices={state.selectedServices}
-                  selectedBrackets={state.selectedBrackets}
-                  selectedTier={state.selectedTier}
-                  onTierSelect={setTier}
-                  onBack={() => setStep(2)}
-                  onActivate={advanceToActivate}
-                  testimonial={spotlightTestimonial}
-                />
-              </motion.div>
-            )}
+                {state.step === 3 && (
+                  <motion.div
+                    key="step3"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Step3Tiers
+                      services={services}
+                      brackets={brackets}
+                      tiers={tiers}
+                      selectedServices={state.selectedServices}
+                      selectedBrackets={state.selectedBrackets}
+                      selectedTier={state.selectedTier}
+                      onTierSelect={setTier}
+                      onBack={() => setStep(2)}
+                      onActivate={advanceToActivate}
+                      testimonial={spotlightTestimonial}
+                    />
+                  </motion.div>
+                )}
 
-            {state.step === 4 && (
-              <motion.div
-                key="step4"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Step4Activate
-                  services={services}
-                  brackets={brackets}
-                  tiers={tiers}
-                  selectedServices={state.selectedServices}
-                  selectedBrackets={state.selectedBrackets}
-                  selectedTier={state.selectedTier}
-                  onBack={() => setStep(3)}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+                {state.step === 4 && (
+                  <motion.div
+                    key="step4"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Step4Activate
+                      services={services}
+                      brackets={brackets}
+                      tiers={tiers}
+                      selectedServices={state.selectedServices}
+                      selectedBrackets={state.selectedBrackets}
+                      selectedTier={state.selectedTier}
+                      onBack={() => setStep(3)}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+
+        {/* Global Inclusions & Comparison */}
+        <div className="mt-24 grid lg:grid-cols-2 gap-12">
+           <div className="p-10 rounded-[40px] bg-white/5 border border-white/10 backdrop-blur-3xl">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Always Included</h3>
+              </div>
+              <div className="grid gap-6">
+                 {PACKAGE_COMMON_ITEMS.map((item, i) => (
+                    <div key={i} className="flex gap-4">
+                       <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                       <div>
+                          <div className="text-white font-bold text-sm mb-1">{item.text}</div>
+                          <div className="text-white/40 text-xs leading-relaxed">{item.tooltip}</div>
+                       </div>
+                    </div>
+                 ))}
+              </div>
+           </div>
+
+           <div className="p-10 rounded-[40px] bg-white/5 border border-white/10 backdrop-blur-3xl">
+              <h3 className="text-2xl font-bold text-white mb-2">Cost Perspective</h3>
+              <p className="text-white/40 text-sm mb-8 leading-relaxed">
+                Why a subscription finance team makes sense before hiring in-house.
+              </p>
+              <div className="space-y-4">
+                 <PriceCompareRow label="In-house Bookkeeper" price="R 15,000+" sub="per month + benefits" />
+                 <PriceCompareRow label="Year-end Accountant" price="R 20,000+" sub="once-off submission" />
+                 <PriceCompareRow label="Capucor Solution" price="From R 1,575" sub="monthly / all-inclusive" highlighted />
+              </div>
+           </div>
+        </div>
+
+        {/* Trust Signals Footer */}
+        <div className="mt-24 pt-12 border-t border-white/5 flex flex-wrap justify-center gap-8 text-[10px] font-bold uppercase tracking-widest text-white/20">
+           {TRUST_ITEMS.map(item => (
+             <div key={item} className="flex items-center gap-2">
+               <BadgeCheck className="w-4 h-4 text-emerald-500/40" />
+               {item}
+             </div>
+           ))}
         </div>
       </div>
-
-      {/* Trust signals near commitment, not in the warm-up */}
-      <section className="py-8 border-t border-border">
-        <TrustBar />
-      </section>
-
-      {/* Post-calculator sections */}
-      <InHouseComparison />
-      <IncludedInEveryPlan />
-      <FAQSection />
-      <BottomCTA />
 
       <MobileTotalBar
         selectedServices={state.selectedServices}
@@ -440,21 +248,27 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
   );
 }
 
-// Wrap in Suspense for useSearchParams
+function PriceCompareRow({ label, price, sub, highlighted = false }: { label: string; price: string; sub: string; highlighted?: boolean }) {
+  return (
+    <div className={cn(
+      "flex items-center justify-between p-5 rounded-2xl border transition-all",
+      highlighted ? "bg-emerald-500/10 border-emerald-500/30" : "bg-white/5 border-white/5"
+    )}>
+      <div>
+        <div className={cn("text-xs font-bold uppercase tracking-widest mb-1", highlighted ? "text-emerald-400" : "text-white/40")}>{label}</div>
+        <div className="text-[10px] text-white/20">{sub}</div>
+      </div>
+      <div className={cn("text-xl font-bold font-mono", highlighted ? "text-white" : "text-white/40")}>{price}</div>
+    </div>
+  );
+}
+
 export function PricingCalculator({ data, testimonials }: PricingCalculatorProps) {
   return (
     <Suspense
       fallback={
-        <div className="max-w-4xl mx-auto px-6 py-16">
-          <div className="h-8 w-64 rounded-md bg-muted animate-pulse mb-8 mx-auto" />
-          <div className="space-y-4">
-            <div className="h-4 w-40 rounded bg-muted animate-pulse" />
-            <div className="grid sm:grid-cols-3 gap-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-36 rounded-xl bg-muted animate-pulse" />
-              ))}
-            </div>
-          </div>
+        <div className="min-h-screen bg-[#060a14] flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full border-4 border-emerald-500/20 border-t-emerald-500 animate-spin" />
         </div>
       }
     >
