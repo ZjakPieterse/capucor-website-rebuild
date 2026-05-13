@@ -16,7 +16,7 @@ const CREDENTIALS = [
 
 export function SocialProofStrip() {
   return (
-    <section className="border-y border-border bg-muted/40 py-10">
+    <section className="border-y border-white/8 bg-white/[0.025] py-12 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
@@ -39,7 +39,7 @@ export function SocialProofStrip() {
               {CREDENTIALS.map((c) => (
                 <div
                   key={c.name}
-                  className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-6 py-3"
+                  className="inline-flex items-center gap-3 rounded-full border border-white/8 bg-white/[0.035] px-6 py-3 backdrop-blur-md"
                 >
                   <span className="text-lg font-semibold">{c.name}</span>
                   <span className="text-base text-muted-foreground">{c.label}</span>

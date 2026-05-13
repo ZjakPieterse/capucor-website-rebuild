@@ -11,10 +11,10 @@ import { faqs } from '@/config/faq';
 
 export function FaqAccordion() {
   return (
-    <section id="faq" className="py-24 lg:py-32">
+    <section id="faq" className="premium-section py-28 lg:py-40">
       <div className="max-w-3xl mx-auto px-6">
         <ScrollReveal>
-          <h2 className="text-3xl font-semibold tracking-tight md:text-4xl text-center">
+          <h2 className="text-center text-4xl font-extralight tracking-[-0.055em] md:text-5xl">
             FAQ
           </h2>
         </ScrollReveal>

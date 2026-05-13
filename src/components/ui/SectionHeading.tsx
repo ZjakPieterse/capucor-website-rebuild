@@ -18,19 +18,19 @@ export function SectionHeading({
   return (
     <div
       className={cn(
-        'space-y-3',
+        'space-y-4',
         align === 'center' && 'text-center',
         className
       )}
     >
       {eyebrow && (
-        <p className="text-sm font-medium uppercase tracking-widest text-primary">
+        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-primary">
           {eyebrow}
         </p>
       )}
-      <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">{title}</h2>
+      <h2 className="text-4xl font-extralight leading-[1.02] tracking-[-0.055em] md:text-5xl">{title}</h2>
       {subtitle && (
-        <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
+        <p className="mx-auto max-w-2xl text-lg font-light leading-relaxed text-muted-foreground">
           {subtitle}
         </p>
       )}
