@@ -55,18 +55,18 @@ const VAT_STATUS_STYLES: Record<VatStatus, { bg: string; color: string }> = {
   red:   { bg: 'rgba(239,68,68,.15)',   color: '#ef4444' },
 };
 
-// ── Chaos items (More realistic mini-docs) ──────────────────────────────────────
+// ── Chaos items (Hyper-realistic mini-docs) ──────────────────────────────────────
 const CHAOS_ITEMS = [
-  { id: 1, type: 'invoice',  label: 'INV-2024-001', detail: 'R 45,210.00', status: 'OVERDUE',  color: '#ef4444', icon: FileText,        x: '10%', y: '15%', rot: -15, float: 'chaos-float-a' },
-  { id: 2, type: 'receipt',  label: 'Lunch Expense', detail: 'Missing Tax',   status: 'FLAGGED',  color: '#f59e0b', icon: Receipt,         x: '65%', y: '10%', rot: 12,  float: 'chaos-float-b' },
-  { id: 3, type: 'sheet',    label: 'Payroll_Draft', detail: 'Formula Err',   status: 'CONFLICT', color: '#ef4444', icon: FileSpreadsheet, x: '82%', y: '40%', rot: -8,  float: 'chaos-float-c' },
-  { id: 4, type: 'alert',    label: 'SARS Notice',   detail: 'Action Req',    status: 'URGENT',   color: '#ef4444', icon: FileWarning,     x: '15%', y: '75%', rot: 10,  float: 'chaos-float-d' },
-  { id: 5, type: 'receipt',  label: 'Uber Trip',     detail: 'Uncategorized', status: 'MISSING',  color: '#71717a', icon: Receipt,         x: '45%', y: '60%', rot: -20, float: 'chaos-float-a' },
-  { id: 6, type: 'invoice',  label: 'Supplier X',    detail: 'Duplicate',     status: 'REVIEW',   color: '#f59e0b', icon: FileText,        x: '75%', y: '80%', rot: 5,   float: 'chaos-float-b' },
-  { id: 7, type: 'sheet',    label: 'Bank_Rec_Final',detail: 'Out of Bal',    status: 'ERROR',    color: '#ef4444', icon: FileSpreadsheet, x: '5%',  y: '45%', rot: 18,  float: 'chaos-float-c' },
-  { id: 8, type: 'alert',    label: 'Bank Sync',     detail: 'Conn Lost',     status: 'DISCONN',  color: '#ef4444', icon: Calculator,      x: '35%', y: '5%',  rot: -5,  float: 'chaos-float-d' },
-  { id: 9, type: 'receipt',  label: 'Hardware Store',detail: 'R 1,250.00',    status: 'UNPAID',   color: '#f59e0b', icon: Receipt,         x: '85%', y: '12%', rot: 25,  float: 'chaos-float-a' },
-  { id: 10,type: 'invoice',  label: 'Rent April',    detail: 'Pending',       status: 'WAITING',  color: '#71717a', icon: FileText,        x: '55%', y: '85%', rot: -12, float: 'chaos-float-b' },
+  { id: 1, type: 'invoice',  label: 'Invoice #8402', detail: 'R 45,210.00', status: 'OVERDUE',  color: '#ef4444', icon: FileText,        x: '8%',  y: '12%', rot: -12, float: 'chaos-float-a' },
+  { id: 2, type: 'receipt',  label: 'Uber Receipt',  detail: 'VAT missing',   status: 'FLAGGED',  color: '#f59e0b', icon: Receipt,         x: '62%', y: '8%',  rot: 10,  float: 'chaos-float-b' },
+  { id: 3, type: 'sheet',    label: 'Payroll_Draft', detail: 'Formula error', status: 'CONFLICT', color: '#ef4444', icon: FileSpreadsheet, x: '85%', y: '38%', rot: -6,  float: 'chaos-float-c' },
+  { id: 4, type: 'alert',    label: 'SARS Notice',   detail: 'Immediate req', status: 'URGENT',   color: '#ef4444', icon: FileWarning,     x: '12%', y: '72%', rot: 8,   float: 'chaos-float-d' },
+  { id: 5, type: 'receipt',  label: 'Lunch_Exp',     detail: 'Unallocated',   status: 'MISSING',  color: '#71717a', icon: Receipt,         x: '42%', y: '58%', rot: -18, float: 'chaos-float-a' },
+  { id: 6, type: 'invoice',  label: 'Statement_X',   detail: 'R 12,400.00',   status: 'REVIEW',   color: '#f59e0b', icon: FileText,        x: '72%', y: '78%', rot: 4,   float: 'chaos-float-b' },
+  { id: 7, type: 'sheet',    label: 'Bank_Rec_v2',   detail: 'Unbalanced',    status: 'ERROR',    color: '#ef4444', icon: FileSpreadsheet, x: '3%',  y: '42%', rot: 15,  float: 'chaos-float-c' },
+  { id: 8, type: 'alert',    label: 'Bank_Feed',     detail: 'Auth failure',  status: 'DISCONN',  color: '#ef4444', icon: Calculator,      x: '32%', y: '3%',  rot: -4,  float: 'chaos-float-d' },
+  { id: 9, type: 'receipt',  label: 'Hardware_Exp',  detail: 'R 1,250.00',    status: 'UNPAID',   color: '#f59e0b', icon: Receipt,         x: '88%', y: '10%', rot: 22,  float: 'chaos-float-a' },
+  { id: 10,type: 'invoice',  label: 'Rent April',    detail: 'Outstanding',   status: 'WAITING',  color: '#71717a', icon: FileText,        x: '52%', y: '82%', rot: -10, float: 'chaos-float-b' },
 ];
 
 // ── Finance Command Centre ────────────────────────────────────────────────────────
@@ -74,87 +74,10 @@ const CHAOS_ITEMS = [
 function FinanceCommandCentre() {
   const dates    = computeDashboardDates();
   const vatStyle = VAT_STATUS_STYLES[dates.vatStatus];
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 20%',
-        end: '+=100%',
-        pin: true,
-        scrub: 1,
-        anticipatePin: 1,
-      },
-    });
-
-    // 1. CHAOS PHASE (already active at start)
-
-    // 2. SORTING PHASE - Items move to a grid and align
-    tl.to('.chaos-item', {
-      x: (i) => `${(i % 5) * 20 + 10}%`,
-      y: (i) => `${Math.floor(i / 5) * 35 + 25}%`,
-      rotation: 0,
-      scale: 0.95,
-      duration: 1,
-      ease: 'power2.inOut',
-    }, 0.2);
-
-    // 3. CONVERSION PHASE - Items disappear as dashboard appears
-    tl.to('.chaos-item', {
-      opacity: 0,
-      scale: 0.5,
-      y: (i) => Math.floor(i / 5) * 35 + 50, // drop down
-      duration: 0.8,
-      stagger: {
-        each: 0.05,
-        from: 'center'
-      },
-      ease: 'back.in(2)',
-    }, 1.2);
-
-    // Glowing core flares then collapses
-    tl.to('.chaos-core', {
-      scale: 3,
-      opacity: 0,
-      duration: 1,
-      ease: 'power2.out',
-    }, 1.2);
-
-    // Tiles pop in
-    tl.fromTo('.fcc-tile',
-      { opacity: 0, scale: 0.8, y: 30, filter: 'blur(10px)' },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        duration: 1.2,
-        stagger: 0.1,
-        ease: 'expo.out',
-        onComplete: () => {
-          gsap.set('.fcc-tile', { className: 'fcc-tile rounded-xl border border-border bg-background/40 p-3.5 fcc-breathe' });
-        },
-      },
-      1.4,
-    );
-
-    // Header fades in
-    tl.fromTo('.fcc-header',
-      { opacity: 0, y: -20 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
-      1.4,
-    );
-
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, { scope: containerRef });
 
   return (
     <div
-      ref={containerRef}
-      className="fcc-container relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden min-h-[370px]"
+      className="fcc-container relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden min-h-[420px] transition-all duration-500"
     >
       {/* ── Chaos State Overlay ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
@@ -358,8 +281,89 @@ function FinanceCommandCentre() {
 
 // ── Hero Section ──────────────────────────────────────────────────────────────────
 export function HeroSection() {
-  const sectionRef = useCursorGlow<HTMLElement>();
+  const sectionRef = useRef<HTMLElement>(null);
   const headline = 'Make your finance function work harder';
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: '+=150%',
+        pin: true,
+        scrub: 1.2,
+        anticipatePin: 1,
+      },
+    });
+
+    // 1. Initial Reveal of items
+    tl.from('.chaos-item', {
+      opacity: 0,
+      scale: 0.5,
+      duration: 0.5,
+      stagger: 0.05,
+      ease: 'back.out(1.7)',
+    }, 0);
+
+    // 2. SORTING PHASE - Items move to a grid and align
+    tl.to('.chaos-item', {
+      x: (i) => `${(i % 5) * 20 + 10}%`,
+      y: (i) => `${Math.floor(i / 5) * 35 + 25}%`,
+      rotation: 0,
+      scale: 1,
+      duration: 1.5,
+      ease: 'expo.inOut',
+    }, 0.5);
+
+    // 3. CONVERSION PHASE - Items drop away as dashboard appears
+    tl.to('.chaos-item', {
+      opacity: 0,
+      scale: 0.4,
+      y: '+=100',
+      duration: 1,
+      stagger: 0.04,
+      ease: 'back.in(1.4)',
+    }, 2);
+
+    tl.to('.chaos-core', {
+      scale: 4,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power2.out',
+    }, 2);
+
+    // Dashboard Entrance
+    tl.fromTo('.fcc-tile',
+      { opacity: 0, scale: 0.85, y: 40, filter: 'blur(12px)' },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 1.5,
+        stagger: 0.1,
+        ease: 'expo.out',
+        onComplete: () => {
+          gsap.set('.fcc-tile', { className: 'fcc-tile rounded-xl border border-border bg-background/40 p-3.5 fcc-breathe' });
+        },
+      },
+      2.2,
+    );
+
+    tl.fromTo('.fcc-header',
+      { opacity: 0, y: -25 },
+      { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
+      2.2,
+    );
+
+    // Subtle shift on the copy to acknowledge the transition
+    tl.to('.hero-copy-container', {
+      y: -10,
+      duration: 1,
+      ease: 'power2.inOut',
+    }, 1);
+
+  }, { scope: sectionRef });
 
   return (
     <section
@@ -380,11 +384,11 @@ export function HeroSection() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      <div className="max-w-7xl mx-auto px-6 h-full flex flex-col justify-center">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
           {/* Copy */}
-          <div className="lg:pt-10">
+          <div className="hero-copy-container">
             <motion.p
               className="text-sm font-medium uppercase tracking-widest mb-4"
               style={{ color: 'var(--brand-navy)' }}
@@ -442,14 +446,9 @@ export function HeroSection() {
           </div>
 
           {/* Dashboard */}
-          <motion.div
-            className="relative lg:min-h-[600px] flex items-start"
-            initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.25 }}
-          >
-            <div className="w-full sticky top-32">
-              <FinanceCommandCentre />
-            </div>
-          </motion.div>
+          <div className="relative">
+            <FinanceCommandCentre />
+          </div>
         </div>
       </div>
     </section>
