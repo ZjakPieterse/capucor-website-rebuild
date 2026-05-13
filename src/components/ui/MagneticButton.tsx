@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, ReactNode } from 'react';
+import { useRef, ReactNode } from 'react';
 import { motion, useSpring, useMotionValue } from 'motion/react';
 import { cn } from '@/lib/utils';
 
@@ -12,7 +12,7 @@ export function MagneticButton({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -34,7 +34,7 @@ export function MagneticButton({
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
+
     x.set(0);
     y.set(0);
   };
@@ -43,7 +43,7 @@ export function MagneticButton({
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => {}}
       onMouseLeave={handleMouseLeave}
       style={{ x: springX, y: springY }}
       className={cn("relative inline-flex", className)}

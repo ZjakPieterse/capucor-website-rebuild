@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Lock, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -85,10 +85,10 @@ export function Step4Activate({
   const totalChargeZAR = monthlyZAR + vatZAR;
 
   const {
+    control,
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -100,7 +100,10 @@ export function Step4Activate({
     },
   });
 
-  const selectedSector = watch('business.sector');
+   const selectedSector = useWatch({
+    control,
+    name: 'business.sector',
+  });
 
   async function onSubmit(values: FormValues) {
     if (!consentGiven) {

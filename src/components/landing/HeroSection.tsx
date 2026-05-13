@@ -357,7 +357,15 @@ function FinanceCommandCentre({ skipAnimation }: { skipAnimation: boolean }) {
               height: c.tile.height,
             }}
           >
-            <TileFace id={c.id} dates={dates} refs={{ cashNumRef, debtorNumRef, vatDaysRef, runwayBarRef }} skipAnimation={skipAnimation} />
+            <TileFace
+              id={c.id}
+              dates={dates}
+              cashNumRef={cashNumRef}
+              debtorNumRef={debtorNumRef}
+              vatDaysRef={vatDaysRef}
+              runwayBarRef={runwayBarRef}
+              skipAnimation={skipAnimation}
+            />
             {!skipAnimation && <ChaosFaceTile id={c.id} />}
           </div>
         ))}
@@ -392,14 +400,25 @@ function FinanceCommandCentre({ skipAnimation }: { skipAnimation: boolean }) {
 
 // ── Tile (order) faces ────────────────────────────────────────────────────────────
 
-type TileRefs = {
+type TileFaceProps = {
+  id: TileCarrier['id'];
+  dates: DashboardDates;
   cashNumRef: React.RefObject<HTMLSpanElement | null>;
   debtorNumRef: React.RefObject<HTMLSpanElement | null>;
   vatDaysRef: React.RefObject<HTMLSpanElement | null>;
   runwayBarRef: React.RefObject<HTMLDivElement | null>;
+  skipAnimation: boolean;
 };
 
-function TileFace({ id, dates, refs, skipAnimation }: { id: TileCarrier['id']; dates: DashboardDates; refs: TileRefs; skipAnimation: boolean }) {
+function TileFace({
+  id,
+  dates,
+  cashNumRef,
+  debtorNumRef,
+  vatDaysRef,
+  runwayBarRef,
+  skipAnimation
+}: TileFaceProps) {
   // When animation is skipped, render numbers at their final values
   return (
     <div className="tile-face absolute inset-0 rounded-xl border border-border bg-card/95 p-3 flex flex-col justify-between">
@@ -407,14 +426,14 @@ function TileFace({ id, dates, refs, skipAnimation }: { id: TileCarrier['id']; d
         <>
           <div className="tile-label">Cash Runway</div>
           <div className="flex items-baseline gap-1.5">
-            <span ref={refs.cashNumRef} className="font-mono font-semibold text-2xl leading-none tabular-nums" style={{ color: 'var(--brand-cyan)' }} suppressHydrationWarning>
+            <span ref={cashNumRef} className="font-mono font-semibold text-2xl leading-none tabular-nums" style={{ color: 'var(--brand-cyan)' }} suppressHydrationWarning>
               {skipAnimation ? '4.2' : '0.0'}
             </span>
             <span className="text-xs text-muted-foreground">months</span>
           </div>
           <div className="h-1 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
             <div
-              ref={refs.runwayBarRef}
+              ref={runwayBarRef}
               className="h-full rounded-full"
               style={{
                 width: skipAnimation ? '35%' : '0%',
@@ -433,7 +452,7 @@ function TileFace({ id, dates, refs, skipAnimation }: { id: TileCarrier['id']; d
           <div className="flex items-center gap-1.5">
             <AlertCircle className="h-3 w-3 shrink-0" style={{ color: 'var(--primary)' }} />
             <span className="text-[11px] font-medium" style={{ color: 'var(--primary)' }}>
-              <span ref={refs.vatDaysRef} className="tabular-nums" suppressHydrationWarning>
+              <span ref={vatDaysRef} className="tabular-nums" suppressHydrationWarning>
                 {skipAnimation ? String(dates.vatDays) : '0'}
               </span> days · prepared
             </span>
@@ -446,7 +465,7 @@ function TileFace({ id, dates, refs, skipAnimation }: { id: TileCarrier['id']; d
         <>
           <div className="tile-label">Debtor Days</div>
           <div className="flex items-baseline gap-1.5">
-            <span ref={refs.debtorNumRef} className="font-mono font-semibold text-2xl leading-none tabular-nums">
+            <span ref={debtorNumRef} className="font-mono font-semibold text-2xl leading-none tabular-nums">
               {skipAnimation ? '32' : '0'}
             </span>
             <span className="text-xs text-muted-foreground">days</span>
@@ -569,7 +588,12 @@ export function HeroSection() {
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isMobile = window.matchMedia('(max-width: 639px)').matches;
-    setSkipAnimation(reducedMotion || isMobile);
+    const shouldSkip = reducedMotion || isMobile;
+    
+    // Only update if different from default to avoid cascading render warning
+    if (shouldSkip) {
+      setTimeout(() => setSkipAnimation(true), 0);
+    }
   }, []);
 
   return (

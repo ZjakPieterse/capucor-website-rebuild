@@ -2,7 +2,7 @@
 
 import { useCallback } from 'react';
 import { ChevronUp } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
