@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { geistSans, geistMono } from '@/lib/fonts';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { SmoothScroll } from '@/components/layout/SmoothScroll';
 import { siteConfig } from '@/config/site';
 import './globals.css';
 
@@ -50,7 +49,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground antialiased">
-        <SmoothScroll />
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

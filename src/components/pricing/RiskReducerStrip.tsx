@@ -9,28 +9,25 @@ const ITEMS = [
   },
   {
     icon: ArrowRightLeft,
-    text: 'We migrate your books during onboarding.',
+    text: 'We migrate your books from any platform during onboarding.',
   },
   {
     icon: ShieldCheck,
-    text: 'If SARS queries, we handle it with you.',
+    text: 'If SARS queries something, we handle it with you.',
   },
 ];
 
 export function RiskReducerStrip() {
   return (
-    <div className="grid sm:grid-cols-3 gap-4">
-      {ITEMS.map(({ icon: Icon, text }) => (
-        <div 
-          key={text} 
-          className="flex items-center gap-4 px-6 py-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-3xl"
-        >
-          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-            <Icon className="h-4 w-4 text-emerald-400" />
+    <div className="rounded-xl border border-primary/20 bg-primary/[0.04] px-4 py-3">
+      <div className="grid sm:grid-cols-3 gap-x-6 gap-y-2.5">
+        {ITEMS.map(({ icon: Icon, text }) => (
+          <div key={text} className="flex items-start gap-2.5">
+            <Icon className="h-4 w-4 mt-0.5 shrink-0 text-primary" />
+            <p className="text-xs leading-relaxed text-foreground/85">{text}</p>
           </div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 leading-relaxed">{text}</p>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

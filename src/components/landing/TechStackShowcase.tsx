@@ -1,44 +1,44 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
 const TOOLS = [
   {
     name: 'Xero',
     tagline: 'Real-time ledger',
-    benefit: 'Your business records live in one cloud ledger that is processed and ready for reporting.',
-    accent: '#22d3ee',
+    benefit:
+      'Your business records live in one cloud ledger that is processed, reconciled and ready for reporting.',
   },
   {
     name: 'Dext',
     tagline: 'Document capture',
-    benefit: 'Supplier invoices and receipts are captured and pushed into the workflow automatically.',
-    accent: '#4ade80',
+    benefit:
+      'Supplier invoices and receipts are captured and pushed into the bookkeeping workflow instead of sitting in inboxes.',
   },
   {
     name: 'Syft',
     tagline: 'Management reporting',
-    benefit: 'Dashboards turn the ledger into a clearer view of revenue, expenses, and cash flow.',
-    accent: '#a78bfa',
+    benefit:
+      'Reports and dashboards turn the ledger into a clearer view of revenue, expenses, cash flow and performance.',
   },
   {
     name: 'Karbon',
     tagline: 'Workflow control',
-    benefit: 'Monthly tasks and compliance dates are tracked so work does not rely on memory.',
-    accent: '#fb923c',
+    benefit:
+      'Monthly tasks, compliance dates and client queries are tracked so work does not rely on memory or scattered emails.',
   },
   {
     name: 'SimplePay',
     tagline: 'Payroll processing',
-    benefit: 'Payslips, PAYE calculations, and EMP201 support stay structured and compliant.',
-    accent: '#f472b6',
+    benefit:
+      'Payslips, payroll calculations, EMP201 support and year-end payroll records stay structured and compliant.',
   },
   {
     name: 'Draftworx',
     tagline: 'Financial statements',
-    benefit: 'Annual financial statements are prepared from clean records for banks and stakeholders.',
-    accent: '#7ba8f5',
+    benefit:
+      'Annual financial statements are prepared from clean records and reviewed for SARS, banks and stakeholders.',
   },
 ];
 
@@ -46,87 +46,46 @@ const WORKFLOW_STEPS = ['Capture', 'Reconcile', 'Track', 'Report', 'Pay', 'Final
 
 export function TechStackShowcase() {
   return (
-    <section id="tech-stack" className="relative py-24 lg:py-40 bg-[#060a14] overflow-hidden">
-      {/* Subtle Grid Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" 
-           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="max-w-3xl mb-16 lg:mb-24">
+    <section id="tech-stack" className="py-24 lg:py-32">
+      <div className="max-w-7xl mx-auto px-6">
+        <ScrollReveal>
           <SectionHeading
-            eyebrow="The Engine"
+            eyebrow="Our tech stack"
             title="Modern finance tools, built for your business"
-            subtitle="Software is not the service. The service is how we set it up, monitor it, and use it to keep your business in control."
-            align="left"
+            subtitle="The software is not the service. The service is how we set it up, monitor it and use it every month to keep your records, deadlines, payroll and reports under control."
           />
-        </div>
+        </ScrollReveal>
 
-        {/* Workflow Strip */}
-        <div className="flex flex-wrap items-center justify-start gap-x-6 gap-y-4 mb-20">
-          {WORKFLOW_STEPS.map((step, i) => (
-            <motion.div 
-              key={step}
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="flex items-center gap-4"
-            >
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40">{step}</span>
-              {i < WORKFLOW_STEPS.length - 1 && (
-                <div className="w-8 h-px bg-white/10" />
-              )}
-            </motion.div>
-          ))}
-        </div>
+        <ScrollReveal delay={0.1}>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
+            {WORKFLOW_STEPS.map((step, i) => (
+              <span key={step} className="flex items-center gap-3">
+                <span className="font-medium uppercase tracking-wider">{step}</span>
+                {i < WORKFLOW_STEPS.length - 1 && (
+                  <span className="text-primary/60" aria-hidden>·</span>
+                )}
+              </span>
+            ))}
+          </div>
+        </ScrollReveal>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {TOOLS.map((tool, i) => (
-            <motion.div
-              key={tool.name}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05, duration: 0.5 }}
-              className="group relative p-8 rounded-[32px] bg-[#070c1a]/50 backdrop-blur-2xl border border-white/5 hover:border-white/10 transition-all overflow-hidden"
-            >
-              {/* Subtle accent glow */}
-              <div 
-                className="absolute top-0 right-0 w-24 h-24 blur-[60px] opacity-0 group-hover:opacity-20 transition-opacity duration-500"
-                style={{ backgroundColor: tool.accent }}
-              />
+            <ScrollReveal key={tool.name} delay={i * 0.07}>
+              <div className="rounded-xl border border-border bg-card p-6 h-full transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-lg hover:border-primary/20">
+                {/* Tool name badge */}
+                <div className="mb-4 inline-flex items-center rounded-lg border border-primary/30 bg-primary/8 px-3 py-1.5">
+                  <span className="text-sm font-semibold text-primary">{tool.name}</span>
+                </div>
 
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="text-xl font-bold text-white tracking-tight">{tool.name}</div>
-                  <div 
-                    className="w-2 h-2 rounded-full shadow-[0_0_10px_currentColor]"
-                    style={{ color: tool.accent, backgroundColor: tool.accent }}
-                  />
-                </div>
-                
-                <div 
-                  className="text-[10px] font-bold uppercase tracking-widest mb-2"
-                  style={{ color: tool.accent }}
-                >
+                <p className="text-sm font-semibold uppercase tracking-wider text-foreground mb-2">
                   {tool.tagline}
-                </div>
-                <p className="text-sm text-white/40 leading-relaxed leading-6">
-                  {tool.benefit}
                 </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{tool.benefit}</p>
               </div>
-            </motion.div>
+            </ScrollReveal>
           ))}
         </div>
-
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          className="mt-20 p-8 rounded-[32px] bg-white/5 border border-white/10 text-center"
-        >
-          <p className="text-sm text-white/40 max-w-2xl mx-auto italic">
-            &ldquo;The value isn&apos;t the cloud ledger; it&apos;s the professional hands that keep it clean, the senior eyes that review the numbers, and the advisor who tells you what they mean.&rdquo;
-          </p>
-        </motion.div>
       </div>
     </section>
   );

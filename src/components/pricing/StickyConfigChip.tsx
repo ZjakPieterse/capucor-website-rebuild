@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { ChevronUp } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { monthlyTotal } from '@/lib/pricing';
@@ -56,51 +55,36 @@ export function StickyConfigChip({
     : 0;
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.button
-          layout
-          type="button"
-          onClick={scrollToCalculator}
-          aria-label="Return to calculator"
-          initial={{ opacity: 0, y: 20, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 20, scale: 0.9 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={cn(
-            'hidden lg:inline-flex fixed bottom-10 right-10 z-30 items-center gap-6 rounded-full bg-white/10 backdrop-blur-2xl border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.4)] pl-6 pr-2 py-2 text-left hover:border-emerald-500/30 transition-all group'
-          )}
-        >
-          <div className="flex flex-col leading-tight">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20 mb-1">
-              {tier ? tier.name : 'Subscription'}
-            </span>
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={total > 0 ? 'price' : 'empty'}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-sm font-bold text-white font-mono"
-              >
-                {total > 0 ? (
-                  <>
-                    <AnimatedPrice amount={total} />
-                    <span className="text-[10px] font-bold text-white/20 uppercase tracking-widest ml-2">/mo</span>
-                  </>
-                ) : (
-                  <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
-                    Build Config
-                  </span>
-                )}
-              </motion.span>
-            </AnimatePresence>
-          </div>
-          <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-[#060a14] shadow-[0_10px_20px_rgba(74,222,128,0.2)] group-hover:bg-emerald-400 transition-colors">
-            <ChevronUp className="w-5 h-5 stroke-[3]" />
-          </div>
-        </motion.button>
+    <button
+      type="button"
+      onClick={scrollToCalculator}
+      aria-label="Return to calculator"
+      className={cn(
+        'hidden lg:inline-flex fixed bottom-6 right-6 z-30 items-center gap-3 rounded-full bg-card/95 backdrop-blur border border-border shadow-lg pl-4 pr-2 py-2 text-left',
+        'transition-all duration-300 hover:border-primary/40 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+        visible
+          ? 'opacity-100 translate-y-0 pointer-events-auto'
+          : 'opacity-0 translate-y-3 pointer-events-none'
       )}
-    </AnimatePresence>
+    >
+      <div className="flex flex-col leading-tight">
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+          {tier ? `${tier.name} plan` : `${activeSlugs.length} service${activeSlugs.length === 1 ? '' : 's'}`}
+        </span>
+        {total > 0 ? (
+          <span className="text-sm">
+            <AnimatedPrice amount={total} className="text-sm font-bold" />
+            <span className="text-[10px] font-normal text-muted-foreground ml-1">/mo</span>
+          </span>
+        ) : (
+          <span className="text-xs text-muted-foreground">
+            {tier ? 'Configure' : 'Pick a tier'}
+          </span>
+        )}
+      </div>
+      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+        <ChevronUp className="h-4 w-4" />
+      </span>
+    </button>
   );
 }
