@@ -17,7 +17,6 @@ import { formatZAR, cn } from '@/lib/utils';
 import { bracketPrice, monthlyTotal } from '@/lib/pricing';
 import type { Bracket, BracketValue, Service, Tier } from '@/types';
 import { MagneticButton } from '@/components/ui/MagneticButton';
-import { motion } from 'motion/react';
 
 const VAT_RATE = 0.15;
 

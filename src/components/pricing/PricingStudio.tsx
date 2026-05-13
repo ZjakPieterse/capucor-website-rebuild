@@ -1,21 +1,24 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'motion/react';
-import { 
-  TrendingUp, 
-  Users, 
-  Zap, 
-  CheckCircle2, 
+import {
   ArrowRight,
+  CheckCircle2,
+  Minus,
+  Plus,
   ShieldCheck,
-  Star
+  Sparkles,
+  Star,
+  TrendingUp,
+  Users,
+  WalletCards,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { MagneticButton } from '@/components/ui/MagneticButton';
+import { cn } from '@/lib/utils';
 import { monthlyTotal } from '@/lib/pricing';
-import type { Bracket, Tier, Service } from '@/types';
+import type { Bracket, Service, Tier } from '@/types';
 
 interface PricingStudioProps {
   services: Service[];
@@ -23,200 +26,253 @@ interface PricingStudioProps {
   tiers: Tier[];
 }
 
+const VOLUME_OPTIONS = [
+  { key: 'low', label: 'Low', value: 40, note: '< 50 lines' },
+  { key: 'medium', label: 'Medium', value: 140, note: '50–250 lines' },
+  { key: 'high', label: 'High', value: 320, note: '250+ lines' },
+] as const;
+
+const fallbackTiers: Pick<Tier, 'slug' | 'name' | 'tagline'>[] = [
+  { slug: 'basic', name: 'Basic', tagline: 'Core controls' },
+  { slug: 'pro', name: 'Pro', tagline: 'Operator rhythm' },
+  { slug: 'premium', name: 'Premium', tagline: 'Board-grade' },
+];
+
 export function PricingStudio({ brackets, tiers }: Omit<PricingStudioProps, 'services'>) {
-  const [revenue, setRevenue] = useState(2500000); // 2.5M
-  const [transactions, setTransactions] = useState(75);
+  const displayTiers = tiers.length > 0 ? tiers : fallbackTiers;
+  const [revenue, setRevenue] = useState(2_500_000);
+  const [volume, setVolume] = useState<(typeof VOLUME_OPTIONS)[number]['key']>('medium');
   const [employees, setEmployees] = useState(8);
   const [activeTier, setActiveTier] = useState<string>('pro');
 
-  // Mapping slider values to ordinals
+  const transactionCount = VOLUME_OPTIONS.find((item) => item.key === volume)?.value ?? 140;
+
   const ordinals = useMemo(() => {
-    // Accounting (Revenue)
-    let accOrd = 1;
-    if (revenue >= 20000000) accOrd = 5;
-    else if (revenue >= 10000000) accOrd = 4;
-    else if (revenue >= 5000000) accOrd = 3;
-    else if (revenue >= 1000000) accOrd = 2;
+    let accounting = 1;
+    if (revenue >= 20_000_000) accounting = 5;
+    else if (revenue >= 10_000_000) accounting = 4;
+    else if (revenue >= 5_000_000) accounting = 3;
+    else if (revenue >= 1_000_000) accounting = 2;
 
-    // Bookkeeping (Transactions)
-    let bookOrd = 1;
-    if (transactions > 250) bookOrd = 4;
-    else if (transactions > 100) bookOrd = 3;
-    else if (transactions > 50) bookOrd = 2;
+    let bookkeeping = 1;
+    if (transactionCount > 250) bookkeeping = 4;
+    else if (transactionCount > 100) bookkeeping = 3;
+    else if (transactionCount > 50) bookkeeping = 2;
 
-    // Payroll (Employees)
-    let payOrd = 1;
-    if (employees > 30) payOrd = 4;
-    else if (employees > 15) payOrd = 3;
-    else if (employees > 5) payOrd = 2;
+    let payroll = 1;
+    if (employees > 30) payroll = 4;
+    else if (employees > 15) payroll = 3;
+    else if (employees > 5) payroll = 2;
 
-    return {
-      accounting: accOrd,
-      bookkeeping: bookOrd,
-      payroll: payOrd
-    };
-  }, [revenue, transactions, employees]);
+    return { accounting, bookkeeping, payroll };
+  }, [employees, revenue, transactionCount]);
 
-  const totalPrice = useMemo(() => {
-    return monthlyTotal(
-      ['accounting', 'bookkeeping', 'payroll'],
-      ordinals,
-      activeTier,
-      brackets
-    );
-  }, [ordinals, activeTier, brackets]);
+  const totalPrice = useMemo(
+    () => monthlyTotal(['accounting', 'bookkeeping', 'payroll'], ordinals, activeTier, brackets),
+    [activeTier, brackets, ordinals]
+  );
 
-  const isPriority = revenue >= 10000000;
+  const dedicatedPartner = revenue >= 10_000_000 || employees >= 25 || volume === 'high';
+  const closeVelocity = volume === 'high' ? 'Weekly pulse' : volume === 'medium' ? 'Fortnightly pulse' : 'Monthly pulse';
+  const selectedTierName = displayTiers.find((tier) => tier.slug === activeTier)?.name ?? 'Pro';
 
   return (
-    <section id="pricing" className="relative py-24 lg:py-40 bg-background overflow-hidden">
-      {/* Background radial glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-emerald-500/5 blur-[160px] rounded-full pointer-events-none" />
+    <section id="pricing" className="relative overflow-hidden bg-[#07111f] py-24 lg:py-40">
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.16),transparent_32%),radial-gradient(circle_at_80%_40%,rgba(45,212,191,0.13),transparent_28%),linear-gradient(180deg,#07111f_0%,#0A192F_100%)]" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16 lg:mb-24">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <div className="mb-16 text-center lg:mb-24">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-6"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-200/15 bg-white/[0.04] px-4 py-2 text-[10px] font-black uppercase tracking-[0.28em] text-cyan-100/65 backdrop-blur-xl"
           >
-            <Zap className="w-3 h-3" />
-            Pricing Studio
+            <WalletCards className="h-3.5 w-3.5 text-teal-200" />
+            Interactive Pricing Studio
           </motion.div>
-          <h2 className="text-4xl lg:text-7xl font-heading font-bold tracking-tighter mb-6">
-            Configure your <span className="text-white/20 italic">ideal</span> team.
+          <h2 className="mx-auto max-w-5xl text-5xl font-black leading-[0.9] tracking-[-0.06em] text-white sm:text-7xl lg:text-8xl">
+            Build the finance layer before you book the call.
           </h2>
-          <p className="text-lg lg:text-xl text-white/40 max-w-2xl mx-auto font-thin-heading">
-            No rigid packages. Move the sliders to match your scale. Instant transparency, board-ready results.
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-white/45">
+            Tune revenue, workload, and headcount. Watch the operating model and monthly fee move in real time.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          
-          {/* Controls Area */}
-          <div className="lg:col-span-7 space-y-10">
-            
-            {/* Revenue Slider */}
-            <SliderGroup 
-              label="Annual Revenue" 
-              value={revenue} 
-              onChange={setRevenue} 
-              min={0} 
-              max={30000000} 
-              step={500000}
-              format={(v: number) => `R ${(v / 1000000).toFixed(1)}M`}
-              icon={TrendingUp}
+        <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
+          <div className="glass-tile space-y-9 rounded-[2.5rem] p-6 sm:p-8 lg:col-span-7 lg:p-10">
+            <SliderGroup
+              label="Annual Revenue"
+              value={revenue}
+              onChange={setRevenue}
+              min={0}
+              max={30_000_000}
+              step={250_000}
+              format={(value) => `R ${(value / 1_000_000).toFixed(1)}M`}
               accent="#22d3ee"
             />
 
-            {/* Transactions Slider */}
-            <SliderGroup 
-              label="Monthly Transactions" 
-              value={transactions} 
-              onChange={setTransactions} 
-              min={0} 
-              max={500} 
-              step={10}
-              format={(v: number) => `${v} lines`}
-              icon={ShieldCheck}
-              accent="#4ade80"
-            />
-
-            {/* Employees Slider */}
-            <SliderGroup 
-              label="Employee Count" 
-              value={employees} 
-              onChange={setEmployees} 
-              min={0} 
-              max={50} 
-              step={1}
-              format={(v: number) => `${v} staff`}
-              icon={Users}
-              accent="#6366f1"
-            />
-
-            {/* Tier Selection */}
-            <div className="pt-8">
-              <div className="flex items-center justify-between mb-6">
-                <div className="text-xs font-bold uppercase tracking-widest text-white/30">Service Depth</div>
-                <div className="h-px flex-1 mx-4 bg-white/5" />
+            <div>
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <div>
+                  <div className="text-sm font-black text-white/70">Transaction Volume</div>
+                  <div className="mt-1 text-xs text-white/35">Monthly bookkeeping line items</div>
+                </div>
+                <ShieldCheck className="h-5 w-5 text-teal-200" />
               </div>
-              <div className="grid grid-cols-3 gap-4">
-                {tiers.map((tier) => (
+              <div className="grid gap-3 sm:grid-cols-3">
+                {VOLUME_OPTIONS.map((option) => (
                   <button
-                    key={tier.slug}
-                    onClick={() => setActiveTier(tier.slug)}
+                    key={option.key}
+                    type="button"
+                    onClick={() => setVolume(option.key)}
                     className={cn(
-                      "relative p-4 rounded-2xl border transition-all duration-500 text-left overflow-hidden",
-                      activeTier === tier.slug 
-                        ? "bg-white border-white text-black" 
-                        : "bg-white/5 border-white/5 text-white/40 hover:border-white/20"
+                      'rounded-2xl border p-4 text-left transition-all duration-500',
+                      volume === option.key
+                        ? 'border-cyan-200/70 bg-cyan-200 text-[#06111f] shadow-[0_18px_50px_rgba(34,211,238,0.18)]'
+                        : 'border-white/10 bg-white/[0.03] text-white/45 hover:border-white/20 hover:bg-white/[0.06]'
                     )}
                   >
-                    <div className="text-[10px] font-bold uppercase tracking-widest mb-1 opacity-60">{tier.name}</div>
-                    <div className="text-sm font-bold truncate">{tier.tagline || 'Standard'}</div>
-                    {activeTier === tier.slug && (
-                      <motion.div 
-                        layoutId="activeTier"
-                        className="absolute inset-0 border-2 border-black/10 rounded-2xl"
-                      />
+                    <div className="text-sm font-black">{option.label}</div>
+                    <div className="mt-1 text-xs opacity-70">{option.note}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <div>
+                  <div className="text-sm font-black text-white/70">Employee Count</div>
+                  <div className="mt-1 text-xs text-white/35">Payroll load for the month</div>
+                </div>
+                <Users className="h-5 w-5 text-emerald-200" />
+              </div>
+              <div className="flex items-center justify-between rounded-[2rem] border border-white/10 bg-white/[0.03] p-3">
+                <button
+                  type="button"
+                  onClick={() => setEmployees((value) => Math.max(0, value - 1))}
+                  className="grid h-12 w-12 place-items-center rounded-2xl bg-white/[0.06] text-white/70 transition hover:bg-white/10"
+                  aria-label="Decrease employee count"
+                >
+                  <Minus className="h-4 w-4" />
+                </button>
+                <div className="text-center">
+                  <motion.div
+                    key={employees}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="font-mono text-5xl font-black text-white"
+                  >
+                    {employees}
+                  </motion.div>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-white/30">Staff</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setEmployees((value) => Math.min(80, value + 1))}
+                  className="grid h-12 w-12 place-items-center rounded-2xl bg-white/[0.06] text-white/70 transition hover:bg-white/10"
+                  aria-label="Increase employee count"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <div className="text-xs font-black uppercase tracking-[0.24em] text-white/30">Service Depth</div>
+                <div className="h-px flex-1 bg-white/10" />
+              </div>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {displayTiers.map((tier) => (
+                  <button
+                    key={tier.slug}
+                    type="button"
+                    onClick={() => setActiveTier(tier.slug)}
+                    className={cn(
+                      'relative overflow-hidden rounded-2xl border p-4 text-left transition-all duration-500',
+                      activeTier === tier.slug
+                        ? 'border-white bg-white text-[#06111f]'
+                        : 'border-white/10 bg-white/[0.03] text-white/45 hover:border-white/20 hover:bg-white/[0.06]'
                     )}
+                  >
+                    {activeTier === tier.slug && (
+                      <motion.div layoutId="active-pricing-tier" className="absolute inset-0 rounded-2xl ring-2 ring-cyan-300/40" />
+                    )}
+                    <div className="relative text-[10px] font-black uppercase tracking-widest opacity-60">{tier.name}</div>
+                    <div className="relative mt-1 truncate text-sm font-black">{tier.tagline || 'Operator support'}</div>
                   </button>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Value Summary Card */}
-          <div className="lg:col-span-5 sticky top-24">
-            <motion.div 
-              className="glass-panel p-8 lg:p-10 rounded-[48px] relative overflow-hidden"
-              animate={{
-                borderColor: isPriority ? 'rgba(74, 222, 128, 0.3)' : 'rgba(255, 255, 255, 0.1)'
-              }}
+          <div className="lg:col-span-5 lg:sticky lg:top-24">
+            <motion.div
+              className="glass-tile relative overflow-hidden rounded-[2.5rem] p-6 sm:p-8 lg:p-10"
+              animate={{ borderColor: dedicatedPartner ? 'rgba(45, 212, 191, 0.38)' : 'rgba(255,255,255,0.10)' }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
-              {isPriority && (
-                <div className="absolute top-0 right-0 p-6">
-                  <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500 text-[#020617] text-[10px] font-bold uppercase tracking-widest shadow-xl shadow-emerald-500/20"
-                  >
-                    <Star className="w-3 h-3 fill-current" />
-                    Priority Partner
-                  </motion.div>
+              <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.16),transparent_42%)]" />
+              <div className="relative z-10">
+                <div className="mb-8 flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.24em] text-white/30">Value Summary</p>
+                    <h3 className="mt-3 text-3xl font-black tracking-[-0.05em] text-white">{selectedTierName} operating plan</h3>
+                  </div>
+                  {dedicatedPartner && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.7, y: -12 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      className="flex shrink-0 items-center gap-2 rounded-full bg-teal-200 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-[#06111f] shadow-[0_0_50px_rgba(45,212,191,0.28)]"
+                    >
+                      <Star className="h-3.5 w-3.5 fill-current" />
+                      Dedicated Partner
+                    </motion.div>
+                  )}
                 </div>
-              )}
 
-              <h3 className="text-2xl font-bold mb-8 tracking-tight">Value Summary</h3>
-              
-              <div className="space-y-6 mb-10">
-                <SummaryRow label="Finance Stack" value="Xero + Dext Included" />
-                <SummaryRow label="Compliance" value="SARS & CIPC Handled" />
-                <SummaryRow label="Team" value="Dedicated Accountant" />
-                <SummaryRow label="Notice" value="30-Day Rolling" />
-              </div>
-
-              <div className="pt-10 border-t border-white/5">
-                <div className="text-xs font-bold uppercase tracking-widest text-white/20 mb-2">Total Monthly Fee</div>
-                <div className="flex items-baseline gap-2">
-                  <AnimatedPrice amount={totalPrice} size="lg" className="text-5xl lg:text-6xl text-white font-mono" />
-                  <span className="text-sm font-bold text-white/20 uppercase tracking-widest">/ month</span>
+                <div className="space-y-4">
+                  <SummaryRow label="Close cadence" value={closeVelocity} />
+                  <SummaryRow label="Tax control" value="SARS + CIPC tracked" />
+                  <SummaryRow label="Bookkeeping" value={`${transactionCount} lines modeled`} />
+                  <SummaryRow label="Payroll" value={`${employees} staff covered`} />
                 </div>
-                <p className="text-[10px] text-white/30 mt-4">Excludes VAT @ 15%. All tools included in fee.</p>
-              </div>
 
-              <div className="mt-10">
-                <MagneticButton>
-                  <button className="w-full py-5 rounded-2xl bg-emerald-500 text-[#020617] font-bold text-lg flex items-center justify-center gap-2 hover:bg-emerald-400 transition-all shadow-[0_20px_40px_rgba(74,222,128,0.2)]">
-                    Secure this rate
-                    <ArrowRight className="w-5 h-5" />
-                  </button>
-                </MagneticButton>
+                <div className="my-9 h-px bg-white/10" />
+
+                <div>
+                  <div className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-white/25">Estimated Monthly Fee</div>
+                  <div className="flex flex-wrap items-end gap-3">
+                    <AnimatedPrice amount={totalPrice} size="lg" className="text-5xl font-black tracking-[-0.06em] text-white lg:text-7xl" duration={0.7} />
+                    <span className="pb-2 text-xs font-black uppercase tracking-widest text-white/25">/ month</span>
+                  </div>
+                  <p className="mt-4 text-xs leading-5 text-white/35">Rolling digit estimate. Excludes VAT at 15%.</p>
+                </div>
+
+                <div className="mt-9 grid gap-3 rounded-[2rem] border border-white/10 bg-white/[0.04] p-4">
+                  <div className="flex items-center gap-3 text-sm text-white/65">
+                    <Sparkles className="h-4 w-4 text-cyan-200" />
+                    Tooling, monthly controls, and accountant review included.
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-white/65">
+                    <TrendingUp className="h-4 w-4 text-teal-200" />
+                    Upgrade or trim scope as the company changes shape.
+                  </div>
+                </div>
+
+                <div className="mt-9">
+                  <MagneticButton className="w-full">
+                    <button className="glow-button flex w-full items-center justify-center gap-2 rounded-2xl bg-cyan-200 px-8 py-5 text-base font-black text-[#06111f] transition hover:bg-white">
+                      Secure this rate
+                      <ArrowRight className="h-5 w-5" />
+                    </button>
+                  </MagneticButton>
+                </div>
               </div>
             </motion.div>
           </div>
-
         </div>
       </div>
     </section>
@@ -231,41 +287,39 @@ interface SliderGroupProps {
   max: number;
   step: number;
   format: (val: number) => string;
-  icon: React.ElementType;
   accent: string;
 }
 
-function SliderGroup({ label, value, onChange, min, max, step, format, icon: Icon, accent }: SliderGroupProps) {
+function SliderGroup({ label, value, onChange, min, max, step, format, accent }: SliderGroupProps) {
+  const progress = ((value - min) / (max - min)) * 100;
+
   return (
-    <div className="group">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 border border-white/5">
-            <Icon className="w-4 h-4 text-white/40" />
-          </div>
-          <span className="text-sm font-bold text-white/60 group-hover:text-white transition-colors">{label}</span>
+    <div>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <div>
+          <div className="text-sm font-black text-white/70">{label}</div>
+          <div className="mt-1 text-xs text-white/35">Smooth revenue tier slider</div>
         </div>
-        <span className="text-xl font-mono font-bold" style={{ color: accent }}>{format(value)}</span>
+        <span className="font-mono text-xl font-black" style={{ color: accent }}>{format(value)}</span>
       </div>
-      
-      <div className="relative h-2 w-full bg-white/5 rounded-full overflow-hidden">
-        <motion.div 
-          className="absolute inset-y-0 left-0 rounded-full"
-          style={{ 
-            backgroundColor: accent,
-            width: `${((value - min) / (max - min)) * 100}%`,
-            boxShadow: `0 0 20px ${accent}44`
-          }}
+      <div className="relative h-4 rounded-full bg-white/[0.06] p-1">
+        <motion.div
+          className="h-full rounded-full"
+          style={{ width: `${progress}%`, backgroundColor: accent, boxShadow: `0 0 34px ${accent}55` }}
         />
-        <input 
-          type="range" 
-          min={min} 
-          max={max} 
-          step={step} 
-          value={value} 
-          onChange={(e) => onChange(Number(e.target.value))}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(event) => onChange(Number(event.target.value))}
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
         />
+      </div>
+      <div className="mt-3 flex justify-between text-[10px] font-black uppercase tracking-widest text-white/25">
+        <span>Pre-revenue</span>
+        <span>R30M+</span>
       </div>
     </div>
   );
@@ -273,11 +327,11 @@ function SliderGroup({ label, value, onChange, min, max, step, format, icon: Ico
 
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between text-sm">
-      <span className="text-white/30">{label}</span>
-      <span className="text-white/80 font-medium flex items-center gap-2">
+    <div className="flex items-center justify-between gap-4 text-sm">
+      <span className="text-white/35">{label}</span>
+      <span className="flex items-center gap-2 text-right font-bold text-white/80">
         {value}
-        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+        <CheckCircle2 className="h-3.5 w-3.5 text-teal-300" />
       </span>
     </div>
   );
