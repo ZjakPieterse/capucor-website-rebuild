@@ -7,9 +7,11 @@ import { cn } from '@/lib/utils';
 export function MagneticButton({
   children,
   className,
+  activationRadius = 50,
 }: {
   children: ReactNode;
   className?: string;
+  activationRadius?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -20,8 +22,6 @@ export function MagneticButton({
   const springY = useSpring(y, springConfig);
 
   useEffect(() => {
-    const activationRadius = 50;
-
     const handlePointerMove = (event: PointerEvent) => {
       if (!ref.current) return;
 
@@ -53,7 +53,7 @@ export function MagneticButton({
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerleave', handlePointerLeave);
     };
-  }, [x, y]);
+  }, [activationRadius, x, y]);
 
   return (
     <motion.div
