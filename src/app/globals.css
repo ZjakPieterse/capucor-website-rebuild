@@ -163,6 +163,119 @@
 .fcc-heartbeat:nth-child(2) { animation-delay: 0.2s; }
 .fcc-heartbeat:nth-child(3) { animation-delay: 0.4s; }
 
+/* ─── Glassmorphic Trust Banner ──────────────────────────────────────────── */
+.trust-banner {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--card) 92%, transparent) 0%,
+    color-mix(in oklch, var(--card) 78%, transparent) 100%
+  );
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid color-mix(in oklch, var(--primary) 20%, var(--border));
+  box-shadow:
+    0 24px 60px -20px color-mix(in oklch, var(--primary) 18%, transparent),
+    0 8px 24px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 color-mix(in oklch, white 8%, transparent);
+}
+
+.trust-banner::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--primary) 60%, transparent),
+    transparent 40%,
+    color-mix(in oklch, var(--brand-cyan) 30%, transparent) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.trust-banner-glow {
+  background: radial-gradient(
+    600px circle at 20% 50%,
+    color-mix(in oklch, var(--primary) 10%, transparent),
+    transparent 60%
+  );
+}
+
+/* ─── Hero chaos float (continuous loop) ─────────────────────────────────── */
+@keyframes chaos-float-a {
+  0%, 100% { transform: translate(0, 0) rotate(12deg); }
+  50%      { transform: translate(8px, -10px) rotate(8deg); }
+}
+@keyframes chaos-float-b {
+  0%, 100% { transform: translate(0, 0) rotate(-12deg); }
+  50%      { transform: translate(-6px, 8px) rotate(-16deg); }
+}
+@keyframes chaos-float-c {
+  0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+  50%      { transform: translate(10px, 6px) rotate(-2deg); }
+}
+@keyframes chaos-float-d {
+  0%, 100% { transform: translate(0, 0) rotate(45deg); }
+  50%      { transform: translate(-8px, -8px) rotate(38deg); }
+}
+
+.chaos-item {
+  will-change: transform;
+}
+.chaos-float-a { animation: chaos-float-a 4.5s ease-in-out infinite; }
+.chaos-float-b { animation: chaos-float-b 5.2s ease-in-out infinite; }
+.chaos-float-c { animation: chaos-float-c 4.1s ease-in-out infinite; }
+.chaos-float-d { animation: chaos-float-d 5.8s ease-in-out infinite; }
+
+/* Continuous breathing on assembled tiles after the assembly */
+@keyframes fcc-breathe {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+.fcc-breathe {
+  animation: fcc-breathe 6s ease-in-out infinite;
+}
+
+/* ─── Calendar UI (OutcomeStories) ───────────────────────────────────────── */
+.day-pill {
+  transition: color 250ms ease, background-color 250ms ease, border-color 250ms ease, transform 250ms ease;
+}
+
+.day-pill:hover {
+  border-color: color-mix(in oklch, var(--primary) 45%, transparent);
+  color: var(--foreground);
+}
+
+.day-pill[data-active="true"] {
+  color: var(--primary-foreground);
+}
+
+.calendar-highlight {
+  background: linear-gradient(135deg, var(--primary), color-mix(in oklch, var(--primary) 70%, var(--brand-cyan)));
+  box-shadow: 0 6px 24px -8px color-mix(in oklch, var(--primary) 60%, transparent);
+}
+
+.calendar-panel {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--card) 88%, transparent) 0%,
+    color-mix(in oklch, var(--card) 72%, transparent) 100%
+  );
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid color-mix(in oklch, var(--primary) 18%, var(--border));
+  box-shadow:
+    0 20px 50px -16px color-mix(in oklch, var(--primary) 16%, transparent),
+    inset 0 1px 0 color-mix(in oklch, white 6%, transparent);
+}
+
 /* ─── Animated price first-reveal glow ───────────────────────────────────── */
 @keyframes price-first-reveal {
   0%   { text-shadow: 0 0 0 transparent; transform: scale(0.94); }
@@ -220,6 +333,14 @@
   }
 
   .fcc-heartbeat {
+    animation: none !important;
+  }
+
+  .chaos-float-a,
+  .chaos-float-b,
+  .chaos-float-c,
+  .chaos-float-d,
+  .fcc-breathe {
     animation: none !important;
   }
 

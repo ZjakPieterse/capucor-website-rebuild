@@ -8,7 +8,6 @@ import {
   TIER_CUMULATIVE_LABELS,
   PACKAGE_COMMON_ITEMS,
   TIER_BUYER_FIT,
-  TIER_MOST_POPULAR_NOTE,
 } from '@/config/tiers';
 import type { Service, Tier } from '@/types';
 
@@ -97,11 +96,6 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
                   ) : tier.tagline ? (
                     <p className="text-sm text-muted-foreground">{tier.tagline}</p>
                   ) : null}
-                  {isMiddle && (
-                    <p className="mt-3 text-xs leading-relaxed text-primary/90">
-                      {TIER_MOST_POPULAR_NOTE}
-                    </p>
-                  )}
                 </div>
 
                 <ul className="space-y-2 flex-1">

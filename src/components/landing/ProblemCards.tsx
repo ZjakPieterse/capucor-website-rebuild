@@ -12,41 +12,41 @@ const PROBLEMS = [
   {
     icon: BookOpen,
     title: 'Messy, outdated books',
-    body: 'Your financials are weeks behind. When the bank, a funder, SARS or your own management team needs a number, the answer takes too long.',
+    body: "It's the 15th. The bank wants management accounts for a facility review. You're categorising 400 bank lines by hand, guessing what half the receipts are for. The weekend is gone.",
     solution: {
       icon: CheckCircle2,
       title: 'Current books. Clear answers.',
-      body: 'We keep your Xero ledger reconciled and decision-ready, so important numbers are not buried in bank feeds, inboxes or spreadsheets.',
+      body: 'By day 7 the month is closed. When the bank asks for numbers, you pull a clean reconciled report in under 30 seconds. The weekend stays yours.',
     },
   },
   {
     icon: AlertCircle,
     title: 'Deadline pressure',
-    body: 'VAT, EMP201, provisional tax, CIPC and payroll dates create constant background pressure. SARS penalties don\'t wait for admin to catch up.',
+    body: "SARS sends a penalty for a missed EMP201. You thought it was being filed. It wasn't. Now you're paying for a mistake that should never have reached your desk.",
     solution: {
       icon: CalendarCheck,
-      title: 'Deadlines tracked properly.',
-      body: 'Your compliance dates are managed through a structured workflow with clear ownership, review points and filing status.',
+      title: 'Deadlines that don’t depend on memory.',
+      body: 'EMP201, VAT201, provisional tax and CIPC sit on a workflow with named owners and review dates. Filed on time, every cycle. No penalty letters.',
     },
   },
   {
     icon: Unplug,
     title: 'Disconnected tools',
-    body: 'Receipts, invoices, payroll, bank transactions and reports sit in different places, making cash flow and VAT exposure harder to see.',
+    body: "You check the bank app for cash, a spreadsheet for payroll, email threads for invoices. None of it agrees. You can't get a straight answer about your own business.",
     solution: {
       icon: Link2,
-      title: 'One connected finance workflow.',
-      body: 'We connect the tools properly so capture, processing, reconciliation and reporting work as one monthly system.',
+      title: 'One ledger, one source of truth.',
+      body: 'Receipts flow into Xero automatically. Payroll connects through. You see one true cash position, not three approximations.',
     },
   },
   {
     icon: Clock,
     title: 'Too much owner involvement',
-    body: 'You spend time chasing slips, checking payments, answering finance questions and trying to make sense of reports instead of running the business.',
+    body: "You spend 15 hours a month chasing slips, approving small payments, answering basic finance questions. The work doesn't stop. The growth does.",
     solution: {
       icon: Zap,
-      title: 'A finance rhythm you can rely on.',
-      body: 'You know what to provide, when to provide it, and what you will receive back each month, with Capucor owning the finance process from there.',
+      title: 'A finance rhythm that runs without you.',
+      body: 'You upload what we ask for. We run the month. You only see the decisions that need an owner in the seat.',
     },
   },
 ];

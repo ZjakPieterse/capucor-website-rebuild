@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { Inbox, Cog, BarChart2, MessageSquare, ArrowRight, Calendar } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -11,7 +11,7 @@ import { useGSAP } from '@gsap/react';
 import { cn } from '@/lib/utils';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
@@ -51,119 +51,138 @@ export function HowItWorks() {
   const [activeStep, setActiveStep] = useState(0);
 
   useGSAP(() => {
-    // We create a ScrollTrigger that pins the container
-    // and scrubs through the steps.
-    const steps = gsap.utils.toArray<HTMLElement>('.step-item');
-    
-    // Create a timeline that is scrubbed by scroll
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'center center', // Pin when section is in the middle of viewport
-        end: `+=${steps.length * 80}%`, // Scroll distance based on number of steps
+        start: 'center center',
+        end: `+=${STEPS.length * 45}%`,
         pin: true,
-        scrub: 0.5,
+        scrub: 0.4,
+        anticipatePin: 1,
         onUpdate: (self) => {
-          // Update active step based on progress
           const progress = self.progress;
           const currentStep = Math.min(
-            steps.length - 1,
-            Math.floor(progress * steps.length)
+            STEPS.length - 1,
+            Math.floor(progress * STEPS.length),
           );
           setActiveStep(currentStep);
-        }
-      }
+        },
+      },
     });
 
-    // Animate the progress bar height
-    tl.fromTo('.progress-fill', 
-      { height: '0%' }, 
-      { height: '100%', ease: 'none' }
+    tl.fromTo('.progress-fill',
+      { width: '0%' },
+      { width: '100%', ease: 'none' },
     );
 
-    // Cleanup
     return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="how-it-works" className="py-12 bg-background min-h-screen flex flex-col justify-center overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 w-full">
-        <div className="mb-12">
-          <SectionHeading
-            eyebrow="How it works"
-            title="A monthly rhythm that keeps you in control"
-            subtitle="Great finance work needs a clear monthly rhythm. We process, review, report and advise so the month closes properly."
+    <section
+      ref={containerRef}
+      id="how-it-works"
+      className="py-12 bg-background min-h-screen flex flex-col justify-center overflow-hidden"
+    >
+      <div className="max-w-3xl mx-auto px-6 w-full">
+        <SectionHeading
+          eyebrow="How it works"
+          title="A monthly rhythm that keeps you in control"
+          subtitle="Great finance work needs a clear monthly rhythm. We process, review, report and advise so the month closes properly."
+        />
+
+        {/* Horizontal step indicator */}
+        <div className="relative mt-14 mb-12">
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-border" aria-hidden />
+          <div
+            className="progress-fill absolute left-0 top-1/2 -translate-y-1/2 h-[2px]"
+            style={{
+              background: 'linear-gradient(to right, var(--primary), color-mix(in oklch, var(--primary) 70%, var(--brand-cyan)))',
+              width: '0%',
+              boxShadow: '0 0 14px color-mix(in oklch, var(--primary) 60%, transparent)',
+            }}
+            aria-hidden
           />
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-12 relative">
-          
-          {/* Left: The pinned progress visual */}
-          <div className="lg:w-1/3 relative flex justify-center lg:justify-start">
-            <div className="relative h-[350px] w-full flex justify-center lg:justify-start">
-              {/* Vertical Track */}
-              <div className="absolute top-0 bottom-0 w-1 bg-border rounded-full overflow-hidden left-1/2 lg:left-12 -translate-x-1/2">
-                <div className="progress-fill w-full bg-primary origin-top" />
-              </div>
-
-              {/* Dynamic Icon/Node based on active step */}
-              <div className="absolute top-1/2 -translate-y-1/2 left-1/2 lg:left-12 -translate-x-1/2 flex flex-col items-center">
-                {STEPS.map((step, i) => {
-                  const isActive = i === activeStep;
-                  return (
-                    <div 
-                      key={step.title}
-                      className={cn(
-                        "absolute transition-all duration-500 ease-out flex items-center justify-center w-16 h-16 rounded-full border-4 border-background",
-                        isActive ? "scale-100 opacity-100 bg-primary shadow-[0_0_30px_rgba(46,216,137,0.4)]" : "scale-50 opacity-0 bg-muted"
-                      )}
-                      style={{ zIndex: isActive ? 10 : 0 }}
-                    >
-                      <step.icon className={cn("w-7 h-7", isActive ? "text-primary-foreground" : "text-muted-foreground")} />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Right: The content that scrubs */}
-          <div className="lg:w-2/3 relative h-[350px] flex items-center mt-8 lg:mt-0">
+          <div className="relative flex items-center justify-between">
             {STEPS.map((step, i) => {
               const isActive = i === activeStep;
-              const isPast = i < activeStep;
-              
+              const isPassed = i <= activeStep;
               return (
-                <div 
-                  key={step.title}
-                  className={cn(
-                    "step-item absolute inset-0 flex flex-col justify-center transition-all duration-700 ease-in-out px-4 lg:px-0 text-center lg:text-left",
-                    isActive ? "opacity-100 translate-y-0" : 
-                    isPast ? "opacity-0 -translate-y-16 pointer-events-none" : "opacity-0 translate-y-16 pointer-events-none"
-                  )}
-                >
-                  <div className="text-[10px] font-bold text-primary uppercase tracking-widest mb-3">
-                    Step {step.number} of {STEPS.length}
+                <div key={step.title} className="flex flex-col items-center gap-2">
+                  <div
+                    className={cn(
+                      'flex items-center justify-center rounded-full border-4 border-background transition-all duration-500 ease-out',
+                      isActive
+                        ? 'w-14 h-14 bg-primary shadow-[0_0_28px_rgba(46,216,137,0.45)] scale-110'
+                        : isPassed
+                          ? 'w-10 h-10 bg-primary/80'
+                          : 'w-10 h-10 bg-muted',
+                    )}
+                  >
+                    <step.icon
+                      className={cn(
+                        'transition-all duration-500',
+                        isActive ? 'h-6 w-6 text-primary-foreground' : isPassed ? 'h-4 w-4 text-primary-foreground' : 'h-4 w-4 text-muted-foreground',
+                      )}
+                    />
                   </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold mb-4">{step.title}</h3>
-                  <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6 max-w-xl mx-auto lg:mx-0">
-                    {step.body}
-                  </p>
-                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-5 max-w-xl mx-auto lg:mx-0 text-left">
-                    <span className="font-semibold uppercase tracking-wider text-[10px] text-primary mr-2">You get</span>
-                    <span className="text-sm font-medium text-foreground/90">{step.deliverable}</span>
-                  </div>
+                  <span
+                    className={cn(
+                      'text-[10px] font-bold uppercase tracking-widest transition-colors duration-300',
+                      isActive ? 'text-primary' : 'text-muted-foreground/70',
+                    )}
+                  >
+                    Step {step.number}
+                  </span>
                 </div>
               );
             })}
           </div>
         </div>
 
+        {/* Centered active content */}
+        <div className="relative min-h-[280px]">
+          {STEPS.map((step, i) => {
+            const isActive = i === activeStep;
+            const isPast = i < activeStep;
+            return (
+              <div
+                key={step.title}
+                className={cn(
+                  'absolute inset-0 text-center transition-all duration-700 ease-in-out',
+                  isActive
+                    ? 'opacity-100 translate-y-0 pointer-events-auto'
+                    : isPast
+                      ? 'opacity-0 -translate-y-6 pointer-events-none'
+                      : 'opacity-0 translate-y-6 pointer-events-none',
+                )}
+              >
+                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
+                  {step.title}
+                </h3>
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6 max-w-2xl mx-auto">
+                  {step.body}
+                </p>
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-5 max-w-xl mx-auto text-left">
+                  <span className="font-semibold uppercase tracking-wider text-[10px] text-primary mr-2">
+                    You get
+                  </span>
+                  <span className="text-sm font-medium text-foreground/90">
+                    {step.deliverable}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
         {/* Bottom CTA */}
         <div className="mt-16 text-center relative z-10">
-          <p className="text-sm text-muted-foreground mb-6">Ready to put a proper monthly finance rhythm in place?</p>
+          <p className="text-sm text-muted-foreground mb-6">
+            Ready to put a proper monthly finance rhythm in place?
+          </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <MagneticButton>
               <Link

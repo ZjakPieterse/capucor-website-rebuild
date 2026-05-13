@@ -1,18 +1,23 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useCursorGlow } from '@/hooks/useCursorGlow';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { ArrowRight, Calendar, TrendingDown, CheckCircle2, Clock, AlertCircle, Receipt, FileSpreadsheet, FileText, Calculator } from 'lucide-react';
+import {
+  ArrowRight, Calendar, TrendingDown, CheckCircle2, Clock, AlertCircle,
+  Receipt, FileSpreadsheet, FileText, Calculator, Mail, FileWarning,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { siteConfig } from '@/config/site';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
-// ── Partners ─────────────────────────────────────────────────────────────────────
-const TOOLS = ['Xero', 'Dext', 'Syft', 'SimplePay', 'Karbon', 'Draftworx'];
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // ── Date helpers ──────────────────────────────────────────────────────────────────
 const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -31,7 +36,6 @@ function computeDashboardDates(): DashboardDates {
   const now   = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // VAT due: 25th of the current month, or 25th of next month if already past the 25th
   const monthOffset = today.getDate() > 25 ? 1 : 0;
   const vatDue    = new Date(now.getFullYear(), now.getMonth() + monthOffset, 25);
   const msPerDay  = 1000 * 60 * 60 * 24;
@@ -39,7 +43,6 @@ function computeDashboardDates(): DashboardDates {
   const vatDateStr = `25 ${MONTH_SHORT[vatDue.getMonth()]} ${vatDue.getFullYear()}`;
   const vatStatus: VatStatus = vatDays > 15 ? 'green' : vatDays > 7 ? 'amber' : 'red';
 
-  // Monthly close: previous calendar month = latest fully complete month
   const prev       = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const closeMonth = MONTH_FULL[prev.getMonth()];
 
@@ -52,6 +55,26 @@ const VAT_STATUS_STYLES: Record<VatStatus, { bg: string; color: string }> = {
   red:   { bg: 'rgba(239,68,68,.15)',   color: '#ef4444' },
 };
 
+// ── Chaos items (more variety, all looping via CSS) ──────────────────────────────
+const CHAOS_ITEMS: Array<{
+  floatClass: string;
+  style: React.CSSProperties;
+  Icon: typeof FileSpreadsheet;
+  iconSize: string;
+  color: string;
+  label: string;
+  labelColor: string;
+}> = [
+  { floatClass: 'chaos-float-a', style: { top: '6%',  left: '5%'   }, Icon: FileSpreadsheet, iconSize: 'w-10 h-10', color: 'text-destructive',      label: 'ERR_SYNC', labelColor: 'text-destructive/80' },
+  { floatClass: 'chaos-float-b', style: { top: '72%', left: '10%'  }, Icon: Receipt,         iconSize: 'w-8 h-8',   color: 'text-yellow-500',       label: 'UNPAID',   labelColor: 'text-yellow-500/80' },
+  { floatClass: 'chaos-float-c', style: { top: '24%', right: '6%'  }, Icon: Calculator,      iconSize: 'w-12 h-12', color: 'text-destructive',      label: 'R -45,210', labelColor: 'text-destructive/80' },
+  { floatClass: 'chaos-float-d', style: { top: '74%', right: '14%' }, Icon: FileText,        iconSize: 'w-9 h-9',   color: 'text-muted-foreground', label: 'LATE',     labelColor: 'text-muted-foreground/80' },
+  { floatClass: 'chaos-float-a', style: { top: '50%', left: '2%'   }, Icon: FileWarning,     iconSize: 'w-9 h-9',   color: 'text-destructive',      label: 'OVERDUE',  labelColor: 'text-destructive/80' },
+  { floatClass: 'chaos-float-c', style: { top: '4%',  right: '40%' }, Icon: Mail,            iconSize: 'w-8 h-8',   color: 'text-yellow-500',       label: 'UNREAD',   labelColor: 'text-yellow-500/80' },
+  { floatClass: 'chaos-float-b', style: { top: '44%', right: '3%'  }, Icon: Receipt,         iconSize: 'w-7 h-7',   color: 'text-muted-foreground', label: 'MISSING',  labelColor: 'text-muted-foreground/80' },
+  { floatClass: 'chaos-float-d', style: { top: '86%', left: '42%'  }, Icon: FileSpreadsheet, iconSize: 'w-8 h-8',   color: 'text-destructive',      label: 'CONFLICT', labelColor: 'text-destructive/80' },
+];
+
 // ── Finance Command Centre ────────────────────────────────────────────────────────
 
 function FinanceCommandCentre() {
@@ -60,67 +83,73 @@ function FinanceCommandCentre() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // GSAP Timeline for the Chaos to Order sequence
-    const tl = gsap.timeline({ delay: 0.5 });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 65%',
+        end: '+=50%',
+        scrub: 0.6,
+      },
+    });
 
-    // 1. Chaos elements get sucked in
+    // Chaos items fade out, get pulled toward centre
     tl.to('.chaos-item', {
       opacity: 0,
-      scale: 0.2,
-      x: 0, // pull towards center
-      y: 0,
-      rotation: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'back.in(1.2)'
+      scale: 0.15,
+      duration: 1,
+      stagger: 0.05,
+      ease: 'power2.in',
     }, 0);
 
-    // 2. The glowing center pulses
+    // Glowing core flares then collapses
     tl.to('.chaos-core', {
-      scale: 1.5,
+      scale: 1.8,
       opacity: 0,
-      duration: 0.6,
-      ease: 'power2.out'
-    }, 0.5);
+      duration: 0.8,
+      ease: 'power2.out',
+    }, 0.4);
 
-    // 3. The organized grid tiles pop in
-    tl.fromTo('.fcc-tile', 
-      { opacity: 0, scale: 0.9, y: 20 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'back.out(1.4)' },
-      0.8
+    // Tiles pop in
+    tl.fromTo('.fcc-tile',
+      { opacity: 0, scale: 0.92, y: 14 },
+      { opacity: 1, scale: 1, y: 0, duration: 1, stagger: 0.05, ease: 'power2.out' },
+      0.55,
     );
-    
-    // 4. Header fades in
+
+    // Header fades in
     tl.fromTo('.fcc-header',
       { opacity: 0, y: -10 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-      0.8
+      { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
+      0.55,
     );
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden min-h-[350px]">
-      
+    <div
+      ref={containerRef}
+      className="fcc-container relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden min-h-[370px]"
+    >
       {/* ── Chaos State Overlay ── */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-10">
-        <div className="chaos-core absolute w-16 h-16 rounded-full bg-primary/40 blur-xl"></div>
-        {/* Scattered messy items */}
-        <div className="chaos-item absolute top-[15%] left-[10%] text-destructive rotate-12 flex flex-col items-center">
-          <FileSpreadsheet className="w-10 h-10 mb-1 opacity-70" />
-          <span className="text-[10px] font-mono text-destructive/80 font-bold tracking-tighter">ERR_SYNC</span>
-        </div>
-        <div className="chaos-item absolute bottom-[20%] left-[20%] text-yellow-500 -rotate-12 flex flex-col items-center">
-          <Receipt className="w-8 h-8 mb-1 opacity-70" />
-          <span className="text-[10px] font-mono text-yellow-500/80 font-bold tracking-tighter">UNPAID</span>
-        </div>
-        <div className="chaos-item absolute top-[30%] right-[15%] text-destructive -rotate-6 flex flex-col items-center">
-          <Calculator className="w-12 h-12 mb-1 opacity-70" />
-          <span className="text-[10px] font-mono text-destructive/80 font-bold tracking-tighter">R -45,210</span>
-        </div>
-        <div className="chaos-item absolute bottom-[15%] right-[25%] text-muted-foreground rotate-45 flex flex-col items-center">
-          <FileText className="w-9 h-9 mb-1 opacity-70" />
-          <span className="text-[10px] font-mono text-muted-foreground/80 font-bold tracking-tighter">LATE</span>
-        </div>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+        <div className="chaos-core absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-primary/40 blur-2xl" />
+        {CHAOS_ITEMS.map((item, i) => (
+          <div
+            key={i}
+            className={`chaos-item absolute ${item.floatClass}`}
+            style={item.style}
+          >
+            <div className={`flex flex-col items-center ${item.color}`}>
+              <item.Icon className={`${item.iconSize} mb-1 opacity-70`} />
+              <span className={`text-[10px] font-mono font-bold tracking-tighter ${item.labelColor}`}>
+                {item.label}
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Header */}
@@ -166,7 +195,7 @@ function FinanceCommandCentre() {
               style={{ background: 'linear-gradient(to right, #22d3ee, #2ED889)' }}
               initial={{ width: 0 }}
               animate={{ width: '35%' }}
-              transition={{ delay: 1.8, duration: 0.9, ease: 'easeOut' }}
+              transition={{ delay: 1.4, duration: 0.9, ease: 'easeOut' }}
             />
           </div>
           <div className="text-[10px] text-muted-foreground mt-1">of 12 months</div>
@@ -273,7 +302,7 @@ function FinanceCommandCentre() {
                 className="flex items-center gap-1.5"
                 initial={{ opacity: 0, x: -6 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 2 + i * 0.1, duration: 0.3 }}
+                transition={{ delay: 1.6 + i * 0.1, duration: 0.3 }}
               >
                 <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: '#2ED889' }} />
                 <span className="text-xs font-medium">{item}</span>
@@ -290,17 +319,25 @@ function FinanceCommandCentre() {
 // ── Hero Section ──────────────────────────────────────────────────────────────────
 export function HeroSection() {
   const sectionRef = useCursorGlow<HTMLElement>();
-  
-  // Stagger text animation
-  const headline = "Make your finance function work harder";
-  
+  const headline = 'Make your finance function work harder';
+
   return (
     <section
       ref={sectionRef}
-      className="cursor-glow relative overflow-hidden py-24 lg:py-32"
+      className="cursor-glow relative overflow-hidden py-24 lg:py-32 pb-32 lg:pb-44"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/8 blur-3xl" />
+        <motion.div
+          className="absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-primary/8 blur-3xl"
+          animate={{ scale: [1, 1.08, 1], opacity: [0.9, 1, 0.9] }}
+          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute top-1/3 right-[8%] h-[260px] w-[260px] rounded-full blur-3xl"
+          style={{ background: 'color-mix(in oklch, var(--brand-cyan) 18%, transparent)' }}
+          animate={{ scale: [1, 1.12, 1], opacity: [0.6, 0.85, 0.6] }}
+          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+        />
       </div>
 
       <div className="max-w-7xl mx-auto px-6">
@@ -315,27 +352,27 @@ export function HeroSection() {
             >
               Outsourced finance team for your growing business
             </motion.p>
-            
+
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6 flex flex-wrap gap-[0.25em]">
               {headline.split(' ').map((word, i) => (
                 <motion.span
                   key={i}
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 + i * 0.08, ease: "easeOut" }}
+                  transition={{ duration: 0.5, delay: 0.1 + i * 0.08, ease: 'easeOut' }}
                 >
                   {word}
                 </motion.span>
               ))}
             </h1>
-            
+
             <motion.p
               className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.5 }}
             >
               Monthly accounting, payroll, tax, and reporting handled by real accountants. Clean numbers, clear deadlines, and practical advice built into one fixed monthly subscription.
             </motion.p>
-            
+
             <motion.div
               className="flex flex-col sm:flex-row gap-3"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.7 }}
@@ -355,6 +392,13 @@ export function HeroSection() {
                 </Button>
               </MagneticButton>
             </motion.div>
+
+            <motion.p
+              className="mt-6 text-xs text-muted-foreground"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 1 }}
+            >
+              Scroll to see the chaos become a controlled month.
+            </motion.p>
           </div>
 
           {/* Dashboard */}
@@ -364,37 +408,6 @@ export function HeroSection() {
             <FinanceCommandCentre />
           </motion.div>
         </div>
-
-        {/* Partners carousel */}
-        <motion.div
-          className="mt-16 pt-8 border-t border-border"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.9 }}
-        >
-          <p
-            className="text-xs font-medium uppercase tracking-widest text-center mb-5"
-            style={{ color: 'var(--brand-cyan)' }}
-          >
-            Partners
-          </p>
-          <div
-            className="overflow-hidden"
-            style={{
-              maskImage: 'linear-gradient(to right, transparent, black 12%, black 88%, transparent)',
-              WebkitMaskImage: 'linear-gradient(to right, transparent, black 12%, black 88%, transparent)',
-            }}
-          >
-            <div className="flex gap-8 animate-marquee w-max">
-              {[...TOOLS, ...TOOLS, ...TOOLS, ...TOOLS].map((tool, i) => (
-                <span
-                  key={i}
-                  className="whitespace-nowrap text-sm font-medium text-muted-foreground border border-border rounded-md px-5 py-2 bg-muted"
-                >
-                  {tool}
-                </span>
-              ))}
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

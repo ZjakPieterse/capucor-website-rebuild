@@ -1,11 +1,19 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Landmark, ReceiptText, ClipboardCheck, FileBarChart, ScrollText } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { cn } from '@/lib/utils';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface DayStop {
   day: number;
@@ -55,20 +63,60 @@ const STATS = [
 ];
 
 export function OutcomeStories() {
-  const timelineRef = useRef<HTMLDivElement | null>(null);
-  const prefersReducedMotion = useReducedMotion();
+  const containerRef = useRef<HTMLElement>(null);
+  const calendarRef = useRef<HTMLDivElement>(null);
+  const dayRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [highlight, setHighlight] = useState({ left: 0, width: 0, ready: false });
 
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ['start 65%', 'end 35%'],
-  });
+  useGSAP(() => {
+    const scrubArea = containerRef.current?.querySelector<HTMLElement>('.day-scrub-area');
+    if (!scrubArea) return;
 
-  // Vertical fill on the calendar line (0% → 100%)
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+    const trigger = ScrollTrigger.create({
+      trigger: scrubArea,
+      start: 'top top',
+      end: `+=${DAY_STOPS.length * 38}%`,
+      pin: true,
+      scrub: 0.5,
+      anticipatePin: 1,
+      onUpdate: (self) => {
+        const idx = Math.min(
+          DAY_STOPS.length - 1,
+          Math.floor(self.progress * DAY_STOPS.length),
+        );
+        setActiveIndex(idx);
+      },
+    });
+
+    return () => {
+      trigger.kill();
+    };
+  }, { scope: containerRef });
+
+  useEffect(() => {
+    const update = () => {
+      const node = dayRefs.current[activeIndex];
+      const container = calendarRef.current;
+      if (!node || !container) return;
+      const cRect = container.getBoundingClientRect();
+      const nRect = node.getBoundingClientRect();
+      setHighlight({
+        left: nRect.left - cRect.left,
+        width: nRect.width,
+        ready: true,
+      });
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [activeIndex]);
+
+  const active = DAY_STOPS[activeIndex];
 
   return (
-    <section className="py-24 lg:py-32 bg-muted/30 border-t border-border">
-      <div className="max-w-7xl mx-auto px-6">
+    <section ref={containerRef} className="bg-muted/30 border-t border-border overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 py-24 lg:py-32">
         <ScrollReveal>
           <SectionHeading
             eyebrow="A month with Capucor"
@@ -92,80 +140,99 @@ export function OutcomeStories() {
             ))}
           </div>
         </ScrollReveal>
+      </div>
 
-        {/* Scroll-driven timeline */}
-        <div ref={timelineRef} className="relative mt-20 grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-16">
+      {/* Pinned calendar UI */}
+      <div className="day-scrub-area min-h-screen flex flex-col justify-center">
+        <div className="max-w-5xl mx-auto px-6 w-full">
 
-          {/* Left: sticky calendar */}
-          <div className="hidden lg:block">
-            <div className="sticky top-32">
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-4">
-                A typical month
-              </p>
-              <div className="relative pl-2">
-                {/* Track */}
-                <div
-                  aria-hidden
-                  className="absolute left-[26px] top-2 bottom-2 w-px bg-border"
-                />
-                {/* Fill */}
-                <motion.div
-                  aria-hidden
-                  className="absolute left-[26px] top-2 w-px bg-primary origin-top"
-                  style={prefersReducedMotion ? { height: '100%' } : { height: lineHeight }}
-                />
-                <ul className="space-y-9">
-                  {DAY_STOPS.map((stop) => (
-                    <li key={stop.day} className="relative flex items-center gap-5">
-                      <div className="relative z-10 flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full border border-primary/30 bg-card">
-                        <stop.icon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                          Day
-                        </p>
-                        <p className="font-mono text-xl font-bold leading-none">
-                          {stop.day}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <p className="text-center text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-6">
+            A typical Capucor month
+          </p>
+
+          {/* Calendar (horizontal pills with gliding highlight) */}
+          <div ref={calendarRef} className="relative">
+            {/* Track */}
+            <div
+              aria-hidden
+              className="absolute left-[6%] right-[6%] top-1/2 -translate-y-1/2 h-px bg-border"
+            />
+            {/* Gliding highlight */}
+            <motion.div
+              aria-hidden
+              className="calendar-highlight absolute top-1/2 -translate-y-1/2 rounded-full"
+              initial={false}
+              animate={{
+                left: highlight.left,
+                width: highlight.width,
+                opacity: highlight.ready ? 1 : 0,
+              }}
+              transition={{ type: 'spring', stiffness: 220, damping: 30 }}
+              style={{ height: 'calc(100% + 4px)' }}
+            />
+            {/* Day pills */}
+            <div className="relative flex justify-between items-center gap-2">
+              {DAY_STOPS.map((stop, i) => {
+                const isActive = i === activeIndex;
+                return (
+                  <div
+                    key={stop.day}
+                    ref={(el) => { dayRefs.current[i] = el; }}
+                    data-active={isActive}
+                    className={cn(
+                      'day-pill relative z-10 inline-flex flex-col items-center justify-center rounded-full border bg-card px-4 py-3 sm:px-6 sm:py-4 min-w-[78px] sm:min-w-[110px]',
+                      isActive
+                        ? 'border-transparent text-primary-foreground'
+                        : 'border-border text-muted-foreground',
+                    )}
+                  >
+                    <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest leading-none mb-1">
+                      Day
+                    </span>
+                    <span className="font-mono text-xl sm:text-2xl font-bold leading-none">
+                      {stop.day}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          {/* Right: scrolling narrative */}
-          <div className="space-y-24 lg:space-y-40">
-            {DAY_STOPS.map((stop, i) => (
+          {/* Glassmorphic panel with active day narrative */}
+          <div className="calendar-panel mt-10 lg:mt-12 rounded-2xl p-8 lg:p-10 min-h-[260px] relative overflow-hidden">
+            <AnimatePresence mode="wait">
               <motion.div
-                key={stop.day}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '0px 0px -25% 0px' }}
-                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
-                className="relative"
+                key={active.day}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-col sm:flex-row gap-6 sm:gap-8"
               >
-                {/* Mobile day chip */}
-                <div className="lg:hidden mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/[0.06] px-3 py-1">
-                  <stop.icon className="h-3.5 w-3.5 text-primary" />
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-                    Day {stop.day}
-                  </span>
+                <div className="flex-shrink-0">
+                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 border border-primary/30">
+                    <active.icon className="h-7 w-7 text-primary" />
+                  </div>
                 </div>
-
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-primary mb-3 hidden lg:block">
-                  {String(i + 1).padStart(2, '0')} of {DAY_STOPS.length}
-                </p>
-                <h3 className="text-2xl lg:text-3xl font-bold tracking-tight leading-tight mb-4">
-                  {stop.title}
-                </h3>
-                <p className="text-base text-muted-foreground leading-relaxed max-w-xl">
-                  {stop.body}
-                </p>
+                <div className="flex-1">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-primary mb-2">
+                    {String(activeIndex + 1).padStart(2, '0')} of {DAY_STOPS.length} · Day {active.day}
+                  </p>
+                  <h3 className="text-2xl lg:text-3xl font-bold tracking-tight mb-3 leading-tight">
+                    {active.title}
+                  </h3>
+                  <p className="text-base text-muted-foreground leading-relaxed">
+                    {active.body}
+                  </p>
+                </div>
               </motion.div>
-            ))}
+            </AnimatePresence>
           </div>
+
+          {/* Scroll hint */}
+          <p className="mt-8 text-center text-xs text-muted-foreground">
+            Keep scrolling to move through the month.
+          </p>
         </div>
       </div>
     </section>
