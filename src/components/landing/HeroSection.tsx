@@ -250,26 +250,20 @@ function FinanceCommandCentre() {
           <div className="text-[10px] text-muted-foreground mt-1.5">3 insights flagged</div>
         </div>
 
-        {/* SARS / CIPC Compliance — full width */}
-        <div
-          className="fcc-tile opacity-0 col-span-1 sm:col-span-3 rounded-xl p-3.5"
-          style={{ border: '1px solid rgba(46,216,137,.2)', background: 'rgba(46,216,137,.05)' }}
-        >
+        {/* SARS / CIPC Compliance — Standardized look */}
+        <div className="fcc-tile opacity-0 col-span-1 sm:col-span-3 rounded-xl border border-border bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2.5">
             SARS / CIPC Compliance
           </div>
           <div className="flex items-center gap-5 flex-wrap">
             {['Provisional Tax', 'EMP201', 'CIPC Annual Return'].map((item, i) => (
-              <motion.div
+              <div
                 key={item}
                 className="flex items-center gap-1.5"
-                initial={{ opacity: 0, x: -6 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.6 + i * 0.1, duration: 0.3 }}
               >
                 <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: '#2ED889' }} />
                 <span className="text-xs font-medium">{item}</span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -296,16 +290,7 @@ export function HeroSection() {
       },
     });
 
-    // 1. Initial Reveal of items
-    tl.from('.chaos-item', {
-      opacity: 0,
-      scale: 0.5,
-      duration: 0.5,
-      stagger: 0.05,
-      ease: 'back.out(1.7)',
-    }, 0);
-
-    // 2. SORTING PHASE - Items move to a grid and align
+    // 1. SORTING PHASE - Items move to a grid and align
     tl.to('.chaos-item', {
       x: (i) => `${(i % 5) * 20 + 10}%`,
       y: (i) => `${Math.floor(i / 5) * 35 + 25}%`,
@@ -313,47 +298,47 @@ export function HeroSection() {
       scale: 1,
       duration: 1.5,
       ease: 'expo.inOut',
-    }, 0.5);
+    }, 0.2);
 
-    // 3. CONVERSION PHASE - Items drop away as dashboard appears
+    // 2. EXIT PHASE - Items disappear COMPLETELY before dashboard enters
     tl.to('.chaos-item', {
       opacity: 0,
-      scale: 0.4,
-      y: '+=100',
-      duration: 1,
-      stagger: 0.04,
-      ease: 'back.in(1.4)',
-    }, 2);
+      scale: 0.2,
+      y: '-=50', // fly up slightly
+      duration: 0.8,
+      stagger: 0.03,
+      ease: 'power2.in',
+    }, 1.7);
 
     tl.to('.chaos-core', {
-      scale: 4,
+      scale: 5,
       opacity: 0,
-      duration: 1.2,
-      ease: 'power2.out',
-    }, 2);
+      duration: 1,
+      ease: 'power3.out',
+    }, 1.7);
 
-    // Dashboard Entrance
+    // 3. DASHBOARD ENTRANCE - Starts after chaos is gone
     tl.fromTo('.fcc-tile',
-      { opacity: 0, scale: 0.85, y: 40, filter: 'blur(12px)' },
+      { opacity: 0, scale: 0.9, y: 30, filter: 'blur(15px)' },
       {
         opacity: 1,
         scale: 1,
         y: 0,
         filter: 'blur(0px)',
-        duration: 1.5,
-        stagger: 0.1,
+        duration: 1.2,
+        stagger: 0.08,
         ease: 'expo.out',
         onComplete: () => {
           gsap.set('.fcc-tile', { className: 'fcc-tile rounded-xl border border-border bg-background/40 p-3.5 fcc-breathe' });
         },
       },
-      2.2,
+      2.4,
     );
 
     tl.fromTo('.fcc-header',
-      { opacity: 0, y: -25 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
-      2.2,
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
+      2.4,
     );
 
     // Subtle shift on the copy to acknowledge the transition
