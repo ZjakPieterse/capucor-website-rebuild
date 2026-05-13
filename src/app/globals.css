@@ -36,37 +36,34 @@
 
 :root {
   /* Surfaces */
-  --background:       #050505;
-  --foreground:       #f8fafc;
-  --card:             rgba(255, 255, 255, 0.025);
-  --card-foreground:  #f8fafc;
-  --popover:          #0a0a0b;
-  --popover-foreground: #f8fafc;
+  --background:       oklch(0.129 0.042 264);   /* #020617 slate-950 */
+  --foreground:       oklch(0.984 0.003 247);   /* #f8fafc slate-50 */
+  --card:             oklch(0.208 0.042 264);   /* #0f172a slate-900 */
+  --card-foreground:  oklch(0.984 0.003 247);
+  --popover:          oklch(0.208 0.042 264);
+  --popover-foreground: oklch(0.984 0.003 247);
 
   /* Neutrals */
-  --secondary:        rgba(15, 23, 42, 0.7);
-  --secondary-foreground: #f8fafc;
-  --muted:            rgba(15, 23, 42, 0.4);
-  --muted-foreground: #64748b;
-  --border:           rgba(255, 255, 255, 0.07);
-  --input:            rgba(255, 255, 255, 0.04);
-  --ring:             #2DD4BF;
+  --secondary:        oklch(0.279 0.041 264);   /* #1e293b slate-800 */
+  --secondary-foreground: oklch(0.984 0.003 247);
+  --muted:            oklch(0.279 0.041 264);
+  --muted-foreground: oklch(0.704 0.04 256);    /* #94a3b8 slate-400 */
+  --border:           oklch(0.279 0.041 264);   /* #1e293b */
+  --input:            oklch(1 0 0 / 12%);
+  --ring:             oklch(0.812 0.182 158);
 
-  /* Accent — The Capucor Signature */
-  --primary:          #2DD4BF; /* Teal */
-  --primary-foreground: #020617;
-  --accent:           #2DD4BF; /* Teal */
-  --accent-foreground: #f8fafc;
+  /* Accent — Option B */
+  --primary:          oklch(0.812 0.182 158);   /* #2ED889 */
+  --primary-foreground: oklch(0.129 0.042 264);
+  --accent:           oklch(0.279 0.041 264);
+  --accent-foreground: oklch(0.984 0.003 247);
 
-  /* Brand Accents (Zen Palette) */
-  --brand-teal:       #2DD4BF;
-  --brand-cyan:       #22d3ee;
-  --brand-emerald:    #4ade80;
-  --brand-indigo:     #6366f1;
-  --brand-deep:       #0f172a;
-  --brand-navy:       #1e293b;
+  /* Semantic */
+  --destructive:      oklch(0.704 0.191 22);
+  --success:          oklch(0.723 0.191 142);
+  --warning:          oklch(0.769 0.188 70);
 
-  --radius: 1.25rem;
+  --radius: 0.75rem;
 }
 
 @layer base {
@@ -75,111 +72,16 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(circle at 50% 0%, rgba(45, 212, 191, 0.045) 0%, transparent 42%);
-    background-attachment: fixed;
   }
   html {
     @apply font-sans;
-    scroll-behavior: smooth;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 2147483647;
-    pointer-events: none;
-    opacity: 0.03;
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-    mix-blend-mode: soft-light;
   }
 }
 
-/* ─── Premium Glassmorphism (Zen) ────────────────────────────────────────── */
-
-
-.glass-hero-pane,
-.glass-tile {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
-  backdrop-filter: blur(10px) saturate(130%);
-  -webkit-backdrop-filter: blur(10px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 30px 90px rgba(0, 0, 0, 0.34);
-}
-
-.glass-hero-pane::before,
-.glass-tile::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(120deg, rgba(255,255,255,0.18), transparent 28%, transparent 72%, rgba(45,212,191,0.10));
-  opacity: 0.55;
-}
-
-.glow-button {
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-    0 18px 55px rgba(45, 212, 191, 0.18),
-    0 0 0 rgba(45, 212, 191, 0);
-  transition: transform 600ms cubic-bezier(0.2, 0, 0, 1),
-    box-shadow 600ms cubic-bezier(0.2, 0, 0, 1),
-    background-color 600ms cubic-bezier(0.2, 0, 0, 1);
-}
-
-.glow-button:hover {
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.35) inset,
-    0 22px 70px rgba(45, 212, 191, 0.34),
-    0 0 34px rgba(45, 212, 191, 0.28);
-  transform: translateY(-1px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .glow-button,
-  .feature-card,
-  .problem-card,
-  .outcome-card {
-    transition-duration: 1ms;
-  }
-}
-
-.glass-panel {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-/* ─── Typography Utilities ────────────────────────────────────────────────── */
-.text-balance {
-  text-wrap: balance;
-}
-
-.font-heading {
-  font-family: Georgia, 'Times New Roman', serif;
-  letter-spacing: -0.045em;
-}
-
-.font-thin-heading {
-  font-weight: 200;
-  letter-spacing: -0.02em;
-}
-
-.text-gradient {
-  background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.4) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* ─── Brand accent tokens ─────────────────────────────────────────────────── */
+:root {
+  --brand-navy: #7ba8f5;
+  --brand-cyan: #22d3ee;
 }
 
 /* ─── Marquee carousel ────────────────────────────────────────────────────── */
@@ -222,128 +124,44 @@
   box-shadow: 0 12px 40px -8px color-mix(in oklch, var(--primary) 18%, transparent);
 }
 
-/* ─── Finance Command Centre — hero dashboard ───────────────────────────── */
-
-/* Tile face: the clean "order" state inside each carrier */
-.tile-face {
-  transition: border-color 250ms ease, box-shadow 250ms ease;
-  will-change: opacity;
+/* ─── Finance Command Centre tiles (hero dashboard) ─────────────────────── */
+.fcc-tile {
+  transition: transform 250ms ease, opacity 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
 }
 
-/* Carrier wrapper hover lift — only when settled (faces fully visible) */
-.fcc-tile .tile-face:hover {
-  border-color: color-mix(in oklch, var(--primary) 40%, transparent);
-  box-shadow: 0 10px 30px -10px color-mix(in oklch, var(--primary) 20%, transparent);
+.fcc-grid:has(.fcc-tile:hover) .fcc-tile:not(:hover) {
+  opacity: 0.55;
 }
 
-.fcc-strip-item .tile-face:hover {
+.fcc-tile:hover {
+  transform: translateY(-2px) scale(1.015);
   border-color: color-mix(in oklch, var(--primary) 45%, transparent);
-  box-shadow: 0 6px 20px -8px color-mix(in oklch, var(--primary) 22%, transparent);
+  box-shadow: 0 10px 30px -10px color-mix(in oklch, var(--primary) 22%, transparent);
 }
 
-/* Tile internal typography helpers */
-.tile-label {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
+/* Sequential heartbeat on SARS/CIPC compliance row — fires once every 8s, items offset by 200ms */
+@keyframes fcc-heartbeat {
+  0%, 96%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  97% {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 6px color-mix(in oklch, var(--primary) 70%, transparent));
+  }
+  98.5% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
 }
 
-.tile-foot {
-  font-size: 10px;
-  color: var(--muted-foreground);
-  line-height: 1.3;
+.fcc-heartbeat {
+  animation: fcc-heartbeat 8s ease-in-out infinite;
+  transform-origin: center;
 }
 
-/* Chaos face — small busy doc card centred in carrier */
-.chaos-face {
-  will-change: opacity, transform;
-  pointer-events: none;
-}
-
-/* ─── Glassmorphic Trust Banner ──────────────────────────────────────────── */
-.trust-banner {
-  background: linear-gradient(
-    135deg,
-    color-mix(in oklch, var(--card) 92%, transparent) 0%,
-    color-mix(in oklch, var(--card) 78%, transparent) 100%
-  );
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  border: 1px solid color-mix(in oklch, var(--primary) 20%, var(--border));
-  box-shadow:
-    0 24px 60px -20px color-mix(in oklch, var(--primary) 18%, transparent),
-    0 8px 24px -12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 color-mix(in oklch, white 8%, transparent);
-}
-
-.trust-banner::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    color-mix(in oklch, var(--primary) 60%, transparent),
-    transparent 40%,
-    color-mix(in oklch, var(--brand-cyan) 30%, transparent) 100%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  pointer-events: none;
-}
-
-.trust-banner-glow {
-  background: radial-gradient(
-    600px circle at 20% 50%,
-    color-mix(in oklch, var(--primary) 10%, transparent),
-    transparent 60%
-  );
-}
-
-/* ─── Hero dashboard carrier (GSAP-driven; no CSS animation needed) ──────── */
-.fcc-tile,
-.fcc-strip-item {
-  will-change: transform;
-}
-
-/* ─── Calendar UI (OutcomeStories) ───────────────────────────────────────── */
-.day-pill {
-  transition: color 250ms ease, background-color 250ms ease, border-color 250ms ease, transform 250ms ease;
-}
-
-.day-pill:hover {
-  border-color: color-mix(in oklch, var(--primary) 45%, transparent);
-  color: var(--foreground);
-}
-
-.day-pill[data-active="true"] {
-  color: var(--primary-foreground);
-}
-
-.calendar-highlight {
-  background: linear-gradient(135deg, var(--primary), color-mix(in oklch, var(--primary) 70%, var(--brand-cyan)));
-  box-shadow: 0 6px 24px -8px color-mix(in oklch, var(--primary) 60%, transparent);
-}
-
-.calendar-panel {
-  background: linear-gradient(
-    135deg,
-    color-mix(in oklch, var(--card) 88%, transparent) 0%,
-    color-mix(in oklch, var(--card) 72%, transparent) 100%
-  );
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid color-mix(in oklch, var(--primary) 18%, var(--border));
-  box-shadow:
-    0 20px 50px -16px color-mix(in oklch, var(--primary) 16%, transparent),
-    inset 0 1px 0 color-mix(in oklch, white 6%, transparent);
-}
+.fcc-heartbeat:nth-child(2) { animation-delay: 0.2s; }
+.fcc-heartbeat:nth-child(3) { animation-delay: 0.4s; }
 
 /* ─── Animated price first-reveal glow ───────────────────────────────────── */
 @keyframes price-first-reveal {
@@ -353,7 +171,7 @@
 }
 
 .price-first-reveal {
-  animation: price-first-reveal 850ms cubic-bezier(0.2, 0, 0, 1);
+  animation: price-first-reveal 850ms cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-block;
   will-change: transform, text-shadow;
 }
@@ -397,14 +215,12 @@
   .feature-card:hover,
   .problem-card:hover,
   .outcome-card:hover,
-  .tile-face:hover {
+  .fcc-tile:hover {
     transform: none !important;
   }
 
-  /* Hide chaos faces entirely under reduced motion — only the resolved tile state remains */
-  .chaos-face,
-  .chaos-blob {
-    display: none !important;
+  .fcc-heartbeat {
+    animation: none !important;
   }
 
   .cursor-glow::before {

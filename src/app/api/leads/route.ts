@@ -51,8 +51,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { website: _unusedHoneypot, consent_given, ...fields } = parsed.data;
-  void _unusedHoneypot;
+  const { website: _honeypot, consent_given, ...fields } = parsed.data;
 
   // 5. Insert into Supabase
   try {

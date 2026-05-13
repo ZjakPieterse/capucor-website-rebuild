@@ -2,7 +2,6 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 interface ConsentCheckboxProps {
@@ -10,7 +9,6 @@ interface ConsentCheckboxProps {
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   error?: string;
-  className?: string;
 }
 
 export function ConsentCheckbox({
@@ -18,10 +16,9 @@ export function ConsentCheckbox({
   checked,
   onCheckedChange,
   error,
-  className,
 }: ConsentCheckboxProps) {
   return (
-    <div className={cn("space-y-1.5", className)}>
+    <div className="space-y-1.5">
       <div className="flex items-start gap-3">
         <Checkbox
           id={id}

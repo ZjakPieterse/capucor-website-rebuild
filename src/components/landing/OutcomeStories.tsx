@@ -1,220 +1,171 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { motion, AnimatePresence, useScroll } from 'motion/react';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import { Landmark, ReceiptText, ClipboardCheck, FileBarChart, ScrollText } from 'lucide-react';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { cn } from '@/lib/utils';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 
-const DAY_STOPS = [
+interface DayStop {
+  day: number;
+  icon: typeof Landmark;
+  title: string;
+  body: string;
+}
+
+const DAY_STOPS: DayStop[] = [
   {
     day: 1,
     icon: Landmark,
-    title: 'Bank Reconciliation',
-    body: 'The month starts with a clean slate. Bank feeds are pulled, transactions are classified, and your ledger is aligned. No backlog, no guessing.',
-    accent: '#22d3ee',
+    title: 'Bank feeds pulled, transactions classified',
+    body: 'Xero pulls the previous month’s bank activity overnight. By the time the new month starts, your bookkeeper is already categorising and reconciling. Nothing waits a quarter to be sorted out.',
   },
   {
     day: 7,
     icon: ReceiptText,
-    title: 'Compliance Filing',
-    body: 'Payroll is closed and approved. EMP201 is calculated, submitted, and paid. We handle the SARS deadline so you don\'t have to remember it.',
-    accent: '#4ade80',
+    title: 'Payroll, EMP201 and UIF handled',
+    body: 'Payslips are generated and approved. EMP201 is calculated, submitted and paid. UIF and PAYE move on the dates SARS expects, not the dates you remembered.',
   },
   {
     day: 15,
     icon: ClipboardCheck,
-    title: 'Senior Sign-off',
-    body: 'A SAICA-registered AGA(SA) accountant reviews your books. You receive a management pack showing performance, cash flow, and debtors.',
-    accent: '#a78bfa',
+    title: 'Senior review, then your management report',
+    body: 'A SAICA-registered AGA(SA) accountant signs off on the month before anything reaches you. You receive a concise P&L, balance sheet and cash position, with the items worth a conversation flagged at the top.',
   },
   {
     day: 25,
     icon: FileBarChart,
-    title: 'VAT Submission',
-    body: 'VAT is calculated directly from your reconciled ledger. No piles of slips. You see the final figure, we file the confirmation.',
-    accent: '#fb923c',
+    title: 'VAT201 prepared and submitted',
+    body: 'VAT is calculated from the reconciled ledger, not from invoice piles. You see the figure before it is submitted, and the SARS confirmation gets logged in your file the same day.',
   },
   {
     day: 30,
     icon: ScrollText,
-    title: 'Strategic Close',
-    body: 'The month closes with a conversation. We discuss planning points, tax timing, and risks for the next 60 days. You stay in control.',
-    accent: '#f472b6',
+    title: 'Next month already on the schedule',
+    body: 'Provisional tax, CIPC returns, IRP5 windows: everything that is approaching in the next 60 days is already on a workflow, with you and your bookkeeper assigned to it.',
   },
 ];
 
+const STATS = [
+  { value: 175, suffix: '+', label: 'Businesses kept current month after month' },
+  { value: 0, suffix: '', label: 'Late SARS filings across our client base in 2025' },
+  { value: 12, suffix: ' days', label: 'Average migration from another accountant to a live Capucor month' },
+  { value: 15, suffix: 'th', label: 'Of the month is when your management report lands' },
+];
+
 export function OutcomeStories() {
-  const containerRef = useRef<HTMLElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const timelineRef = useRef<HTMLDivElement | null>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
+    target: timelineRef,
+    offset: ['start 65%', 'end 35%'],
   });
 
-  // Calculate active index based on scroll
-  scrollYProgress.on('change', (v) => {
-    const idx = Math.min(DAY_STOPS.length - 1, Math.floor(v * DAY_STOPS.length));
-    if (idx !== activeIndex) setActiveIndex(idx);
-  });
+  // Vertical fill on the calendar line (0% → 100%)
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
-    <section ref={containerRef} className="relative bg-[#060a14] min-h-[400vh]">
-      {/* Sticky Content */}
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-        
-        {/* Background elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] blur-[160px] opacity-20 transition-all duration-1000"
-            style={{ backgroundColor: DAY_STOPS[activeIndex].accent }}
+    <section className="py-24 lg:py-32 bg-muted/30 border-t border-border">
+      <div className="max-w-7xl mx-auto px-6">
+        <ScrollReveal>
+          <SectionHeading
+            eyebrow="A month with Capucor"
+            title="What actually happens between the 1st and the 30th"
+            subtitle="Most accounting firms surface once a year, at audit time. We work to the month. Scroll through what that rhythm looks like in practice."
           />
-        </div>
+        </ScrollReveal>
 
-        <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-            
-            {/* Left: The Narrative */}
-            <div>
-              <SectionHeading
-                eyebrow="Rhythm of the month"
-                title="When the month closes, you stay in control"
-                subtitle="Most accountants surface once a year. We work to the month, every month."
-                align="left"
-              />
-
-              <div className="mt-12 space-y-8">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeIndex}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                  >
-                    <div 
-                      className="inline-flex h-16 w-16 items-center justify-center rounded-3xl mb-8 bg-white/5 border border-white/10 shadow-2xl"
-                      style={{ color: DAY_STOPS[activeIndex].accent }}
-                    >
-                      {(() => {
-                        const Icon = DAY_STOPS[activeIndex].icon;
-                        return <Icon className="w-8 h-8" />;
-                      })()}
-                    </div>
-                    
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="font-mono text-5xl font-bold text-white/10">Day {DAY_STOPS[activeIndex].day}</span>
-                      <div className="h-px flex-1 bg-white/5" />
-                    </div>
-                    
-                    <h3 className="text-3xl lg:text-5xl font-bold text-white mb-6 tracking-tight">
-                      {DAY_STOPS[activeIndex].title}
-                    </h3>
-                    <p className="text-white/50 text-lg lg:text-xl leading-relaxed max-w-lg">
-                      {DAY_STOPS[activeIndex].body}
-                    </p>
-                  </motion.div>
-                </AnimatePresence>
-
-                <div className="flex items-center gap-2">
-                  {DAY_STOPS.map((_, i) => (
-                    <div 
-                      key={i}
-                      className={cn(
-                        "h-1.5 rounded-full transition-all duration-500",
-                        i === activeIndex ? "w-12 bg-white" : "w-2 bg-white/10"
-                      )}
-                      style={i === activeIndex ? { backgroundColor: DAY_STOPS[i].accent } : {}}
-                    />
-                  ))}
+        {/* Stat ticker */}
+        <ScrollReveal delay={0.1}>
+          <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 border-y border-border py-8">
+            {STATS.map((s) => (
+              <div key={s.label} className="text-center lg:text-left">
+                <div className="text-3xl lg:text-4xl font-bold font-mono text-primary leading-none">
+                  <AnimatedNumber to={s.value} suffix={s.suffix} />
                 </div>
+                <p className="mt-2 text-xs text-muted-foreground leading-snug">
+                  {s.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </ScrollReveal>
+
+        {/* Scroll-driven timeline */}
+        <div ref={timelineRef} className="relative mt-20 grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-16">
+
+          {/* Left: sticky calendar */}
+          <div className="hidden lg:block">
+            <div className="sticky top-32">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-4">
+                A typical month
+              </p>
+              <div className="relative pl-2">
+                {/* Track */}
+                <div
+                  aria-hidden
+                  className="absolute left-[26px] top-2 bottom-2 w-px bg-border"
+                />
+                {/* Fill */}
+                <motion.div
+                  aria-hidden
+                  className="absolute left-[26px] top-2 w-px bg-primary origin-top"
+                  style={prefersReducedMotion ? { height: '100%' } : { height: lineHeight }}
+                />
+                <ul className="space-y-9">
+                  {DAY_STOPS.map((stop) => (
+                    <li key={stop.day} className="relative flex items-center gap-5">
+                      <div className="relative z-10 flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full border border-primary/30 bg-card">
+                        <stop.icon className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          Day
+                        </p>
+                        <p className="font-mono text-xl font-bold leading-none">
+                          {stop.day}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-
-            {/* Right: The High-Fidelity Calendar Visual */}
-            <div className="relative">
-               <motion.div 
-                 className="relative aspect-square max-w-[500px] mx-auto bg-[#070c1a]/50 backdrop-blur-3xl rounded-[48px] border border-white/10 p-8 shadow-2xl overflow-hidden"
-                 initial={{ rotateY: 10, rotateX: 10 }}
-                 animate={{ rotateY: 0, rotateX: 0 }}
-                 transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
-               >
-                  {/* Calendar Grid */}
-                  <div className="grid grid-cols-7 gap-3 h-full">
-                    {Array.from({ length: 30 }).map((_, i) => {
-                      const dayNum = i + 1;
-                      const stop = DAY_STOPS.find(s => s.day === dayNum);
-                      const isCurrentStop = stop && DAY_STOPS.indexOf(stop) === activeIndex;
-                      const isPastStop = stop && DAY_STOPS.indexOf(stop) < activeIndex;
-                      
-                      return (
-                        <div 
-                          key={i}
-                          className={cn(
-                            "relative aspect-square rounded-xl border flex items-center justify-center text-[10px] font-mono transition-all duration-700",
-                            isCurrentStop 
-                              ? "bg-white border-white scale-110 shadow-[0_0_30px_rgba(255,255,255,0.3)] z-20" 
-                              : isPastStop
-                                ? "bg-white/20 border-white/20 text-white/40"
-                                : "bg-white/5 border-white/5 text-white/10"
-                          )}
-                          style={isCurrentStop ? { backgroundColor: stop.accent, borderColor: stop.accent, color: '#060a14' } : {}}
-                        >
-                           {dayNum}
-                           {stop && !isCurrentStop && (
-                             <div 
-                               className="absolute -top-1 -right-1 w-2 h-2 rounded-full" 
-                               style={{ backgroundColor: stop.accent }}
-                             />
-                           )}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Glass overlays */}
-                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#070c1a] via-transparent to-transparent opacity-60" />
-                  
-                  {/* Floating Metric Card */}
-                  <AnimatePresence>
-                     <motion.div 
-                       key={activeIndex}
-                       initial={{ opacity: 0, y: 40, scale: 0.9 }}
-                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                       exit={{ opacity: 0, y: -40, scale: 0.9 }}
-                       className="absolute bottom-10 left-10 right-10 p-6 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-3xl shadow-2xl"
-                     >
-                        <div className="flex items-center gap-4">
-                           <div 
-                             className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10"
-                             style={{ color: DAY_STOPS[activeIndex].accent }}
-                           >
-                              {(() => {
-                                const Icon = DAY_STOPS[activeIndex].icon;
-                                return <Icon className="w-5 h-5" />;
-                              })()}
-                           </div>
-                           <div>
-                              <div className="text-[9px] font-bold uppercase tracking-widest text-white/30 mb-0.5">Live Outcome</div>
-                              <div className="text-sm font-bold text-white tracking-tight">{DAY_STOPS[activeIndex].title}</div>
-                           </div>
-                           <div className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/20 text-[9px] font-bold text-emerald-400">
-                             <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-                             FILED
-                           </div>
-                        </div>
-                     </motion.div>
-                  </AnimatePresence>
-               </motion.div>
-            </div>
           </div>
-        </div>
-        
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-           <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20">The Monthly Timeline</div>
-           <div className="w-px h-12 bg-gradient-to-b from-white/20 to-transparent" />
+
+          {/* Right: scrolling narrative */}
+          <div className="space-y-24 lg:space-y-40">
+            {DAY_STOPS.map((stop, i) => (
+              <motion.div
+                key={stop.day}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '0px 0px -25% 0px' }}
+                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+                className="relative"
+              >
+                {/* Mobile day chip */}
+                <div className="lg:hidden mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/[0.06] px-3 py-1">
+                  <stop.icon className="h-3.5 w-3.5 text-primary" />
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                    Day {stop.day}
+                  </span>
+                </div>
+
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-primary mb-3 hidden lg:block">
+                  {String(i + 1).padStart(2, '0')} of {DAY_STOPS.length}
+                </p>
+                <h3 className="text-2xl lg:text-3xl font-bold tracking-tight leading-tight mb-4">
+                  {stop.title}
+                </h3>
+                <p className="text-base text-muted-foreground leading-relaxed max-w-xl">
+                  {stop.body}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

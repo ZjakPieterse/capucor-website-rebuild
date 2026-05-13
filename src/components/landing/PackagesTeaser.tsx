@@ -1,18 +1,16 @@
-'use client';
-
 import Link from 'next/link';
-import { CalendarCheck, Check, Layers, Users, ArrowRight, Star } from 'lucide-react';
+import { CalendarCheck, Check, Layers, Users } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { motion } from 'motion/react';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { cn } from '@/lib/utils';
 import {
   TIER_HIGHLIGHTS,
   TIER_CUMULATIVE_LABELS,
   PACKAGE_COMMON_ITEMS,
   TIER_BUYER_FIT,
+  TIER_MOST_POPULAR_NOTE,
 } from '@/config/tiers';
 import type { Service, Tier } from '@/types';
-import { MagneticButton } from '@/components/ui/MagneticButton';
 
 interface PackagesTeaserProps {
   services: Service[];
@@ -32,125 +30,103 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
   const sortedTiers = [...tiers].sort((a, b) => a.display_order - b.display_order);
 
   return (
-    <section id="packages" className="relative py-24 lg:py-40 bg-[#060a14] overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[160px] rounded-full" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="max-w-3xl mb-16 lg:mb-24">
+    <section className="py-24 lg:py-32 bg-muted/30">
+      <div className="max-w-7xl mx-auto px-6">
+        <ScrollReveal>
           <SectionHeading
-            eyebrow="The Plans"
-            title="Support that scales with your complexity"
-            subtitle="Choose the depth of monthly involvement. You see the transparent monthly fee before any conversation, and your subscription grows as you do."
-            align="left"
+            eyebrow="Packages"
+            title="Choose the level of support your business needs right now"
+            subtitle="Start with the services you need, then choose the depth of monthly support. You see the monthly fee before any conversation, and your subscription can grow as the business becomes more complex."
           />
-        </div>
+        </ScrollReveal>
 
-        {/* Global Inclusions Banner */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-12 p-8 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-3xl"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400">
-                <Star className="w-6 h-6 fill-emerald-400/20" />
-              </div>
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-0.5">Every Subscription</div>
-                <div className="text-lg font-bold text-white tracking-tight">Professional Standards Included</div>
-              </div>
-            </div>
-            
-            <div className="flex flex-wrap justify-center gap-6 lg:gap-12">
-              {PACKAGE_COMMON_ITEMS.map((item, idx) => {
-                const Icon = idx === 0 ? Users : idx === 1 ? Layers : CalendarCheck;
-                return (
-                  <div key={item.text} className="flex items-center gap-3">
-                    <Icon className="h-4 w-4 text-emerald-400 shrink-0" />
-                    <span className="text-sm font-medium text-white/70">{item.text}</span>
-                  </div>
-                );
-              })}
-            </div>
+        {/* Included in every package */}
+        <ScrollReveal delay={0.1}>
+        <div className="mt-10 rounded-xl border border-border bg-card px-8 py-6">
+          <p className="text-xs font-medium uppercase tracking-widest text-center text-muted-foreground mb-5">
+            Included in every package
+          </p>
+          <div className="flex flex-wrap justify-center gap-8">
+            {PACKAGE_COMMON_ITEMS.map((item, idx) => {
+              const Icon = idx === 0 ? Users : idx === 1 ? Layers : CalendarCheck;
+              return (
+                <div key={item.text} className="flex items-center gap-2.5">
+                  <Icon className="h-4 w-4 text-primary shrink-0" />
+                  <span className="text-sm font-medium">{item.text}</span>
+                </div>
+              );
+            })}
           </div>
-        </motion.div>
+        </div>
+        </ScrollReveal>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <ScrollReveal delay={0.15}>
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            Every month-end is reviewed and signed off by a SAICA-registered AGA(SA) accountant before it reaches you.
+          </p>
+        </ScrollReveal>
+
+        <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedTiers.map((tier, i) => {
-            const isFeatured = i === 1; // "Growth" is usually the middle one
+            const isMiddle = i === 1;
             const displayItems = getDisplayItems(tier.slug);
-            const accentColor = isFeatured ? 'var(--brand-emerald)' : 'var(--brand-cyan)';
 
             return (
-              <motion.div
-                key={tier.slug}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
+              <ScrollReveal key={tier.slug} delay={i * 0.1}>
+              <div
                 className={cn(
-                  "group relative p-10 rounded-[40px] bg-[#070c1a]/80 backdrop-blur-3xl border transition-all duration-500 flex flex-col",
-                  isFeatured 
-                    ? "border-emerald-500/30 lg:scale-105 shadow-[0_40px_80px_rgba(0,0,0,0.4)] z-10" 
-                    : "border-white/10 hover:border-white/20"
+                  'rounded-xl border bg-card p-8 flex flex-col h-full transition-all duration-[250ms]',
+                  'hover:-translate-y-1 hover:shadow-lg',
+                  isMiddle
+                    ? 'border-primary/40 shadow-lg shadow-primary/10 relative hover:shadow-primary/15'
+                    : 'border-border hover:border-primary/20'
                 )}
               >
-                {isFeatured && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-emerald-500 text-[#060a14] text-[10px] font-bold uppercase tracking-widest shadow-xl">
-                    Most Popular
+                {isMiddle && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+                      Most popular
+                    </span>
                   </div>
                 )}
 
-                <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">{tier.name}</h3>
-                  <p className="text-sm text-white/40 leading-relaxed min-h-[40px]">
-                    {TIER_BUYER_FIT[tier.slug] || tier.tagline}
-                  </p>
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold mb-1">{tier.name}</h3>
+                  {TIER_BUYER_FIT[tier.slug] ? (
+                    <p className="text-sm text-muted-foreground">{TIER_BUYER_FIT[tier.slug]}</p>
+                  ) : tier.tagline ? (
+                    <p className="text-sm text-muted-foreground">{tier.tagline}</p>
+                  ) : null}
+                  {isMiddle && (
+                    <p className="mt-3 text-xs leading-relaxed text-primary/90">
+                      {TIER_MOST_POPULAR_NOTE}
+                    </p>
+                  )}
                 </div>
 
-                <div className="flex-1 space-y-4 mb-10">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-white/20 mb-4">Service Depth</div>
+                <ul className="space-y-2 flex-1">
                   {displayItems.map((item) => (
-                    <div key={item.text} className="flex items-start gap-3">
-                      <Check className="w-4 h-4 shrink-0 mt-0.5" style={{ color: accentColor }} />
-                      <span className="text-sm text-white/70 leading-relaxed">{item.text}</span>
-                    </div>
+                    <li key={item.text} className="flex items-start gap-2 text-sm">
+                      <Check className="h-4 w-4 shrink-0 mt-0.5 text-primary" />
+                      <span>{item.text}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
 
-                <div className="pt-8 border-t border-white/5">
-                  <MagneticButton>
-                    <Link
-                      href="/pricing"
-                      className={cn(
-                        "flex items-center justify-center gap-2 w-full py-4 rounded-2xl text-sm font-bold transition-all",
-                        isFeatured 
-                          ? "bg-emerald-500 text-[#060a14] hover:bg-emerald-400 shadow-[0_20px_40px_rgba(74,222,128,0.2)]" 
-                          : "bg-white/5 text-white hover:bg-white/10 border border-white/10"
-                      )}
-                    >
-                      Build your plan
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  </MagneticButton>
+                <div className="mt-6 flex justify-center">
+                  <Link
+                    href="/pricing"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
+                  >
+                    Build your subscription →
+                  </Link>
                 </div>
-              </motion.div>
+              </div>
+              </ScrollReveal>
             );
           })}
         </div>
 
-        <motion.p 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          className="mt-12 text-center text-xs text-white/30 font-medium max-w-lg mx-auto"
-        >
-          Every month-end is reviewed and signed off by a SAICA-registered AGA(SA) accountant. Professional oversight is built into every tier.
-        </motion.p>
       </div>
     </section>
   );

@@ -1,224 +1,186 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react';
-import { Inbox, Cog, BarChart2, MessageSquare, ArrowRight, Calendar, CheckCircle2 } from 'lucide-react';
+import { motion } from 'motion/react';
+import Link from 'next/link';
+import { Inbox, Cog, BarChart2, MessageSquare, ArrowRight, Calendar } from 'lucide-react';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { siteConfig } from '@/config/site';
-import { MagneticButton } from '@/components/ui/MagneticButton';
-import Link from 'next/link';
 
 const STEPS = [
   {
     icon: Inbox,
-    number: '01',
+    number: '1',
     title: 'Collect & Collaborate',
-    body: 'We make the monthly admin clear and repeatable. No more missing invoices or last-minute scrambles. Everything has a home and a deadline.',
-    deliverable: 'VAT201, EMP201, and provisional tax deadlines tracked through a structured digital workflow.',
-    accent: '#22d3ee',
+    body: 'You know exactly what to send, where to send it, and by when. We make the monthly admin clear and repeatable, so both sides can deliver properly.',
+    deliverable: 'VAT201, EMP201, provisional tax and CIPC deadlines tracked through a structured workflow, not memory or last-minute panic.',
   },
   {
     icon: Cog,
-    number: '02',
+    number: '2',
     title: 'Process & Reconcile',
-    body: 'We capture, code, and reconcile every transaction in Xero. Bank feeds, supplier invoices, and payroll are aligned daily to ensure decision-ready data.',
-    deliverable: 'A clean, reconciled Xero ledger that is always audit-ready and funder-compliant.',
-    accent: '#4ade80',
+    body: 'We capture, code and reconcile the month’s activity in Xero, including bank feeds, supplier invoices, payroll entries and key control accounts.',
+    deliverable: 'Your Xero ledger stays reconciled and decision-ready. When the bank, SARS or a funder needs a number, you are not scrambling to catch up.',
   },
   {
     icon: BarChart2,
-    number: '03',
+    number: '3',
     title: 'Review & Report',
-    body: 'Senior oversight is built-in. You receive a clear monthly report showing performance, cash flow, and debtors before we even talk.',
-    deliverable: 'A premium PDF reporting pack showing revenue, expenses, cash flow, and key business health metrics.',
-    accent: '#a78bfa',
+    body: 'A senior accountant checks the numbers before they reach you. You receive a clear monthly report showing performance, cash flow, debtors and anything that needs attention.',
+    deliverable: 'A concise monthly view of revenue, expenses, cash flow, debtors and anything unusual that deserves attention.',
   },
   {
     icon: MessageSquare,
-    number: '04',
+    number: '4',
     title: 'Advise & Plan',
-    body: 'We turn the reports into useful business conversation. We talk about tax timing, cash pressure, and practical next steps to grow your business.',
-    deliverable: 'A scheduled monthly strategy session to act on risks and opportunities while they still matter.',
-    accent: '#fb923c',
+    body: 'We turn the report into useful business conversation: tax timing, cash pressure, margin movement, compliance risks and practical next steps.',
+    deliverable: 'Risks, opportunities and planning points raised early, while there is still time to act on them.',
   },
 ];
 
 export function HowItWorks() {
-  const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start center', 'end center'],
-  });
-
-  const scaleY = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
   return (
-    <section
-      ref={containerRef}
-      id="how-it-works"
-      className="relative py-24 lg:py-40 bg-[#060a14] overflow-hidden"
-    >
-      {/* Background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-500/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-cyan-500/5 blur-[120px] rounded-full" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="max-w-3xl mb-20 lg:mb-32">
+    <section id="how-it-works" className="py-24 lg:py-32">
+      <div className="max-w-7xl mx-auto px-6">
+        <ScrollReveal>
           <SectionHeading
-            eyebrow="The Monthly Rhythm"
-            title="Finance work that finally feels organized"
-            subtitle="Great finance work is a process, not a project. We provide the rhythm so you can provide the vision."
-            align="left"
+            eyebrow="How it works"
+            title="A monthly rhythm that keeps you in control"
+            subtitle="Great finance work needs a clear monthly rhythm. You provide the documents, approvals and answers we need. We process, review, report and advise from there. So the month closes properly and your business stays in control."
           />
-        </div>
+        </ScrollReveal>
 
-        <div className="relative grid lg:grid-cols-[1fr_auto_1fr] gap-12 lg:gap-24">
-          {/* Left Side: Decorative imagery/status */}
-          <div className="hidden lg:block relative">
-             <div className="sticky top-1/3">
-                <motion.div 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  className="p-8 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-3xl"
-                >
-                   <div className="text-emerald-400 font-mono text-sm mb-4 uppercase tracking-widest">Status Update</div>
-                   <h4 className="text-xl font-bold text-white mb-2">Systems Operational</h4>
-                   <p className="text-white/40 text-sm leading-relaxed">
-                     Your finance function is now running on a set monthly cadence. Deadlines are met automatically, and data is flowing into your dashboard in real-time.
-                   </p>
-                   <div className="mt-6 flex items-center gap-3">
-                      <div className="flex -space-x-2">
-                        {[1,2,3].map(i => (
-                          <div key={i} className="w-8 h-8 rounded-full border-2 border-[#060a14] bg-emerald-500/20" />
-                        ))}
-                      </div>
-                      <span className="text-[10px] text-white/30 uppercase font-bold tracking-tighter">Verified by Senior Accountants</span>
-                   </div>
-                </motion.div>
-             </div>
-          </div>
-
-          {/* Center Line (The Laser Line) */}
-          <div className="relative flex flex-col items-center">
-            <div className="absolute top-0 bottom-0 w-px bg-white/10" />
-            <motion.div
-              style={{ scaleY, originY: 0 }}
-              className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-400 via-emerald-400 to-purple-500 shadow-[0_0_15px_rgba(34,211,238,0.5)]"
-            />
-            <div className="flex flex-col gap-[30vh] lg:gap-[40vh] py-12">
-              {STEPS.map((step, i) => (
-                <StepNode key={i} step={step} index={i} scrollYProgress={scrollYProgress} />
-              ))}
-            </div>
-          </div>
-
-          {/* Right Side: Step Content */}
-          <div className="flex flex-col gap-[30vh] lg:gap-[40vh] py-12">
+        {/* ── Desktop: horizontal timeline ─────────────────────────── */}
+        <div className="mt-16 hidden lg:block">
+          {/* gap-0 is required: the line positioning math assumes columns are flush.
+              left: calc(50%+32px) = right edge of the icon (centered in column).
+              right: calc(-50%+32px) = extends past the column boundary by exactly
+              col_width/2 - 32px, landing at the left edge of the next icon. */}
+          <div className="grid grid-cols-4 gap-0">
             {STEPS.map((step, i) => (
-              <StepContent key={i} step={step} index={i} scrollYProgress={scrollYProgress} />
+              <ScrollReveal key={step.title} delay={i * 0.1}>
+                <div className="relative flex flex-col items-center text-center px-3">
+                  {i < STEPS.length - 1 && (
+                    <motion.div
+                      aria-hidden
+                      className="absolute top-8 h-0.5 pointer-events-none origin-left"
+                      style={{
+                        left: 'calc(50% + 32px)',
+                        right: 'calc(-50% + 32px)',
+                        background:
+                          'linear-gradient(to right, color-mix(in oklch, var(--primary) 70%, transparent), transparent)',
+                      }}
+                      initial={{ scaleX: 0, opacity: 0.4 }}
+                      whileInView={{ scaleX: 1, opacity: 1 }}
+                      viewport={{ once: true, margin: '0px 0px -25% 0px' }}
+                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 + i * 0.1 }}
+                    />
+                  )}
+
+                  {/* Icon */}
+                  <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40">
+                    <motion.span
+                      aria-hidden
+                      className="absolute inset-0 rounded-full border-2 border-primary"
+                      initial={{ scale: 1, opacity: 0 }}
+                      whileInView={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                      viewport={{ once: true, margin: '0px 0px -30% 0px' }}
+                      transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 + i * 0.1 }}
+                    />
+                    <step.icon className="relative z-10 h-6 w-6 text-primary" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="w-full border-t border-primary/20 pt-5">
+                    <h3 className="text-base font-semibold mb-2 leading-snug">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+                    <p className="mt-3 text-xs leading-relaxed text-primary/90">
+                      <span className="font-semibold uppercase tracking-wider text-[10px] mr-1.5">You get</span>
+                      {step.deliverable}
+                    </p>
+                  </div>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
 
-        {/* Final CTA Strip */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-32 lg:mt-48 p-12 rounded-[40px] bg-gradient-to-br from-emerald-500/10 to-cyan-500/5 border border-white/10 backdrop-blur-2xl text-center"
-        >
-          <h3 className="text-3xl font-bold text-white mb-4">Ready to put this rhythm to work?</h3>
-          <p className="text-white/50 mb-10 max-w-xl mx-auto">
-            Take the first step toward a professional finance team. Build your monthly subscription or book a call with us today.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <MagneticButton>
-              <Link
-                href="/pricing"
-                className="inline-flex items-center gap-2 rounded-xl bg-white text-black px-8 py-4 text-sm font-bold hover:bg-white/90 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
-              >
-                Build your subscription
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </MagneticButton>
-            <MagneticButton>
-              <a
-                href={siteConfig.links.booking}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-all"
-              >
-                <Calendar className="h-4 w-4" />
-                Book a fit call
-              </a>
-            </MagneticButton>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
+        {/* ── Mobile: vertical left-side timeline ──────────────────── */}
+        <div className="mt-12 lg:hidden">
+          {STEPS.map((step, i) => {
+            const isLast = i === STEPS.length - 1;
+            return (
+              <ScrollReveal key={step.title} delay={i * 0.1}>
+                <div className="relative flex gap-5 pb-10">
+                  {/* Vertical line segment — hidden on last step */}
+                  {!isLast && (
+                    <motion.div
+                      aria-hidden
+                      className="absolute left-6 top-12 bottom-0 w-[2px] pointer-events-none origin-top"
+                      style={{
+                        background:
+                          'linear-gradient(to bottom, color-mix(in oklch, var(--primary) 70%, transparent), color-mix(in oklch, var(--border) 20%, transparent))',
+                      }}
+                      initial={{ scaleY: 0, opacity: 0.4 }}
+                      whileInView={{ scaleY: 1, opacity: 1 }}
+                      viewport={{ once: true, margin: '0px 0px -15% 0px' }}
+                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+                    />
+                  )}
 
-function StepNode({ step, index, scrollYProgress }: { step: (typeof STEPS)[0]; index: number; scrollYProgress: MotionValue<number> }) {
-  const threshold = index / (STEPS.length - 1);
-  const isActive = useTransform(scrollYProgress, [threshold - 0.1, threshold, threshold + 0.1], [0.3, 1, 0.3]);
-  const scale = useTransform(scrollYProgress, [threshold - 0.1, threshold, threshold + 0.1], [0.8, 1.2, 0.8]);
-  
-  return (
-    <motion.div
-      style={{ opacity: isActive, scale }}
-      className="relative z-20 w-12 h-12 lg:w-16 lg:h-16 rounded-full bg-[#060a14] border-2 border-white/20 flex items-center justify-center shadow-2xl"
-    >
-      <div 
-        className="absolute inset-0 rounded-full blur-md opacity-50"
-        style={{ backgroundColor: step.accent }}
-      />
-      <step.icon className="w-5 h-5 lg:w-7 lg:h-7 text-white relative z-10" />
-      <div className="absolute -left-12 lg:-left-16 text-white/20 font-mono font-bold text-sm lg:text-base">
-        {step.number}
-      </div>
-    </motion.div>
-  );
-}
+                  {/* Node */}
+                  <div className="relative z-10 shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40 ring-4 ring-background">
+                    <motion.span
+                      aria-hidden
+                      className="absolute inset-0 rounded-full border-2 border-primary"
+                      initial={{ scale: 1, opacity: 0 }}
+                      whileInView={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                      viewport={{ once: true, margin: '0px 0px -15% 0px' }}
+                      transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 }}
+                    />
+                    <step.icon className="relative z-10 h-5 w-5 text-primary" />
+                  </div>
 
-function StepContent({ step, index, scrollYProgress }: { step: (typeof STEPS)[0]; index: number; scrollYProgress: MotionValue<number> }) {
-  const threshold = index / (STEPS.length - 1);
-  const opacity = useTransform(scrollYProgress, [threshold - 0.15, threshold, threshold + 0.15], [0, 1, 0]);
-  const y = useTransform(scrollYProgress, [threshold - 0.15, threshold, threshold + 0.15], [20, 0, -20]);
-
-  return (
-    <motion.div
-      style={{ opacity, y }}
-      className="max-w-md"
-    >
-      <h3 className="text-2xl lg:text-4xl font-bold text-white mb-4 lg:mb-6 tracking-tight">
-        {step.title}
-      </h3>
-      <p className="text-white/50 text-base lg:text-lg leading-relaxed mb-8">
-        {step.body}
-      </p>
-      
-      <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl relative overflow-hidden group">
-        <div 
-          className="absolute top-0 left-0 w-1 h-full"
-          style={{ backgroundColor: step.accent }}
-        />
-        <div className="flex items-start gap-3">
-          <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0" style={{ color: step.accent }} />
-          <div>
-            <div className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-1">Monthly Outcome</div>
-            <p className="text-sm lg:text-base text-white/80 font-medium">
-              {step.deliverable}
-            </p>
-          </div>
+                  {/* Content */}
+                  <div className="flex-1 pt-2">
+                    <h3 className="text-base font-semibold mb-1.5 leading-snug">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+                    <p className="mt-2.5 text-xs leading-relaxed text-primary/90">
+                      <span className="font-semibold uppercase tracking-wider text-[10px] mr-1.5">You get</span>
+                      {step.deliverable}
+                    </p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            );
+          })}
         </div>
       </div>
-    </motion.div>
+
+      {/* Bottom CTA */}
+      <ScrollReveal delay={0.4}>
+        <div className="mt-16 text-center">
+          <p className="text-sm text-muted-foreground mb-6">Ready to put a proper monthly finance rhythm in place?</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 rounded-lg border border-input bg-input/30 px-5 py-2.5 text-sm font-semibold hover:bg-input/50 transition-all hover:scale-[1.03]"
+            >
+              Build your subscription
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <a
+              href={siteConfig.links.booking}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Calendar className="h-4 w-4" />
+              Book a 15-minute fit call
+            </a>
+          </div>
+        </div>
+      </ScrollReveal>
+    </section>
   );
 }

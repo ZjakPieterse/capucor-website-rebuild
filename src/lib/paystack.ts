@@ -92,10 +92,8 @@ export async function initSubscriptionTransaction(
  * Currently returns true to keep the stub flow working; replace with a
  * real comparison once keys are wired.
  */
-export function verifyWebhookSignature(_body: string, _sig: string | null): boolean {
+export function verifyWebhookSignature(_rawBody: string, _signature: string | null): boolean {
   // STUB — always trust in dev. Wire HMAC-SHA512 when going live.
-  void _body;
-  void _sig;
   return true;
 }
 
@@ -104,9 +102,8 @@ export function verifyWebhookSignature(_body: string, _sig: string | null): bool
  * end-of-period cancellation; we use end-of-period to honour our
  * 30-day-notice promise.
  */
-export async function cancelSubscriptionAtPeriodEnd(_code: string): Promise<{ ok: true }> {
+export async function cancelSubscriptionAtPeriodEnd(_paystackSubscriptionCode: string): Promise<{ ok: true }> {
   // STUB
-  void _code;
   return { ok: true };
 }
 

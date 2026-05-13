@@ -12,18 +12,18 @@ export function TestimonialSpotlight({ testimonial: t }: TestimonialSpotlightPro
 
   return (
     <figure
-      className="relative rounded-3xl border border-white/5 bg-white/5 p-8 overflow-hidden"
+      className="relative rounded-xl border border-border bg-card p-6 sm:p-7 overflow-hidden"
       aria-label="Customer testimonial"
     >
-      <div className="absolute top-0 right-0 p-8 text-white/5">
-        <Quote className="w-12 h-12 rotate-180" />
-      </div>
-      
-      <blockquote className="text-sm italic leading-relaxed text-white/60 mb-6 relative z-10">
+      <div
+        aria-hidden
+        className="absolute -top-6 -right-6 h-32 w-32 rounded-full bg-primary/[0.04] blur-2xl"
+      />
+      <Quote className="h-6 w-6 text-primary/40 mb-3 shrink-0 relative" />
+      <blockquote className="text-sm sm:text-base leading-relaxed text-foreground relative">
         &ldquo;{t.quote}&rdquo;
       </blockquote>
-
-      <figcaption className="flex items-center gap-4 relative z-10">
+      <figcaption className="mt-5 flex items-center gap-3 relative">
         {t.avatar_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -31,19 +31,19 @@ export function TestimonialSpotlight({ testimonial: t }: TestimonialSpotlightPro
             alt={t.name}
             loading="lazy"
             decoding="async"
-            className="h-10 w-10 rounded-full object-cover grayscale"
+            className="h-10 w-10 rounded-full object-cover"
           />
         ) : (
-          <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-            <span className="text-xs font-bold text-emerald-400">
+          <div className="h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+            <span className="text-sm font-semibold text-primary">
               {t.name.charAt(0).toUpperCase()}
             </span>
           </div>
         )}
-        <div>
-          <p className="text-xs font-bold text-white uppercase tracking-widest">{t.name}</p>
+        <div className="min-w-0">
+          <p className="text-sm font-semibold">{t.name}</p>
           {subtitle && (
-            <p className="text-[10px] text-white/20 font-bold uppercase tracking-[0.2em] mt-0.5">{subtitle}</p>
+            <p className="text-xs text-muted-foreground truncate">{subtitle}</p>
           )}
         </div>
       </figcaption>

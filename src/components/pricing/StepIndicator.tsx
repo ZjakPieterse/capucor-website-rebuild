@@ -1,78 +1,76 @@
 'use client';
-import { motion } from 'motion/react';
+
 import { cn } from '@/lib/utils';
 import type { CalculatorStep } from '@/types';
-import { Check } from 'lucide-react';
 
 interface StepIndicatorProps {
   currentStep: CalculatorStep;
 }
 
 const STEPS = [
-  { number: 1, label: 'Services' },
-  { number: 2, label: 'Business Size' },
-  { number: 3, label: 'Support Level' },
-  { number: 4, label: 'Finalize' },
+  { number: 1, label: 'Select services' },
+  { number: 2, label: 'Your business' },
+  { number: 3, label: 'Choose package' },
+  { number: 4, label: 'Activate' },
 ] as const;
 
 export function StepIndicator({ currentStep }: StepIndicatorProps) {
   return (
-    <nav aria-label="Calculator progress" className="max-w-2xl mx-auto">
-      <div className="relative flex justify-between">
-        {/* Connection Line */}
-        <div className="absolute top-5 left-0 w-full h-px bg-white/10" />
-        
-        {STEPS.map((step) => {
+    <nav aria-label="Calculator progress" className="mb-8">
+      <ol className="flex items-start gap-0">
+        {STEPS.map((step, i) => {
           const isDone = step.number < currentStep;
           const isActive = step.number === currentStep;
 
           return (
-            <div key={step.number} className="relative z-10 flex flex-col items-center group">
-              {/* Node */}
-              <motion.div
-                initial={false}
-                animate={{
-                  backgroundColor: isDone ? '#4ade80' : isActive ? '#060a14' : '#060a14',
-                  borderColor: isDone ? '#4ade80' : isActive ? '#4ade80' : 'rgba(255,255,255,0.1)',
-                  scale: isActive ? 1.2 : 1,
-                }}
-                className={cn(
-                  "w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500",
-                  isActive && "shadow-[0_0_20px_rgba(74,222,128,0.4)]"
-                )}
-              >
-                {isDone ? (
-                  <Check className="w-5 h-5 text-[#060a14] stroke-[3]" />
-                ) : (
-                  <span className={cn(
-                    "font-mono font-bold text-sm",
-                    isActive ? "text-emerald-400" : "text-white/20"
-                  )}>
-                    {step.number}
-                  </span>
-                )}
-                
-                {isActive && (
-                  <motion.div 
-                    layoutId="nodeGlow"
-                    className="absolute inset-0 rounded-full bg-emerald-400/20 blur-md"
-                  />
-                )}
-              </motion.div>
-
-              {/* Label */}
-              <div className="mt-4 flex flex-col items-center">
-                 <span className={cn(
-                   "text-[10px] font-bold uppercase tracking-widest transition-colors duration-500",
-                   isActive ? "text-emerald-400" : isDone ? "text-white/60" : "text-white/20"
-                 )}>
-                   {step.label}
-                 </span>
+            <li
+              key={step.number}
+              className={cn('flex items-start', i === STEPS.length - 1 ? '' : 'flex-1')}
+            >
+              <div className="flex flex-col items-center shrink-0">
+                <div
+                  className={cn(
+                    'relative h-8 w-8 rounded-full border-2 flex items-center justify-center text-sm font-semibold transition-all duration-200',
+                    isDone
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : isActive
+                      ? 'border-primary bg-primary/10 text-primary scale-110'
+                      : 'border-border bg-background text-muted-foreground'
+                  )}
+                  aria-current={isActive ? 'step' : undefined}
+                >
+                  {isActive && (
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 rounded-full ring-4 ring-primary/15 animate-pulse"
+                    />
+                  )}
+                  <span className="relative">{isDone ? '✓' : step.number}</span>
+                </div>
+                <span
+                  className={cn(
+                    'mt-2 text-[10px] sm:text-xs font-medium text-center max-w-[80px] leading-tight',
+                    isActive ? 'text-foreground' : 'text-muted-foreground'
+                  )}
+                >
+                  {step.label}
+                </span>
               </div>
-            </div>
+
+              {i < STEPS.length - 1 && (
+                <div className="flex-1 h-px mt-4 mx-2 sm:mx-3 bg-border relative overflow-hidden">
+                  <div
+                    className={cn(
+                      'absolute inset-0 bg-primary origin-left transition-transform duration-500 ease-out',
+                      isDone ? 'scale-x-100' : 'scale-x-0'
+                    )}
+                  />
+                </div>
+              )}
+            </li>
           );
         })}
-      </div>
+      </ol>
     </nav>
   );
 }
