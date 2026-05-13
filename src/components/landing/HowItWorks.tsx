@@ -1,11 +1,19 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Inbox, Cog, BarChart2, MessageSquare, ArrowRight, Calendar } from 'lucide-react';
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { siteConfig } from '@/config/site';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { cn } from '@/lib/utils';
+import { MagneticButton } from '@/components/ui/MagneticButton';
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const STEPS = [
   {
@@ -39,148 +47,147 @@ const STEPS = [
 ];
 
 export function HowItWorks() {
+  const containerRef = useRef<HTMLElement>(null);
+  const [activeStep, setActiveStep] = useState(0);
+
+  useGSAP(() => {
+    // We create a ScrollTrigger that pins the container
+    // and scrubs through the steps.
+    const steps = gsap.utils.toArray<HTMLElement>('.step-item');
+    
+    // Create a timeline that is scrubbed by scroll
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'center center', // Pin when section is in the middle of viewport
+        end: `+=${steps.length * 80}%`, // Scroll distance based on number of steps
+        pin: true,
+        scrub: 0.5,
+        onUpdate: (self) => {
+          // Update active step based on progress
+          const progress = self.progress;
+          const currentStep = Math.min(
+            steps.length - 1,
+            Math.floor(progress * steps.length)
+          );
+          setActiveStep(currentStep);
+        }
+      }
+    });
+
+    // Animate the progress bar height
+    tl.fromTo('.progress-fill', 
+      { height: '0%' }, 
+      { height: '100%', ease: 'none' }
+    );
+
+    // Cleanup
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, { scope: containerRef });
+
   return (
-    <section id="how-it-works" className="py-24 lg:py-32">
-      <div className="max-w-7xl mx-auto px-6">
-        <ScrollReveal>
+    <section ref={containerRef} id="how-it-works" className="py-12 bg-background min-h-screen flex flex-col justify-center overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 w-full">
+        <div className="mb-12">
           <SectionHeading
             eyebrow="How it works"
             title="A monthly rhythm that keeps you in control"
-            subtitle="Great finance work needs a clear monthly rhythm. You provide the documents, approvals and answers we need. We process, review, report and advise from there. So the month closes properly and your business stays in control."
+            subtitle="Great finance work needs a clear monthly rhythm. We process, review, report and advise so the month closes properly."
           />
-        </ScrollReveal>
+        </div>
 
-        {/* ── Desktop: horizontal timeline ─────────────────────────── */}
-        <div className="mt-16 hidden lg:block">
-          {/* gap-0 is required: the line positioning math assumes columns are flush.
-              left: calc(50%+32px) = right edge of the icon (centered in column).
-              right: calc(-50%+32px) = extends past the column boundary by exactly
-              col_width/2 - 32px, landing at the left edge of the next icon. */}
-          <div className="grid grid-cols-4 gap-0">
-            {STEPS.map((step, i) => (
-              <ScrollReveal key={step.title} delay={i * 0.1}>
-                <div className="relative flex flex-col items-center text-center px-3">
-                  {i < STEPS.length - 1 && (
-                    <motion.div
-                      aria-hidden
-                      className="absolute top-8 h-0.5 pointer-events-none origin-left"
-                      style={{
-                        left: 'calc(50% + 32px)',
-                        right: 'calc(-50% + 32px)',
-                        background:
-                          'linear-gradient(to right, color-mix(in oklch, var(--primary) 70%, transparent), transparent)',
-                      }}
-                      initial={{ scaleX: 0, opacity: 0.4 }}
-                      whileInView={{ scaleX: 1, opacity: 1 }}
-                      viewport={{ once: true, margin: '0px 0px -25% 0px' }}
-                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 + i * 0.1 }}
-                    />
+        <div className="flex flex-col lg:flex-row gap-12 relative">
+          
+          {/* Left: The pinned progress visual */}
+          <div className="lg:w-1/3 relative flex justify-center lg:justify-start">
+            <div className="relative h-[350px] w-full flex justify-center lg:justify-start">
+              {/* Vertical Track */}
+              <div className="absolute top-0 bottom-0 w-1 bg-border rounded-full overflow-hidden left-1/2 lg:left-12 -translate-x-1/2">
+                <div className="progress-fill w-full bg-primary origin-top" />
+              </div>
+
+              {/* Dynamic Icon/Node based on active step */}
+              <div className="absolute top-1/2 -translate-y-1/2 left-1/2 lg:left-12 -translate-x-1/2 flex flex-col items-center">
+                {STEPS.map((step, i) => {
+                  const isActive = i === activeStep;
+                  return (
+                    <div 
+                      key={step.title}
+                      className={cn(
+                        "absolute transition-all duration-500 ease-out flex items-center justify-center w-16 h-16 rounded-full border-4 border-background",
+                        isActive ? "scale-100 opacity-100 bg-primary shadow-[0_0_30px_rgba(46,216,137,0.4)]" : "scale-50 opacity-0 bg-muted"
+                      )}
+                      style={{ zIndex: isActive ? 10 : 0 }}
+                    >
+                      <step.icon className={cn("w-7 h-7", isActive ? "text-primary-foreground" : "text-muted-foreground")} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Right: The content that scrubs */}
+          <div className="lg:w-2/3 relative h-[350px] flex items-center mt-8 lg:mt-0">
+            {STEPS.map((step, i) => {
+              const isActive = i === activeStep;
+              const isPast = i < activeStep;
+              
+              return (
+                <div 
+                  key={step.title}
+                  className={cn(
+                    "step-item absolute inset-0 flex flex-col justify-center transition-all duration-700 ease-in-out px-4 lg:px-0 text-center lg:text-left",
+                    isActive ? "opacity-100 translate-y-0" : 
+                    isPast ? "opacity-0 -translate-y-16 pointer-events-none" : "opacity-0 translate-y-16 pointer-events-none"
                   )}
-
-                  {/* Icon */}
-                  <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40">
-                    <motion.span
-                      aria-hidden
-                      className="absolute inset-0 rounded-full border-2 border-primary"
-                      initial={{ scale: 1, opacity: 0 }}
-                      whileInView={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-                      viewport={{ once: true, margin: '0px 0px -30% 0px' }}
-                      transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 + i * 0.1 }}
-                    />
-                    <step.icon className="relative z-10 h-6 w-6 text-primary" />
+                >
+                  <div className="text-[10px] font-bold text-primary uppercase tracking-widest mb-3">
+                    Step {step.number} of {STEPS.length}
                   </div>
-
-                  {/* Content */}
-                  <div className="w-full border-t border-primary/20 pt-5">
-                    <h3 className="text-base font-semibold mb-2 leading-snug">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
-                    <p className="mt-3 text-xs leading-relaxed text-primary/90">
-                      <span className="font-semibold uppercase tracking-wider text-[10px] mr-1.5">You get</span>
-                      {step.deliverable}
-                    </p>
+                  <h3 className="text-2xl sm:text-3xl font-bold mb-4">{step.title}</h3>
+                  <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6 max-w-xl mx-auto lg:mx-0">
+                    {step.body}
+                  </p>
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-5 max-w-xl mx-auto lg:mx-0 text-left">
+                    <span className="font-semibold uppercase tracking-wider text-[10px] text-primary mr-2">You get</span>
+                    <span className="text-sm font-medium text-foreground/90">{step.deliverable}</span>
                   </div>
                 </div>
-              </ScrollReveal>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* ── Mobile: vertical left-side timeline ──────────────────── */}
-        <div className="mt-12 lg:hidden">
-          {STEPS.map((step, i) => {
-            const isLast = i === STEPS.length - 1;
-            return (
-              <ScrollReveal key={step.title} delay={i * 0.1}>
-                <div className="relative flex gap-5 pb-10">
-                  {/* Vertical line segment — hidden on last step */}
-                  {!isLast && (
-                    <motion.div
-                      aria-hidden
-                      className="absolute left-6 top-12 bottom-0 w-[2px] pointer-events-none origin-top"
-                      style={{
-                        background:
-                          'linear-gradient(to bottom, color-mix(in oklch, var(--primary) 70%, transparent), color-mix(in oklch, var(--border) 20%, transparent))',
-                      }}
-                      initial={{ scaleY: 0, opacity: 0.4 }}
-                      whileInView={{ scaleY: 1, opacity: 1 }}
-                      viewport={{ once: true, margin: '0px 0px -15% 0px' }}
-                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-                    />
-                  )}
-
-                  {/* Node */}
-                  <div className="relative z-10 shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40 ring-4 ring-background">
-                    <motion.span
-                      aria-hidden
-                      className="absolute inset-0 rounded-full border-2 border-primary"
-                      initial={{ scale: 1, opacity: 0 }}
-                      whileInView={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-                      viewport={{ once: true, margin: '0px 0px -15% 0px' }}
-                      transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 }}
-                    />
-                    <step.icon className="relative z-10 h-5 w-5 text-primary" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 pt-2">
-                    <h3 className="text-base font-semibold mb-1.5 leading-snug">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
-                    <p className="mt-2.5 text-xs leading-relaxed text-primary/90">
-                      <span className="font-semibold uppercase tracking-wider text-[10px] mr-1.5">You get</span>
-                      {step.deliverable}
-                    </p>
-                  </div>
-                </div>
-              </ScrollReveal>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Bottom CTA */}
-      <ScrollReveal delay={0.4}>
-        <div className="mt-16 text-center">
+        {/* Bottom CTA */}
+        <div className="mt-16 text-center relative z-10">
           <p className="text-sm text-muted-foreground mb-6">Ready to put a proper monthly finance rhythm in place?</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              href="/pricing"
-              className="inline-flex items-center gap-2 rounded-lg border border-input bg-input/30 px-5 py-2.5 text-sm font-semibold hover:bg-input/50 transition-all hover:scale-[1.03]"
-            >
-              Build your subscription
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <a
-              href={siteConfig.links.booking}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Calendar className="h-4 w-4" />
-              Book a 15-minute fit call
-            </a>
+            <MagneticButton>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors w-full sm:w-auto justify-center"
+              >
+                Build your subscription
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </MagneticButton>
+            <MagneticButton>
+              <a
+                href={siteConfig.links.booking}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-input bg-background px-6 py-3 text-sm font-medium hover:bg-muted transition-colors w-full sm:w-auto justify-center"
+              >
+                <Calendar className="h-4 w-4" />
+                Book a 15-minute fit call
+              </a>
+            </MagneticButton>
           </div>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   );
 }

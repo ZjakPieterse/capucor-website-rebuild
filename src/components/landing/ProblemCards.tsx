@@ -1,9 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { BookOpen, AlertCircle, Unplug, Clock, CheckCircle2, CalendarCheck, Link2, Zap, ArrowRight } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { motion, AnimatePresence } from 'motion/react';
+import { cn } from '@/lib/utils';
 
 const PROBLEMS = [
   {
@@ -49,55 +52,101 @@ const PROBLEMS = [
 ];
 
 export function ProblemCards() {
+  const [isResolved, setIsResolved] = useState(false);
+
   return (
     <section className="py-24 lg:py-32 bg-muted/30">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="The problem"
+            eyebrow="The reality"
             title="Your business has outgrown its finance function"
-            subtitle="Late submissions, unclear numbers, reactive accounting. While you focus on growth, the books fall behind. By the time you notice, the damage is done."
+            subtitle="Late submissions, unclear numbers, reactive accounting. While you focus on growth, the books fall behind."
           />
         </ScrollReveal>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {PROBLEMS.map((problem, i) => (
-            <ScrollReveal key={problem.title} delay={i * 0.08} className="h-full">
-              <div className="problem-card h-full rounded-xl border border-border bg-card p-6 flex flex-col">
+        {/* The Toggle */}
+        <ScrollReveal delay={0.1}>
+          <div className="flex justify-center mt-8 mb-12">
+            <div className="inline-flex items-center p-1.5 rounded-full bg-input/20 border border-border">
+              <button
+                onClick={() => setIsResolved(false)}
+                className={cn(
+                  "px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300",
+                  !isResolved ? "bg-destructive text-destructive-foreground shadow-md" : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                Without Capucor
+              </button>
+              <button
+                onClick={() => setIsResolved(true)}
+                className={cn(
+                  "px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300",
+                  isResolved ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                With Capucor
+              </button>
+            </div>
+          </div>
+        </ScrollReveal>
 
-                {/* Problem */}
-                <div>
-                  <div className="mb-3 flex items-center gap-3">
-                    <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-destructive/10">
-                      <problem.icon className="h-5 w-5 text-destructive" />
-                    </div>
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-destructive/80">
-                      Problem
-                    </div>
-                  </div>
-                  <h3 className="text-base font-semibold mb-2">{problem.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{problem.body}</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[280px]">
+          {PROBLEMS.map((item, i) => (
+            <div key={item.title} className="h-full" style={{ perspective: '1000px' }}>
+              <ScrollReveal delay={i * 0.08} className="h-full">
+                <div 
+                  className={cn(
+                    "problem-card h-full rounded-xl border p-6 flex flex-col transition-colors duration-500",
+                    isResolved ? "border-primary/30 bg-card shadow-[0_0_20px_rgba(46,216,137,0.05)]" : "border-destructive/30 bg-destructive/5"
+                  )}
+                >
+                <AnimatePresence mode="wait">
+                  {!isResolved ? (
+                    <motion.div
+                      key="problem"
+                      initial={{ opacity: 0, rotateX: 90 }}
+                      animate={{ opacity: 1, rotateX: 0 }}
+                      exit={{ opacity: 0, rotateX: -90 }}
+                      transition={{ duration: 0.4, ease: "backOut" }}
+                      className="flex-1 origin-center"
+                    >
+                      <div className="mb-4 flex items-center gap-3">
+                        <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-destructive/10">
+                          <item.icon className="h-5 w-5 text-destructive animate-pulse" />
+                        </div>
+                        <div className="text-[10px] font-semibold uppercase tracking-wider text-destructive/80">
+                          The Problem
+                        </div>
+                      </div>
+                      <h3 className="text-base font-semibold mb-2">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.body}</p>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="solution"
+                      initial={{ opacity: 0, rotateX: 90 }}
+                      animate={{ opacity: 1, rotateX: 0 }}
+                      exit={{ opacity: 0, rotateX: -90 }}
+                      transition={{ duration: 0.4, ease: "backOut" }}
+                      className="flex-1 origin-center"
+                    >
+                      <div className="mb-4 flex items-center gap-3">
+                        <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                          <item.solution.icon className="h-5 w-5 text-primary" />
+                        </div>
+                        <div className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                          Capucor Solution
+                        </div>
+                      </div>
+                      <h3 className="text-base font-semibold mb-2">{item.solution.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.solution.body}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
                 </div>
-
-                {/* Divider */}
-                <div className="my-5 border-t border-border" aria-hidden />
-
-                {/* Fix */}
-                <div>
-                  <div className="mb-3 flex items-center gap-3">
-                    <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <problem.solution.icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-                      Capucor fixes this
-                    </div>
-                  </div>
-                  <h3 className="text-base font-semibold mb-2">{problem.solution.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{problem.solution.body}</p>
-                </div>
-
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
+            </div>
           ))}
         </div>
 
