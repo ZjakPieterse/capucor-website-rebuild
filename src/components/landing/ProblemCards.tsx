@@ -50,7 +50,7 @@ const PROBLEMS = [
 
 export function ProblemCards() {
   return (
-    <section className="py-24 lg:py-32 bg-muted/30">
+    <section className="premium-section py-28 lg:py-40">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
@@ -60,15 +60,15 @@ export function ProblemCards() {
           />
         </ScrollReveal>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {PROBLEMS.map((problem, i) => (
             <ScrollReveal key={problem.title} delay={i * 0.08} className="h-full">
-              <div className="problem-card h-full rounded-xl border border-border bg-card p-6 flex flex-col">
+              <div className="premium-card problem-card flex h-full flex-col rounded-[1.5rem] p-6">
 
                 {/* Problem */}
                 <div>
                   <div className="mb-3 flex items-center gap-3">
-                    <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-destructive/10">
+                    <div className="premium-icon inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-destructive/15 bg-destructive/10">
                       <problem.icon className="h-5 w-5 text-destructive" />
                     </div>
                     <div className="text-[10px] font-semibold uppercase tracking-wider text-destructive/80">
@@ -80,12 +80,12 @@ export function ProblemCards() {
                 </div>
 
                 {/* Divider */}
-                <div className="my-5 border-t border-border" aria-hidden />
+                <div className="my-5 border-t border-white/8" aria-hidden />
 
                 {/* Fix */}
                 <div>
                   <div className="mb-3 flex items-center gap-3">
-                    <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                    <div className="premium-icon inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/15 bg-primary/10">
                       <problem.solution.icon className="h-5 w-5 text-primary" />
                     </div>
                     <div className="text-[10px] font-semibold uppercase tracking-wider text-primary">

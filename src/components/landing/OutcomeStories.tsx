@@ -67,7 +67,7 @@ export function OutcomeStories() {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
-    <section className="py-24 lg:py-32 bg-muted/30 border-t border-border">
+    <section className="premium-section border-t border-white/8 py-28 lg:py-40">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
@@ -79,7 +79,7 @@ export function OutcomeStories() {
 
         {/* Stat ticker */}
         <ScrollReveal delay={0.1}>
-          <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 border-y border-border py-8">
+          <div className="premium-panel mt-14 grid grid-cols-2 gap-6 rounded-[1.75rem] px-6 py-8 lg:grid-cols-4 lg:gap-10">
             {STATS.map((s) => (
               <div key={s.label} className="text-center lg:text-left">
                 <div className="text-3xl lg:text-4xl font-bold font-mono text-primary leading-none">
@@ -94,7 +94,7 @@ export function OutcomeStories() {
         </ScrollReveal>
 
         {/* Scroll-driven timeline */}
-        <div ref={timelineRef} className="relative mt-20 grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-16">
+        <div ref={timelineRef} className="relative mt-24 grid gap-12 lg:grid-cols-[260px_1fr] lg:gap-20">
 
           {/* Left: sticky calendar */}
           <div className="hidden lg:block">
@@ -106,7 +106,7 @@ export function OutcomeStories() {
                 {/* Track */}
                 <div
                   aria-hidden
-                  className="absolute left-[26px] top-2 bottom-2 w-px bg-border"
+                  className="absolute left-[26px] top-2 bottom-2 w-px bg-white/10"
                 />
                 {/* Fill */}
                 <motion.div
@@ -117,7 +117,7 @@ export function OutcomeStories() {
                 <ul className="space-y-9">
                   {DAY_STOPS.map((stop) => (
                     <li key={stop.day} className="relative flex items-center gap-5">
-                      <div className="relative z-10 flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full border border-primary/30 bg-card">
+                      <div className="premium-icon relative z-10 flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full border border-primary/25 bg-white/[0.045] backdrop-blur-md">
                         <stop.icon className="h-5 w-5 text-primary" />
                       </div>
                       <div>

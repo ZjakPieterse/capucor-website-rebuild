@@ -63,7 +63,7 @@ function FinanceCommandCentre() {
   const vatStyle = VAT_STATUS_STYLES[dates.vatStatus];
 
   return (
-    <div className="relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden">
+    <div className="premium-panel relative overflow-hidden rounded-[2rem] p-5 shadow-2xl">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
@@ -92,7 +92,7 @@ function FinanceCommandCentre() {
         {/* Cash Runway */}
         <motion.div
           custom={0} variants={tileVariants} initial="hidden" animate="visible"
-          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-2xl border border-white/8 bg-background/35 p-3.5 backdrop-blur-md"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Cash Runway
@@ -122,7 +122,7 @@ function FinanceCommandCentre() {
         {/* Debtor Days */}
         <motion.div
           custom={1} variants={tileVariants} initial="hidden" animate="visible"
-          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-2xl border border-white/8 bg-background/35 p-3.5 backdrop-blur-md"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Debtor Days
@@ -140,7 +140,7 @@ function FinanceCommandCentre() {
         {/* VAT Due Date */}
         <motion.div
           custom={2} variants={tileVariants} initial="hidden" animate="visible"
-          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-2xl border border-white/8 bg-background/35 p-3.5 backdrop-blur-md"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             VAT Due
@@ -164,7 +164,7 @@ function FinanceCommandCentre() {
         {/* Monthly Close */}
         <motion.div
           custom={3} variants={tileVariants} initial="hidden" animate="visible"
-          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-2xl border border-white/8 bg-background/35 p-3.5 backdrop-blur-md"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Monthly Close
@@ -181,7 +181,7 @@ function FinanceCommandCentre() {
         {/* Payroll */}
         <motion.div
           custom={4} variants={tileVariants} initial="hidden" animate="visible"
-          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-2xl border border-white/8 bg-background/35 p-3.5 backdrop-blur-md"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Payroll
@@ -203,7 +203,7 @@ function FinanceCommandCentre() {
         {/* Management Report */}
         <motion.div
           custom={5} variants={tileVariants} initial="hidden" animate="visible"
-          className="fcc-tile rounded-xl border border-border bg-background/40 p-3.5"
+          className="fcc-tile rounded-2xl border border-white/8 bg-background/35 p-3.5 backdrop-blur-md"
         >
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Management Report
@@ -253,38 +253,38 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="cursor-glow relative overflow-hidden py-24 lg:py-32"
+      className="cursor-glow premium-section relative overflow-hidden py-28 lg:py-40"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/8 blur-3xl" />
+        <div className="absolute -top-48 left-1/2 h-[680px] w-[680px] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid items-center gap-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-24">
 
           {/* Copy */}
           <div>
             <motion.p
-              className="text-sm font-medium uppercase tracking-widest mb-4"
+              className="mb-5 text-xs font-semibold uppercase tracking-[0.32em]"
               style={{ color: 'var(--brand-navy)' }}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
             >
               Outsourced finance team for your growing business
             </motion.p>
             <motion.h1
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6"
+              className="mb-7 text-5xl font-extralight leading-[0.98] tracking-[-0.065em] sm:text-6xl lg:text-7xl"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
             >
               Make your finance function work harder
             </motion.h1>
             <motion.p
-              className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg"
+              className="mb-10 max-w-xl text-lg font-light leading-relaxed text-muted-foreground"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}
             >
               Monthly accounting, payroll, tax, and reporting handled by real accountants. Clean numbers, clear deadlines, and practical advice built into one fixed monthly subscription.
             </motion.p>
             <motion.div
-              className="flex flex-col sm:flex-row gap-3"
+              className="flex flex-col gap-3 sm:flex-row"
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.3 }}
             >
               <Button nativeButton={false} render={<Link href="/pricing" />} size="lg" className="gap-2">
@@ -310,7 +310,7 @@ export function HeroSection() {
 
         {/* Partners carousel */}
         <motion.div
-          className="mt-16 pt-8 border-t border-border"
+          className="mt-24 border-t border-white/8 pt-8"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.6 }}
         >
           <p
@@ -330,7 +330,7 @@ export function HeroSection() {
               {[...TOOLS, ...TOOLS, ...TOOLS, ...TOOLS].map((tool, i) => (
                 <span
                   key={i}
-                  className="whitespace-nowrap text-sm font-medium text-muted-foreground border border-border rounded-md px-5 py-2 bg-muted"
+                  className="whitespace-nowrap rounded-full border border-white/8 bg-white/[0.035] px-5 py-2 text-sm font-medium text-muted-foreground backdrop-blur-md"
                 >
                   {tool}
                 </span>

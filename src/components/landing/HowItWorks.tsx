@@ -40,7 +40,7 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 lg:py-32">
+    <section id="how-it-works" className="premium-section py-28 lg:py-40">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
@@ -78,7 +78,7 @@ export function HowItWorks() {
                   )}
 
                   {/* Icon */}
-                  <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40">
+                  <div className="premium-icon relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-primary/35 bg-primary/10 backdrop-blur-md">
                     <motion.span
                       aria-hidden
                       className="absolute inset-0 rounded-full border-2 border-primary"
@@ -91,7 +91,7 @@ export function HowItWorks() {
                   </div>
 
                   {/* Content */}
-                  <div className="w-full border-t border-primary/20 pt-5">
+                  <div className="w-full border-t border-white/10 pt-5">
                     <h3 className="text-base font-semibold mb-2 leading-snug">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
                     <p className="mt-3 text-xs leading-relaxed text-primary/90">
@@ -129,7 +129,7 @@ export function HowItWorks() {
                   )}
 
                   {/* Node */}
-                  <div className="relative z-10 shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 border-2 border-primary/40 ring-4 ring-background">
+                  <div className="premium-icon relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-primary/35 bg-primary/10 ring-4 ring-background">
                     <motion.span
                       aria-hidden
                       className="absolute inset-0 rounded-full border-2 border-primary"
@@ -164,7 +164,7 @@ export function HowItWorks() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/pricing"
-              className="inline-flex items-center gap-2 rounded-lg border border-input bg-input/30 px-5 py-2.5 text-sm font-semibold hover:bg-input/50 transition-all hover:scale-[1.03]"
+              className="premium-button inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-primary/95"
             >
               Build your subscription
               <ArrowRight className="h-4 w-4" />
@@ -173,7 +173,7 @@ export function HowItWorks() {
               href={siteConfig.links.booking}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="premium-button inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.045] px-5 py-2.5 text-sm font-semibold text-foreground backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-primary/35 hover:bg-white/[0.075]"
             >
               <Calendar className="h-4 w-4" />
               Book a 15-minute fit call
