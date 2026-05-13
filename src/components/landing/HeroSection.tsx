@@ -1,359 +1,581 @@
 'use client';
 
-import { useRef } from 'react';
-import { useCursorGlow } from '@/hooks/useCursorGlow';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import {
   ArrowRight, Calendar, TrendingDown, CheckCircle2, Clock, AlertCircle,
-  Receipt, FileSpreadsheet, FileText, Calculator, Mail, FileWarning,
+  FileSpreadsheet, FileText, FileWarning, ScrollText,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { siteConfig } from '@/config/site';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 // ── Date helpers ──────────────────────────────────────────────────────────────────
 const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MONTH_FULL  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-type VatStatus = 'green' | 'amber' | 'red';
-
-interface DashboardDates {
+type DashboardDates = {
   vatDateStr: string;
   vatDays: number;
-  vatStatus: VatStatus;
   closeMonth: string;
-}
+};
 
 function computeDashboardDates(): DashboardDates {
   const now   = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
   const monthOffset = today.getDate() > 25 ? 1 : 0;
-  const vatDue    = new Date(now.getFullYear(), now.getMonth() + monthOffset, 25);
-  const msPerDay  = 1000 * 60 * 60 * 24;
-  const vatDays   = Math.round((vatDue.getTime() - today.getTime()) / msPerDay);
-  const vatDateStr = `25 ${MONTH_SHORT[vatDue.getMonth()]} ${vatDue.getFullYear()}`;
-  const vatStatus: VatStatus = vatDays > 15 ? 'green' : vatDays > 7 ? 'amber' : 'red';
-
-  const prev       = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const vatDue   = new Date(now.getFullYear(), now.getMonth() + monthOffset, 25);
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const vatDays  = Math.max(0, Math.round((vatDue.getTime() - today.getTime()) / msPerDay));
+  const vatDateStr = `25 ${MONTH_SHORT[vatDue.getMonth()]}`;
+  const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const closeMonth = MONTH_FULL[prev.getMonth()];
-
-  return { vatDateStr, vatDays, vatStatus, closeMonth };
+  return { vatDateStr, vatDays, closeMonth };
 }
 
-const VAT_STATUS_STYLES: Record<VatStatus, { bg: string; color: string }> = {
-  green: { bg: 'rgba(46,216,137,.15)',  color: '#2ED889' },
-  amber: { bg: 'rgba(234,179,8,.15)',   color: '#eab308' },
-  red:   { bg: 'rgba(239,68,68,.15)',   color: '#ef4444' },
+// ── Carrier definitions ──────────────────────────────────────────────────────────
+// Each carrier is a single element that morphs from chaos card → clean tile.
+// Tile position is set via CSS inline styles below. Chaos transform values
+// are pixel deltas applied by GSAP at cycle start.
+
+type TileCarrier = {
+  id: 'cash' | 'vat' | 'debtor' | 'close';
+  tile: { left: string; top: string; width: string; height: string };
+  chaos: { x: number; y: number; rot: number };
 };
 
-// ── Chaos items (Hyper-realistic mini-docs) ──────────────────────────────────────
-const CHAOS_ITEMS = [
-  { id: 1, type: 'invoice',  label: 'Invoice #8402', detail: 'R 45,210.00', status: 'OVERDUE',  color: '#ef4444', icon: FileText,        x: '8%',  y: '12%', rot: -12, float: 'chaos-float-a' },
-  { id: 2, type: 'receipt',  label: 'Uber Receipt',  detail: 'VAT missing',   status: 'FLAGGED',  color: '#f59e0b', icon: Receipt,         x: '62%', y: '8%',  rot: 10,  float: 'chaos-float-b' },
-  { id: 3, type: 'sheet',    label: 'Payroll_Draft', detail: 'Formula error', status: 'CONFLICT', color: '#ef4444', icon: FileSpreadsheet, x: '85%', y: '38%', rot: -6,  float: 'chaos-float-c' },
-  { id: 4, type: 'alert',    label: 'SARS Notice',   detail: 'Immediate req', status: 'URGENT',   color: '#ef4444', icon: FileWarning,     x: '12%', y: '72%', rot: 8,   float: 'chaos-float-d' },
-  { id: 5, type: 'receipt',  label: 'Lunch_Exp',     detail: 'Unallocated',   status: 'MISSING',  color: '#71717a', icon: Receipt,         x: '42%', y: '58%', rot: -18, float: 'chaos-float-a' },
-  { id: 6, type: 'invoice',  label: 'Statement_X',   detail: 'R 12,400.00',   status: 'REVIEW',   color: '#f59e0b', icon: FileText,        x: '72%', y: '78%', rot: 4,   float: 'chaos-float-b' },
-  { id: 7, type: 'sheet',    label: 'Bank_Rec_v2',   detail: 'Unbalanced',    status: 'ERROR',    color: '#ef4444', icon: FileSpreadsheet, x: '3%',  y: '42%', rot: 15,  float: 'chaos-float-c' },
-  { id: 8, type: 'alert',    label: 'Bank_Feed',     detail: 'Auth failure',  status: 'DISCONN',  color: '#ef4444', icon: Calculator,      x: '32%', y: '3%',  rot: -4,  float: 'chaos-float-d' },
-  { id: 9, type: 'receipt',  label: 'Hardware_Exp',  detail: 'R 1,250.00',    status: 'UNPAID',   color: '#f59e0b', icon: Receipt,         x: '88%', y: '10%', rot: 22,  float: 'chaos-float-a' },
-  { id: 10,type: 'invoice',  label: 'Rent April',    detail: 'Outstanding',   status: 'WAITING',  color: '#71717a', icon: FileText,        x: '52%', y: '82%', rot: -10, float: 'chaos-float-b' },
+type StripCarrier = {
+  id: 'prov-tax' | 'emp201' | 'cipc';
+  tile: { left: string; top: string; width: string; height: string };
+  chaos: { x: number; y: number; rot: number };
+};
+
+const TILE_CARRIERS: TileCarrier[] = [
+  { id: 'cash',   tile: { left: '0%',  top: '0%',  width: '49%',  height: '39%' }, chaos: { x: -30, y: -20, rot: -8  } },
+  { id: 'vat',    tile: { left: '51%', top: '0%',  width: '49%',  height: '39%' }, chaos: { x: -28, y: -32, rot:  9  } },
+  { id: 'debtor', tile: { left: '0%',  top: '41%', width: '49%',  height: '39%' }, chaos: { x: -42, y: -58, rot: -12 } },
+  { id: 'close',  tile: { left: '51%', top: '41%', width: '49%',  height: '39%' }, chaos: { x:  26, y: -24, rot:  11 } },
 ];
 
-// ── Finance Command Centre ────────────────────────────────────────────────────────
+const STRIP_CARRIERS: StripCarrier[] = [
+  { id: 'prov-tax', tile: { left: '0%',  top: '84%', width: '32%', height: '14%' }, chaos: { x:  60, y: -260, rot: -6  } },
+  { id: 'emp201',   tile: { left: '34%', top: '84%', width: '32%', height: '14%' }, chaos: { x:  20, y: -130, rot:  14 } },
+  { id: 'cipc',     tile: { left: '68%', top: '84%', width: '32%', height: '14%' }, chaos: { x: -30, y: -200, rot: -10 } },
+];
 
-function FinanceCommandCentre() {
-  const dates    = computeDashboardDates();
-  const vatStyle = VAT_STATUS_STYLES[dates.vatStatus];
+// Decorative red/amber blobs that pulse during chaos and dissolve during converge.
+const CHAOS_BLOBS = [
+  { id: 'b1', left: '14%', top: '18%', size: 90,  color: 'rgba(239,68,68,0.22)' },
+  { id: 'b2', left: '70%', top: '52%', size: 130, color: 'rgba(245,158,11,0.18)' },
+  { id: 'b3', left: '42%', top: '70%', size: 80,  color: 'rgba(239,68,68,0.14)' },
+];
+
+// ── Finance Command Centre (dashboard + chaos layer combined) ────────────────────
+
+function FinanceCommandCentre({ skipAnimation }: { skipAnimation: boolean }) {
+  const dates = computeDashboardDates();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stageRef     = useRef<HTMLDivElement>(null);
+  const cashNumRef   = useRef<HTMLSpanElement>(null);
+  const debtorNumRef = useRef<HTMLSpanElement>(null);
+  const vatDaysRef   = useRef<HTMLSpanElement>(null);
+  const runwayBarRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (skipAnimation) return;
+    if (!stageRef.current) return;
+
+    const stage = stageRef.current;
+
+    // Query carriers + faces + ambient blobs scoped to this stage
+    const tileCarriers   = gsap.utils.toArray<HTMLElement>(stage.querySelectorAll('[data-carrier="tile"]'));
+    const stripCarriers  = gsap.utils.toArray<HTMLElement>(stage.querySelectorAll('[data-carrier="strip"]'));
+    const allCarriers    = [...tileCarriers, ...stripCarriers];
+    const chaosFaces     = stage.querySelectorAll('.chaos-face');
+    const tileFaces      = stage.querySelectorAll('.tile-face');
+    const ambient        = stage.querySelectorAll('.chaos-blob');
+    const header         = stage.querySelector('.fcc-header');
+    const stripWrap      = stage.querySelector('.fcc-strip-wrap');
+
+    // Counter object for animated numbers
+    const counter = { cash: 0, debtor: 0, vatDays: 0 };
+
+    const setChaosState = () => {
+      // Position carriers at scattered transforms; show chaos faces; hide tile faces & header
+      allCarriers.forEach((el) => {
+        const x = parseFloat(el.dataset.chaosX || '0');
+        const y = parseFloat(el.dataset.chaosY || '0');
+        const r = parseFloat(el.dataset.chaosRot || '0');
+        gsap.set(el, { x, y, rotation: r, scale: 0.6, filter: 'blur(0px)' });
+      });
+      gsap.set(chaosFaces, { opacity: 1 });
+      gsap.set(tileFaces, { opacity: 0 });
+      gsap.set(ambient, { opacity: 1, scale: 1 });
+      gsap.set(header, { opacity: 0, y: -8 });
+      gsap.set(stripWrap, { opacity: 0 });
+      counter.cash = 0;
+      counter.debtor = 0;
+      counter.vatDays = 0;
+      if (cashNumRef.current) cashNumRef.current.textContent = '0.0';
+      if (debtorNumRef.current) debtorNumRef.current.textContent = '0';
+      if (vatDaysRef.current) vatDaysRef.current.textContent = '0';
+      if (runwayBarRef.current) runwayBarRef.current.style.width = '0%';
+    };
+
+    setChaosState();
+
+    const tl = gsap.timeline({ repeat: -1, defaults: { ease: 'power2.inOut' } });
+
+    // ── 0.0–0.8s — chaos idle (gentle drift) ──────────────────────────────────
+    // Add a small floating wobble to all carriers without losing their chaos pose
+    allCarriers.forEach((el, i) => {
+      const baseX = parseFloat(el.dataset.chaosX || '0');
+      const baseY = parseFloat(el.dataset.chaosY || '0');
+      const baseR = parseFloat(el.dataset.chaosRot || '0');
+      tl.to(el, {
+        x: baseX + (i % 2 ? 6 : -6),
+        y: baseY + (i % 3 ? -5 : 5),
+        rotation: baseR + (i % 2 ? 2 : -2),
+        duration: 0.8,
+        ease: 'sine.inOut',
+      }, 0);
+    });
+
+    // Ambient blobs pulse
+    tl.to(ambient, { opacity: 0.55, scale: 1.08, duration: 0.8, ease: 'sine.inOut' }, 0);
+
+    // ── 0.8–2.0s — converge (carriers glide to tile positions, scale up, derotate) ──
+    tl.to(allCarriers, {
+      x: 0,
+      y: 0,
+      rotation: 0,
+      scale: 1,
+      duration: 1.2,
+      ease: 'expo.inOut',
+      stagger: { each: 0.04, from: 'random' },
+    }, 0.8);
+
+    // Brief motion blur peaking mid-converge
+    tl.to(allCarriers, {
+      filter: 'blur(2.5px)',
+      duration: 0.5,
+      ease: 'power1.out',
+    }, 0.8);
+    tl.to(allCarriers, {
+      filter: 'blur(0px)',
+      duration: 0.5,
+      ease: 'power2.in',
+    }, 1.5);
+
+    // Ambient blobs dissolve
+    tl.to(ambient, { opacity: 0, scale: 0.4, duration: 0.9, ease: 'power2.in' }, 0.9);
+
+    // ── 2.0–3.0s — morph (crossfade faces, count numbers up) ──────────────────
+    tl.to(chaosFaces, {
+      opacity: 0,
+      duration: 0.7,
+      ease: 'power2.in',
+      stagger: 0.03,
+    }, 1.8);
+
+    tl.to(tileFaces, {
+      opacity: 1,
+      duration: 0.7,
+      ease: 'power2.out',
+      stagger: 0.04,
+    }, 2.0);
+
+    tl.to(counter, {
+      cash: 4.2,
+      debtor: 32,
+      vatDays: dates.vatDays,
+      duration: 0.9,
+      ease: 'power2.out',
+      onUpdate: () => {
+        if (cashNumRef.current) cashNumRef.current.textContent = counter.cash.toFixed(1);
+        if (debtorNumRef.current) debtorNumRef.current.textContent = Math.round(counter.debtor).toString();
+        if (vatDaysRef.current) vatDaysRef.current.textContent = Math.round(counter.vatDays).toString();
+      },
+    }, 2.0);
+
+    // Cash runway progress bar fills during morph
+    tl.to(runwayBarRef.current, {
+      width: '35%',
+      duration: 0.9,
+      ease: 'power2.out',
+    }, 2.1);
+
+    // Header fades in slightly before tiles settle
+    tl.to(header, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+    }, 2.4);
+
+    // ── 3.0–3.5s — settle (cyan glow ripple, strip checkmarks pop) ────────────
+    tl.to(tileCarriers, {
+      boxShadow: '0 0 0 1px color-mix(in oklch, var(--brand-cyan) 35%, transparent), 0 10px 30px -10px color-mix(in oklch, var(--brand-cyan) 30%, transparent)',
+      duration: 0.3,
+      ease: 'power2.out',
+      stagger: 0.08,
+    }, 3.0);
+    tl.to(tileCarriers, {
+      boxShadow: '0 0 0 0px transparent, 0 0 0 0 transparent',
+      duration: 0.6,
+      ease: 'power2.in',
+      stagger: 0.08,
+    }, 3.3);
+
+    tl.to(stripWrap, {
+      opacity: 1,
+      duration: 0.5,
+      ease: 'power2.out',
+    }, 3.0);
+
+    // ── 3.5–10.5s — hold ────────────────────────────────────────────────────────
+    tl.to({}, { duration: 7 }, 3.5);
+
+    // ── 10.5–11.5s — return to chaos ────────────────────────────────────────────
+    tl.to(header, { opacity: 0, y: -8, duration: 0.5, ease: 'power2.in' }, 10.5);
+    tl.to(stripWrap, { opacity: 0, duration: 0.5, ease: 'power2.in' }, 10.5);
+    tl.to(tileFaces, { opacity: 0, duration: 0.6, ease: 'power2.in', stagger: 0.02 }, 10.6);
+    tl.to(chaosFaces, { opacity: 1, duration: 0.7, ease: 'power2.out', stagger: 0.02 }, 10.8);
+    allCarriers.forEach((el) => {
+      const x = parseFloat(el.dataset.chaosX || '0');
+      const y = parseFloat(el.dataset.chaosY || '0');
+      const r = parseFloat(el.dataset.chaosRot || '0');
+      tl.to(el, {
+        x, y, rotation: r, scale: 0.6,
+        duration: 1.0,
+        ease: 'power2.inOut',
+      }, 10.6);
+    });
+    tl.to(ambient, { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out' }, 10.8);
+
+    // ── 11.5–12.0s — pre-loop chaos breath ──────────────────────────────────────
+    tl.to({}, { duration: 0.5 }, 11.5);
+
+    // ── IntersectionObserver: pause when off-screen, resume when on-screen ────
+    const container = containerRef.current;
+    let io: IntersectionObserver | null = null;
+    if (container && 'IntersectionObserver' in window) {
+      io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) tl.play();
+          else tl.pause();
+        }
+      }, { threshold: 0.15 });
+      io.observe(container);
+    }
+
+    // Pause when document is hidden
+    const onVis = () => (document.hidden ? tl.pause() : tl.play());
+    document.addEventListener('visibilitychange', onVis);
+
+    return () => {
+      io?.disconnect();
+      document.removeEventListener('visibilitychange', onVis);
+      tl.kill();
+    };
+  }, { scope: containerRef, dependencies: [skipAnimation] });
 
   return (
     <div
-      className="fcc-container relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden min-h-[420px] transition-all duration-500"
+      ref={containerRef}
+      className="fcc-container relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden"
     >
-      {/* ── Chaos State Overlay ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
-        <div className="chaos-core absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-primary/20 blur-[100px]" />
-        {CHAOS_ITEMS.map((item, i) => (
-          <div
-            key={item.id}
-            className={`chaos-item absolute ${item.float}`}
-            style={{
-              left: item.x,
-              top: item.y,
-              rotate: `${item.rot}deg`,
-            }}
-          >
-            <div className="flex items-center gap-3 bg-background/60 backdrop-blur-md border border-white/10 rounded-lg p-2.5 shadow-xl min-w-[140px]">
-              <div className="p-2 rounded-md bg-white/5" style={{ color: item.color }}>
-                <item.icon className="w-5 h-5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold tracking-tight text-white/90 leading-none mb-1">
-                  {item.label}
-                </span>
-                <span className="text-[9px] font-medium text-white/50 leading-none">
-                  {item.detail}
-                </span>
-              </div>
-              <div
-                className="ml-auto px-1.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter"
-                style={{ backgroundColor: `${item.color}20`, color: item.color }}
-              >
-                {item.status}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Ambient cyan/green wash to subtly tint the stage */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-60"
+        style={{
+          background: 'radial-gradient(circle at 30% 20%, color-mix(in oklch, var(--brand-cyan) 6%, transparent), transparent 55%), radial-gradient(circle at 80% 80%, color-mix(in oklch, var(--primary) 5%, transparent), transparent 60%)',
+        }}
+      />
 
       {/* Header */}
-      <div className="fcc-header opacity-0 flex items-center justify-between mb-4 relative z-20">
+      <div className="fcc-header relative z-20 flex items-center justify-between mb-4">
         <div>
-          <div className="text-sm font-bold tracking-tight">Finance Command Centre</div>
-          <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,.55)' }} suppressHydrationWarning>
-            {dates.closeMonth} close complete. Three items flagged for review.
+          <div className="text-sm font-semibold tracking-tight">Finance Command Centre</div>
+          <div className="text-xs mt-0.5 text-muted-foreground" suppressHydrationWarning>
+            {dates.closeMonth} close complete. All filings on track.
           </div>
         </div>
         <div
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
-          style={{ background: 'rgba(34,211,238,.12)', color: '#22d3ee' }}
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider"
+          style={{ background: 'color-mix(in oklch, var(--brand-cyan) 14%, transparent)', color: 'var(--brand-cyan)' }}
         >
           <motion.div
             className="w-1.5 h-1.5 rounded-full"
-            style={{ background: '#22d3ee', boxShadow: '0 0 5px #22d3ee' }}
+            style={{ background: 'var(--brand-cyan)', boxShadow: '0 0 6px var(--brand-cyan)' }}
             animate={{ opacity: [1, 0.4, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+            transition={{ duration: 1.6, repeat: Infinity }}
           />
           Live
         </div>
       </div>
 
-      {/* Tile grid */}
-      <div className="fcc-grid grid grid-cols-1 sm:grid-cols-3 gap-2.5 relative z-20">
-
-        {/* Cash Runway */}
-        <div className="fcc-tile opacity-0 rounded-xl border border-border bg-background/40 p-3.5">
-          <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
-            Cash Runway
-          </div>
-          <div className="font-mono font-bold text-xl leading-none" style={{ color: '#22d3ee' }}>
-            4.2
-          </div>
-          <div className="text-xs text-muted-foreground mt-0.5">months</div>
+      {/* Stage: holds all carriers + ambient blobs, fixed aspect ratio for predictable animation */}
+      <div
+        ref={stageRef}
+        className="fcc-stage relative z-10"
+        style={{ aspectRatio: '1.18 / 1' }}
+      >
+        {/* Ambient chaos blobs (decorative, dissolve during morph) */}
+        {CHAOS_BLOBS.map((b) => (
           <div
-            className="mt-2.5 h-1.5 rounded-full overflow-hidden"
-            style={{ background: 'rgba(255,255,255,.08)' }}
+            key={b.id}
+            className="chaos-blob absolute pointer-events-none rounded-full"
+            style={{
+              left: b.left,
+              top: b.top,
+              width: b.size,
+              height: b.size,
+              background: b.color,
+              filter: 'blur(28px)',
+            }}
+          />
+        ))}
+
+        {/* Tile carriers (4 hero metrics) */}
+        {TILE_CARRIERS.map((c) => (
+          <div
+            key={c.id}
+            data-carrier="tile"
+            data-chaos-x={c.chaos.x}
+            data-chaos-y={c.chaos.y}
+            data-chaos-rot={c.chaos.rot}
+            className="fcc-tile absolute"
+            style={{
+              left: c.tile.left,
+              top: c.tile.top,
+              width: c.tile.width,
+              height: c.tile.height,
+            }}
           >
-            <motion.div
-              className="h-full rounded-full"
-              style={{ background: 'linear-gradient(to right, #22d3ee, #2ED889)' }}
-              initial={{ width: 0 }}
-              animate={{ width: '35%' }}
-              transition={{ delay: 1.4, duration: 0.9, ease: 'easeOut' }}
-            />
+            <TileFace id={c.id} dates={dates} refs={{ cashNumRef, debtorNumRef, vatDaysRef, runwayBarRef }} skipAnimation={skipAnimation} />
+            {!skipAnimation && <ChaosFaceTile id={c.id} />}
           </div>
-          <div className="text-[10px] text-muted-foreground mt-1">of 12 months</div>
-          <div className="text-[10px] mt-1 font-medium" style={{ color: '#eab308' }}>
-            Watch: below 6-month target
-          </div>
-        </div>
+        ))}
 
-        {/* Debtor Days */}
-        <div className="fcc-tile opacity-0 rounded-xl border border-border bg-background/40 p-3.5">
-          <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
-            Debtor Days
+        {/* Strip carriers (3 compliance pills) */}
+        {STRIP_CARRIERS.map((c) => (
+          <div
+            key={c.id}
+            data-carrier="strip"
+            data-chaos-x={c.chaos.x}
+            data-chaos-y={c.chaos.y}
+            data-chaos-rot={c.chaos.rot}
+            className="fcc-strip-item absolute"
+            style={{
+              left: c.tile.left,
+              top: c.tile.top,
+              width: c.tile.width,
+              height: c.tile.height,
+            }}
+          >
+            <StripPillFace id={c.id} />
+            {!skipAnimation && <ChaosFaceStrip id={c.id} />}
           </div>
-          <div className="font-mono font-bold text-xl leading-none">32</div>
-          <div className="text-xs text-muted-foreground mt-0.5">days</div>
-          <div className="flex items-center gap-1 mt-2">
-            <TrendingDown className="h-3.5 w-3.5 shrink-0" style={{ color: '#2ED889' }} />
-            <span className="text-[11px] font-medium" style={{ color: '#2ED889' }}>
-              −4 vs last month
-            </span>
-          </div>
-        </div>
+        ))}
 
-        {/* VAT Due Date */}
-        <div className="fcc-tile opacity-0 rounded-xl border border-border bg-background/40 p-3.5">
-          <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
-            VAT Due
-          </div>
-          <div className="font-mono font-bold text-sm leading-tight" suppressHydrationWarning>
-            {dates.vatDateStr}
-          </div>
-          <div className="mt-2">
-            <span
-              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide"
-              style={{ background: vatStyle.bg, color: vatStyle.color }}
-              suppressHydrationWarning
-            >
-              <AlertCircle className="h-3 w-3" />
-              {dates.vatDays} days
-            </span>
-          </div>
-          <div className="text-[10px] text-muted-foreground mt-1.5">Prepared before deadline</div>
-        </div>
-
-        {/* Monthly Close */}
-        <div className="fcc-tile opacity-0 rounded-xl border border-border bg-background/40 p-3.5">
-          <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
-            Monthly Close
-          </div>
-          <div className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: '#2ED889' }} />
-            <span className="text-xs font-semibold" suppressHydrationWarning>
-              {dates.closeMonth}: reviewed
-            </span>
-          </div>
-          <div className="text-[10px] text-muted-foreground mt-1.5">Senior accountant sign-off</div>
-        </div>
-
-        {/* Payroll */}
-        <div className="fcc-tile opacity-0 rounded-xl border border-border bg-background/40 p-3.5">
-          <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
-            Payroll
-          </div>
-          <div className="flex items-center gap-1.5">
-            <motion.div
-              className="w-2 h-2 rounded-full shrink-0"
-              style={{ background: '#2ED889' }}
-              animate={{ opacity: [1, 0.4, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <span className="text-xs font-semibold" style={{ color: '#2ED889' }}>
-              EMP201 submitted
-            </span>
-          </div>
-          <div className="text-[10px] text-muted-foreground mt-1.5">Payslips delivered</div>
-        </div>
-
-        {/* Management Report */}
-        <div className="fcc-tile opacity-0 rounded-xl border border-border bg-background/40 p-3.5">
-          <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
-            Management Report
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5 shrink-0" style={{ color: '#22d3ee' }} />
-            <span className="text-[11px] font-semibold" style={{ color: '#22d3ee' }}>
-              Ready for review
-            </span>
-          </div>
-          <div className="text-[10px] text-muted-foreground mt-1.5">3 insights flagged</div>
-        </div>
-
-        {/* SARS / CIPC Compliance — Standardized look */}
-        <div className="fcc-tile opacity-0 col-span-1 sm:col-span-3 rounded-xl border border-border bg-background/40 p-3.5">
-          <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2.5">
-            SARS / CIPC Compliance
-          </div>
-          <div className="flex items-center gap-5 flex-wrap">
-            {['Provisional Tax', 'EMP201', 'CIPC Annual Return'].map((item, i) => (
-              <div
-                key={item}
-                className="flex items-center gap-1.5"
-              >
-                <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: '#2ED889' }} />
-                <span className="text-xs font-medium">{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
+        {/* Strip wrapper for unified fade-in (visual grouping) */}
+        <div className="fcc-strip-wrap pointer-events-none absolute inset-x-0 bottom-0 h-[14%]" aria-hidden />
       </div>
     </div>
   );
 }
 
+// ── Tile (order) faces ────────────────────────────────────────────────────────────
+
+type TileRefs = {
+  cashNumRef: React.RefObject<HTMLSpanElement | null>;
+  debtorNumRef: React.RefObject<HTMLSpanElement | null>;
+  vatDaysRef: React.RefObject<HTMLSpanElement | null>;
+  runwayBarRef: React.RefObject<HTMLDivElement | null>;
+};
+
+function TileFace({ id, dates, refs, skipAnimation }: { id: TileCarrier['id']; dates: DashboardDates; refs: TileRefs; skipAnimation: boolean }) {
+  // When animation is skipped, render numbers at their final values
+  return (
+    <div className="tile-face absolute inset-0 rounded-xl border border-border bg-card/95 p-3 flex flex-col justify-between">
+      {id === 'cash' && (
+        <>
+          <div className="tile-label">Cash Runway</div>
+          <div className="flex items-baseline gap-1.5">
+            <span ref={refs.cashNumRef} className="font-mono font-semibold text-2xl leading-none tabular-nums" style={{ color: 'var(--brand-cyan)' }} suppressHydrationWarning>
+              {skipAnimation ? '4.2' : '0.0'}
+            </span>
+            <span className="text-xs text-muted-foreground">months</span>
+          </div>
+          <div className="h-1 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <div
+              ref={refs.runwayBarRef}
+              className="h-full rounded-full"
+              style={{
+                width: skipAnimation ? '35%' : '0%',
+                background: 'linear-gradient(to right, var(--brand-cyan), var(--primary))',
+              }}
+            />
+          </div>
+          <div className="tile-foot">Watch · 6-month target</div>
+        </>
+      )}
+
+      {id === 'vat' && (
+        <>
+          <div className="tile-label">VAT Due</div>
+          <div className="font-mono font-semibold text-lg leading-none" suppressHydrationWarning>{dates.vatDateStr}</div>
+          <div className="flex items-center gap-1.5">
+            <AlertCircle className="h-3 w-3 shrink-0" style={{ color: 'var(--primary)' }} />
+            <span className="text-[11px] font-medium" style={{ color: 'var(--primary)' }}>
+              <span ref={refs.vatDaysRef} className="tabular-nums" suppressHydrationWarning>
+                {skipAnimation ? String(dates.vatDays) : '0'}
+              </span> days · prepared
+            </span>
+          </div>
+          <div className="tile-foot">Reviewed and ready</div>
+        </>
+      )}
+
+      {id === 'debtor' && (
+        <>
+          <div className="tile-label">Debtor Days</div>
+          <div className="flex items-baseline gap-1.5">
+            <span ref={refs.debtorNumRef} className="font-mono font-semibold text-2xl leading-none tabular-nums">
+              {skipAnimation ? '32' : '0'}
+            </span>
+            <span className="text-xs text-muted-foreground">days</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <TrendingDown className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--primary)' }} />
+            <span className="text-[11px] font-medium" style={{ color: 'var(--primary)' }}>
+              −4 vs last month
+            </span>
+          </div>
+          <div className="tile-foot">Collections improving</div>
+        </>
+      )}
+
+      {id === 'close' && (
+        <>
+          <div className="tile-label">Monthly Close</div>
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="h-5 w-5 shrink-0" style={{ color: 'var(--primary)' }} />
+            <span className="font-mono font-semibold text-lg leading-none" suppressHydrationWarning>
+              {dates.closeMonth}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Clock className="h-3 w-3 shrink-0 text-muted-foreground" />
+            <span className="text-[11px] text-muted-foreground">Senior sign-off</span>
+          </div>
+          <div className="tile-foot">Books reconciled</div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function StripPillFace({ id }: { id: StripCarrier['id'] }) {
+  const label = id === 'prov-tax' ? 'Provisional Tax' : id === 'emp201' ? 'EMP201' : 'CIPC Annual Return';
+  return (
+    <div className="tile-face absolute inset-0 rounded-full border border-border bg-card/95 flex items-center justify-center gap-1.5 px-2">
+      <CheckCircle2 className="h-3 w-3 shrink-0" style={{ color: 'var(--primary)' }} />
+      <span className="text-[11px] font-medium truncate">{label}</span>
+    </div>
+  );
+}
+
+// ── Chaos faces ────────────────────────────────────────────────────────────────────
+
+function ChaosFaceTile({ id }: { id: TileCarrier['id'] }) {
+  const map = {
+    cash:   { Icon: ScrollText,        title: 'Bank_Statement', detail: 'Unreconciled · R 412k', badge: 'PENDING',  color: '#f59e0b' },
+    vat:    { Icon: FileSpreadsheet,   title: 'VAT201_draft',   detail: '3 errors · totals off', badge: 'FAILED',   color: '#ef4444' },
+    debtor: { Icon: FileText,          title: 'AgedDebt_Apr',   detail: '6 overdue · R 28k',     badge: 'OVERDUE',  color: '#ef4444' },
+    close:  { Icon: FileWarning,       title: 'GL_Journals',    detail: '8 unposted entries',    badge: 'BLOCKED',  color: '#ef4444' },
+  } as const;
+  const m = map[id];
+  return (
+    <div
+      className="chaos-face absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 bg-background/75 backdrop-blur-md rounded-lg px-2 py-1.5 shadow-xl"
+      style={{
+        width: 160,
+        border: `1px solid ${m.color}55`,
+      }}
+    >
+      <div className="p-1 rounded-md" style={{ background: `${m.color}1f`, color: m.color }}>
+        <m.Icon className="w-3.5 h-3.5" />
+      </div>
+      <div className="flex flex-col min-w-0 flex-1">
+        <span className="text-[10px] font-semibold tracking-tight text-white/90 leading-tight truncate">
+          {m.title}
+        </span>
+        <span className="text-[9px] text-white/55 leading-tight truncate">
+          {m.detail}
+        </span>
+      </div>
+      <span
+        className="text-[8px] font-bold uppercase tracking-wider px-1 py-0.5 rounded shrink-0"
+        style={{ background: `${m.color}25`, color: m.color }}
+      >
+        {m.badge}
+      </span>
+    </div>
+  );
+}
+
+function ChaosFaceStrip({ id }: { id: StripCarrier['id'] }) {
+  const map = {
+    'prov-tax': { label: 'PROV TAX', status: 'DUE' },
+    'emp201':   { label: 'EMP201',   status: 'LATE' },
+    'cipc':     { label: 'CIPC',     status: 'UNFILED' },
+  } as const;
+  const m = map[id];
+  return (
+    <div
+      className="chaos-face absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 bg-background/75 backdrop-blur-md rounded-full px-2 py-1 shadow-xl"
+      style={{
+        width: 130,
+        border: '1px solid rgba(239,68,68,0.4)',
+      }}
+    >
+      <AlertCircle className="h-3 w-3 shrink-0" style={{ color: '#ef4444' }} />
+      <span className="text-[9px] font-bold uppercase tracking-wider text-white/90 truncate flex-1">
+        {m.label}
+      </span>
+      <span
+        className="text-[8px] font-bold uppercase tracking-wider px-1 rounded shrink-0"
+        style={{ background: 'rgba(239,68,68,0.22)', color: '#ef4444' }}
+      >
+        {m.status}
+      </span>
+    </div>
+  );
+}
+
 // ── Hero Section ──────────────────────────────────────────────────────────────────
+
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [skipAnimation, setSkipAnimation] = useState(false);
   const headline = 'Make your finance function work harder';
 
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: '+=150%',
-        pin: true,
-        scrub: 1.2,
-        anticipatePin: 1,
-      },
-    });
-
-    // 1. SORTING PHASE - Items move to a grid and align
-    tl.to('.chaos-item', {
-      x: (i) => `${(i % 5) * 20 + 10}%`,
-      y: (i) => `${Math.floor(i / 5) * 35 + 25}%`,
-      rotation: 0,
-      scale: 1,
-      duration: 1.5,
-      ease: 'expo.inOut',
-    }, 0.2);
-
-    // 2. EXIT PHASE - Items disappear COMPLETELY before dashboard enters
-    tl.to('.chaos-item', {
-      opacity: 0,
-      scale: 0.2,
-      y: '-=50', // fly up slightly
-      duration: 0.8,
-      stagger: 0.03,
-      ease: 'power2.in',
-    }, 1.7);
-
-    tl.to('.chaos-core', {
-      scale: 5,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-    }, 1.7);
-
-    // 3. DASHBOARD ENTRANCE - Starts after chaos is gone
-    tl.fromTo('.fcc-tile',
-      { opacity: 0, scale: 0.9, y: 30, filter: 'blur(15px)' },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        duration: 1.2,
-        stagger: 0.08,
-        ease: 'expo.out',
-        onComplete: () => {
-          gsap.set('.fcc-tile', { className: 'fcc-tile rounded-xl border border-border bg-background/40 p-3.5 fcc-breathe' });
-        },
-      },
-      2.4,
-    );
-
-    tl.fromTo('.fcc-header',
-      { opacity: 0, y: -20 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
-      2.4,
-    );
-
-    // Subtle shift on the copy to acknowledge the transition
-    tl.to('.hero-copy-container', {
-      y: -10,
-      duration: 1,
-      ease: 'power2.inOut',
-    }, 1);
-
-  }, { scope: sectionRef });
+  useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.matchMedia('(max-width: 639px)').matches;
+    setSkipAnimation(reducedMotion || isMobile);
+  }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="cursor-glow relative overflow-hidden py-24 lg:py-32 pb-32 lg:pb-44"
+      className="relative overflow-hidden pt-24 lg:pt-28 pb-28 lg:pb-40"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <motion.div
@@ -369,11 +591,11 @@ export function HeroSection() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 h-full flex flex-col justify-center">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
           {/* Copy */}
-          <div className="hero-copy-container">
+          <div>
             <motion.p
               className="text-sm font-medium uppercase tracking-widest mb-4"
               style={{ color: 'var(--brand-navy)' }}
@@ -421,18 +643,11 @@ export function HeroSection() {
                 </Button>
               </MagneticButton>
             </motion.div>
-
-            <motion.p
-              className="mt-6 text-xs text-muted-foreground"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 1 }}
-            >
-              Scroll to see the chaos become a controlled month.
-            </motion.p>
           </div>
 
           {/* Dashboard */}
-          <div className="relative">
-            <FinanceCommandCentre />
+          <div className="relative w-full max-w-[540px] mx-auto lg:mx-0 lg:ml-auto">
+            <FinanceCommandCentre skipAnimation={skipAnimation} />
           </div>
         </div>
       </div>

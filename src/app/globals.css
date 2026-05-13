@@ -124,44 +124,45 @@
   box-shadow: 0 12px 40px -8px color-mix(in oklch, var(--primary) 18%, transparent);
 }
 
-/* ─── Finance Command Centre tiles (hero dashboard) ─────────────────────── */
-.fcc-tile {
-  transition: transform 250ms ease, opacity 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+/* ─── Finance Command Centre — hero dashboard ───────────────────────────── */
+
+/* Tile face: the clean "order" state inside each carrier */
+.tile-face {
+  transition: border-color 250ms ease, box-shadow 250ms ease;
+  will-change: opacity;
 }
 
-.fcc-grid:has(.fcc-tile:hover) .fcc-tile:not(:hover) {
-  opacity: 0.55;
+/* Carrier wrapper hover lift — only when settled (faces fully visible) */
+.fcc-tile .tile-face:hover {
+  border-color: color-mix(in oklch, var(--primary) 40%, transparent);
+  box-shadow: 0 10px 30px -10px color-mix(in oklch, var(--primary) 20%, transparent);
 }
 
-.fcc-tile:hover {
-  transform: translateY(-2px) scale(1.015);
+.fcc-strip-item .tile-face:hover {
   border-color: color-mix(in oklch, var(--primary) 45%, transparent);
-  box-shadow: 0 10px 30px -10px color-mix(in oklch, var(--primary) 22%, transparent);
+  box-shadow: 0 6px 20px -8px color-mix(in oklch, var(--primary) 22%, transparent);
 }
 
-/* Sequential heartbeat on SARS/CIPC compliance row — fires once every 8s, items offset by 200ms */
-@keyframes fcc-heartbeat {
-  0%, 96%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 0 transparent);
-  }
-  97% {
-    transform: scale(1.18);
-    filter: drop-shadow(0 0 6px color-mix(in oklch, var(--primary) 70%, transparent));
-  }
-  98.5% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 0 transparent);
-  }
+/* Tile internal typography helpers */
+.tile-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
-.fcc-heartbeat {
-  animation: fcc-heartbeat 8s ease-in-out infinite;
-  transform-origin: center;
+.tile-foot {
+  font-size: 10px;
+  color: var(--muted-foreground);
+  line-height: 1.3;
 }
 
-.fcc-heartbeat:nth-child(2) { animation-delay: 0.2s; }
-.fcc-heartbeat:nth-child(3) { animation-delay: 0.4s; }
+/* Chaos face — small busy doc card centred in carrier */
+.chaos-face {
+  will-change: opacity, transform;
+  pointer-events: none;
+}
 
 /* ─── Glassmorphic Trust Banner ──────────────────────────────────────────── */
 .trust-banner {
@@ -207,40 +208,10 @@
   );
 }
 
-/* ─── Hero chaos float (continuous loop) ─────────────────────────────────── */
-@keyframes chaos-float-a {
-  0%, 100% { transform: translate(0, 0) rotate(12deg); }
-  50%      { transform: translate(8px, -10px) rotate(8deg); }
-}
-@keyframes chaos-float-b {
-  0%, 100% { transform: translate(0, 0) rotate(-12deg); }
-  50%      { transform: translate(-6px, 8px) rotate(-16deg); }
-}
-@keyframes chaos-float-c {
-  0%, 100% { transform: translate(0, 0) rotate(-6deg); }
-  50%      { transform: translate(10px, 6px) rotate(-2deg); }
-}
-@keyframes chaos-float-d {
-  0%, 100% { transform: translate(0, 0) rotate(45deg); }
-  50%      { transform: translate(-8px, -8px) rotate(38deg); }
-}
-
-.chaos-item {
+/* ─── Hero dashboard carrier (GSAP-driven; no CSS animation needed) ──────── */
+.fcc-tile,
+.fcc-strip-item {
   will-change: transform;
-}
-.chaos-float-a { animation: chaos-float-a 4.5s ease-in-out infinite; }
-.chaos-float-b { animation: chaos-float-b 5.2s ease-in-out infinite; }
-.chaos-float-c { animation: chaos-float-c 4.1s ease-in-out infinite; }
-.chaos-float-d { animation: chaos-float-d 5.8s ease-in-out infinite; }
-
-/* Continuous breathing on assembled tiles after the assembly */
-@keyframes fcc-breathe {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-2px); }
-}
-
-.fcc-breathe {
-  animation: fcc-breathe 6s ease-in-out infinite;
 }
 
 /* ─── Calendar UI (OutcomeStories) ───────────────────────────────────────── */
@@ -328,20 +299,14 @@
   .feature-card:hover,
   .problem-card:hover,
   .outcome-card:hover,
-  .fcc-tile:hover {
+  .tile-face:hover {
     transform: none !important;
   }
 
-  .fcc-heartbeat {
-    animation: none !important;
-  }
-
-  .chaos-float-a,
-  .chaos-float-b,
-  .chaos-float-c,
-  .chaos-float-d,
-  .fcc-breathe {
-    animation: none !important;
+  /* Hide chaos faces entirely under reduced motion — only the resolved tile state remains */
+  .chaos-face,
+  .chaos-blob {
+    display: none !important;
   }
 
   .cursor-glow::before {
