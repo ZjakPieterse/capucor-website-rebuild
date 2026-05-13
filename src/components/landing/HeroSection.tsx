@@ -73,6 +73,10 @@ const CHAOS_ITEMS: Array<{
   { floatClass: 'chaos-float-c', style: { top: '4%',  right: '40%' }, Icon: Mail,            iconSize: 'w-8 h-8',   color: 'text-yellow-500',       label: 'UNREAD',   labelColor: 'text-yellow-500/80' },
   { floatClass: 'chaos-float-b', style: { top: '44%', right: '3%'  }, Icon: Receipt,         iconSize: 'w-7 h-7',   color: 'text-muted-foreground', label: 'MISSING',  labelColor: 'text-muted-foreground/80' },
   { floatClass: 'chaos-float-d', style: { top: '86%', left: '42%'  }, Icon: FileSpreadsheet, iconSize: 'w-8 h-8',   color: 'text-destructive',      label: 'CONFLICT', labelColor: 'text-destructive/80' },
+  { floatClass: 'chaos-float-b', style: { top: '15%', left: '20%'  }, Icon: FileWarning,     iconSize: 'w-6 h-6',   color: 'text-destructive',      label: 'REF_04X',  labelColor: 'text-destructive/60' },
+  { floatClass: 'chaos-float-a', style: { top: '65%', right: '25%' }, Icon: Receipt,         iconSize: 'w-5 h-5',   color: 'text-yellow-500',       label: 'EXPENSE?', labelColor: 'text-yellow-500/60' },
+  { floatClass: 'chaos-float-c', style: { top: '35%', left: '15%'  }, Icon: FileText,        iconSize: 'w-8 h-8',   color: 'text-destructive',      label: 'VOID',     labelColor: 'text-destructive/80' },
+  { floatClass: 'chaos-float-d', style: { top: '10%', right: '15%' }, Icon: Calculator,      iconSize: 'w-10 h-10', color: 'text-yellow-600',       label: '??.00',    labelColor: 'text-yellow-600/70' },
 ];
 
 // ── Finance Command Centre ────────────────────────────────────────────────────────
@@ -86,41 +90,56 @@ function FinanceCommandCentre() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 65%',
-        end: '+=50%',
-        scrub: 0.6,
+        start: 'top 15%',
+        end: '+=80%',
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
       },
     });
 
     // Chaos items fade out, get pulled toward centre
     tl.to('.chaos-item', {
       opacity: 0,
-      scale: 0.15,
-      duration: 1,
-      stagger: 0.05,
+      scale: 0.1,
+      y: (i) => (i % 2 === 0 ? -40 : 40),
+      x: (i) => (i % 3 === 0 ? -40 : 40),
+      duration: 1.2,
+      stagger: 0.04,
       ease: 'power2.in',
     }, 0);
 
     // Glowing core flares then collapses
     tl.to('.chaos-core', {
-      scale: 1.8,
+      scale: 2.5,
       opacity: 0,
-      duration: 0.8,
+      duration: 1,
       ease: 'power2.out',
-    }, 0.4);
+    }, 0.5);
 
     // Tiles pop in
     tl.fromTo('.fcc-tile',
-      { opacity: 0, scale: 0.92, y: 14 },
-      { opacity: 1, scale: 1, y: 0, duration: 1, stagger: 0.05, ease: 'power2.out' },
-      0.55,
+      { opacity: 0, scale: 0.9, y: 20 },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 1.2,
+        stagger: 0.08,
+        ease: 'back.out(1.4)',
+        onComplete: () => {
+          // Add breathing animation after they've assembled
+          gsap.set('.fcc-tile', { className: 'fcc-tile rounded-xl border border-border bg-background/40 p-3.5 fcc-breathe' });
+        },
+      },
+      0.7,
     );
 
     // Header fades in
     tl.fromTo('.fcc-header',
-      { opacity: 0, y: -10 },
-      { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
-      0.55,
+      { opacity: 0, y: -15 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
+      0.7,
     );
 
     return () => {

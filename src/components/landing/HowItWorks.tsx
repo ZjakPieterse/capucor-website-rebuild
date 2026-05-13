@@ -55,7 +55,7 @@ export function HowItWorks() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'center center',
-        end: `+=${STEPS.length * 45}%`,
+        end: `+=${STEPS.length * 32}%`,
         pin: true,
         scrub: 0.4,
         anticipatePin: 1,

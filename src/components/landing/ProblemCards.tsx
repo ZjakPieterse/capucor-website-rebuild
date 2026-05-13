@@ -12,27 +12,27 @@ const PROBLEMS = [
   {
     icon: BookOpen,
     title: 'Messy, outdated books',
-    body: "It's the 15th. The bank wants management accounts for a facility review. You're categorising 400 bank lines by hand, guessing what half the receipts are for. The weekend is gone.",
+    body: "It's the 15th. The bank wants management accounts for a facility review. You're categorising 400 bank lines by hand, guessing what receipts were for. The weekend is gone.",
     solution: {
       icon: CheckCircle2,
       title: 'Current books. Clear answers.',
-      body: 'By day 7 the month is closed. When the bank asks for numbers, you pull a clean reconciled report in under 30 seconds. The weekend stays yours.',
+      body: 'By day 7 the month is closed. When the bank asks for numbers, you pull a clean reconciled report in 30 seconds. The weekend stays yours.',
     },
   },
   {
     icon: AlertCircle,
     title: 'Deadline pressure',
-    body: "SARS sends a penalty for a missed EMP201. You thought it was being filed. It wasn't. Now you're paying for a mistake that should never have reached your desk.",
+    body: "A SARS penalty letter arrives for a missed EMP201. You thought it was filed. It wasn't. Now you're paying for a mistake that should never have reached your desk.",
     solution: {
       icon: CalendarCheck,
       title: 'Deadlines that don’t depend on memory.',
-      body: 'EMP201, VAT201, provisional tax and CIPC sit on a workflow with named owners and review dates. Filed on time, every cycle. No penalty letters.',
+      body: 'EMP201, VAT and CIPC sit on a workflow with named owners and review dates. Filed on time, every cycle. No more penalty letters.',
     },
   },
   {
     icon: Unplug,
     title: 'Disconnected tools',
-    body: "You check the bank app for cash, a spreadsheet for payroll, email threads for invoices. None of it agrees. You can't get a straight answer about your own business.",
+    body: "You check the bank for cash, a spreadsheet for payroll, and email for invoices. None of it agrees. You can't get a straight answer about your own business.",
     solution: {
       icon: Link2,
       title: 'One ledger, one source of truth.',
@@ -42,11 +42,11 @@ const PROBLEMS = [
   {
     icon: Clock,
     title: 'Too much owner involvement',
-    body: "You spend 15 hours a month chasing slips, approving small payments, answering basic finance questions. The work doesn't stop. The growth does.",
+    body: "You spend 15 hours a month chasing slips and answering basic finance questions. The work doesn't stop. The growth does.",
     solution: {
       icon: Zap,
       title: 'A finance rhythm that runs without you.',
-      body: 'You upload what we ask for. We run the month. You only see the decisions that need an owner in the seat.',
+      body: 'You upload what we ask for. We run the month. You only focus on the decisions that actually need an owner in the seat.',
     },
   },
 ];

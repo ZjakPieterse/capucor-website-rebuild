@@ -5,6 +5,8 @@ import { BarChart2, BookMarked, Users, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
+import { useCursorGlow } from '@/hooks/useCursorGlow';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 import type { Service } from '@/types';
 
 const SERVICE_ICONS: Record<string, React.ElementType> = {
@@ -101,6 +103,7 @@ interface Step1ServicesProps {
 export function Step1Services({ services, selected, onToggle, onNext }: Step1ServicesProps) {
   const canContinue = selected.size > 0;
   const [expandedScope, setExpandedScope] = useState<Set<string>>(new Set());
+  const containerRef = useCursorGlow<HTMLDivElement>();
 
   function toggleScope(slug: string) {
     setExpandedScope((prev) => {
@@ -120,7 +123,7 @@ export function Step1Services({ services, selected, onToggle, onNext }: Step1Ser
         </p>
       </div>
 
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div ref={containerRef} className="cursor-glow grid sm:grid-cols-3 gap-4">
         {services.map((svc) => {
           const Icon = SERVICE_ICONS[svc.slug] ?? BarChart2;
           const isSelected = selected.has(svc.slug);
@@ -229,9 +232,11 @@ export function Step1Services({ services, selected, onToggle, onNext }: Step1Ser
       </p>
 
       <div className="flex justify-end pt-2">
-        <Button onClick={onNext} disabled={!canContinue} className="gap-2">
-          Continue →
-        </Button>
+        <MagneticButton>
+          <Button onClick={onNext} disabled={!canContinue} className="gap-2">
+            Continue →
+          </Button>
+        </MagneticButton>
       </div>
     </div>
   );

@@ -76,7 +76,7 @@ export function OutcomeStories() {
     const trigger = ScrollTrigger.create({
       trigger: scrubArea,
       start: 'top top',
-      end: `+=${DAY_STOPS.length * 38}%`,
+      end: `+=${DAY_STOPS.length * 28}%`,
       pin: true,
       scrub: 0.5,
       anticipatePin: 1,

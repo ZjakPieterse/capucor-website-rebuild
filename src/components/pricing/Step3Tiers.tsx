@@ -8,6 +8,8 @@ import { TierComparison } from './TierComparison';
 import { RiskReducerStrip } from './RiskReducerStrip';
 import { cn } from '@/lib/utils';
 import { bracketPrice } from '@/lib/pricing';
+import { useCursorGlow } from '@/hooks/useCursorGlow';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 import { TIER_HIGHLIGHTS, TIER_CUMULATIVE_LABELS } from '@/config/tiers';
 import type { TierHighlightItem } from '@/config/tiers';
 import type { Bracket, Service, Tier, BracketValue, Testimonial } from '@/types';
@@ -39,6 +41,7 @@ export function Step3Tiers({
 }: Step3TiersProps) {
   const sortedTiers = [...tiers].sort((a, b) => a.display_order - b.display_order);
   const activeServices = services.filter((s) => selectedServices.has(s.slug));
+  const containerRef = useCursorGlow<HTMLDivElement>();
 
   return (
     <div className="space-y-6">
@@ -51,7 +54,7 @@ export function Step3Tiers({
 
       <RiskReducerStrip />
 
-      <div className="grid sm:grid-cols-3 gap-4 sm:pt-3">
+      <div ref={containerRef} className="cursor-glow grid sm:grid-cols-3 gap-4 sm:pt-3">
         {sortedTiers.map((tier) => {
           const isSelected = selectedTier === tier.slug;
 
@@ -135,10 +138,12 @@ export function Step3Tiers({
               A few details, then a secure Paystack checkout. You can cancel any time with 30 days notice.
             </p>
           </div>
-          <Button onClick={onActivate} className="shrink-0 gap-2">
-            Activate
-            <ArrowRight className="h-4 w-4" />
-          </Button>
+          <MagneticButton>
+            <Button onClick={onActivate} className="shrink-0 gap-2">
+              Activate
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </MagneticButton>
         </div>
       )}
 
@@ -152,9 +157,11 @@ export function Step3Tiers({
       )}
 
       <div className="flex justify-start pt-2">
-        <Button variant="outline" onClick={onBack}>
-          ← Back
-        </Button>
+        <MagneticButton>
+          <Button variant="outline" onClick={onBack}>
+            ← Back
+          </Button>
+        </MagneticButton>
       </div>
     </div>
   );
