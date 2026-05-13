@@ -61,7 +61,6 @@ export function MobileTotalBar({
           </p>
           {total > 0 ? (
             <motion.div
-              key={total}
               initial={{ scale: 0.95, opacity: 0.5 }}
               animate={{ scale: 1, opacity: 1 }}
               className="font-mono font-bold text-lg leading-tight"

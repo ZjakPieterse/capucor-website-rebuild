@@ -56,7 +56,7 @@ export function Step2Brackets({
           return (
             <div
               key={svc.slug}
-              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 rounded-xl border border-border bg-card px-5 py-4"
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 rounded-xl border border-border bg-card/40 backdrop-blur-md px-5 py-4"
             >
               <div className="min-w-0">
                 <p className="font-semibold text-sm">{svc.name}</p>

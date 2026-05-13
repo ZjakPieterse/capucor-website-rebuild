@@ -148,8 +148,8 @@ export function Step1Services({ services, selected, onToggle, onNext }: Step1Ser
                 'rounded-xl border-2 p-6 text-left transition-all duration-150 outline-none cursor-pointer',
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isSelected
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border bg-card hover:border-primary/40 hover:bg-muted/40'
+                  ? 'border-primary bg-primary/10 backdrop-blur-md shadow-lg shadow-primary/10'
+                  : 'border-border bg-card/40 backdrop-blur-md hover:border-primary/40 hover:bg-muted/20'
               )}
             >
               <div

@@ -78,7 +78,7 @@ export function StickyConfigChip({
             </span>
             <AnimatePresence mode="wait">
               <motion.span
-                key={total}
+                key={total > 0 ? 'price' : 'empty'}
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-sm"

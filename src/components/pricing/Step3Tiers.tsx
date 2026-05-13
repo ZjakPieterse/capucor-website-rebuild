@@ -84,8 +84,8 @@ export function Step3Tiers({
                 'rounded-xl border-2 p-6 text-left transition-all duration-150 outline-none w-full relative',
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isSelected
-                  ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
-                  : 'border-border bg-card hover:border-primary/40 hover:bg-muted/20'
+                  ? 'border-primary bg-primary/10 backdrop-blur-md shadow-lg shadow-primary/10'
+                  : 'border-border bg-card/40 backdrop-blur-md hover:border-primary/40 hover:bg-muted/20'
               )}
             >
               <div className="mb-4">

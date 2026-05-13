@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Landmark, ReceiptText, ClipboardCheck, FileBarChart, ScrollText } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -55,12 +54,6 @@ const DAY_STOPS: DayStop[] = [
   },
 ];
 
-const STATS = [
-  { value: 175, suffix: '+', label: 'Businesses kept current month after month' },
-  { value: 0, suffix: '', label: 'Late SARS filings across our client base in 2025' },
-  { value: 12, suffix: ' days', label: 'Average migration from another accountant to a live Capucor month' },
-  { value: 15, suffix: 'th', label: 'Of the month is when your management report lands' },
-];
 
 export function OutcomeStories() {
   const containerRef = useRef<HTMLElement>(null);
@@ -123,22 +116,6 @@ export function OutcomeStories() {
             title="What actually happens between the 1st and the 30th"
             subtitle="Most accounting firms surface once a year, at audit time. We work to the month. Scroll through what that rhythm looks like in practice."
           />
-        </ScrollReveal>
-
-        {/* Stat ticker */}
-        <ScrollReveal delay={0.1}>
-          <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 border-y border-border py-8">
-            {STATS.map((s) => (
-              <div key={s.label} className="text-center lg:text-left">
-                <div className="text-3xl lg:text-4xl font-bold font-mono text-primary leading-none">
-                  <AnimatedNumber to={s.value} suffix={s.suffix} />
-                </div>
-                <p className="mt-2 text-xs text-muted-foreground leading-snug">
-                  {s.label}
-                </p>
-              </div>
-            ))}
-          </div>
         </ScrollReveal>
       </div>
 
