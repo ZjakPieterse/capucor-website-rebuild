@@ -481,6 +481,184 @@
     color-mix(in oklch, var(--primary) 18%, transparent);
 }
 
+/* ─── How It Works — minimalist expansion glass cards ─────────────────── */
+.how-glass-row {
+  isolation: isolate;
+}
+
+.how-glass-row::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--cursor-glow-opacity, 0);
+  background: radial-gradient(
+    520px circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
+    color-mix(in oklch, var(--primary) 22%, transparent),
+    transparent 65%
+  );
+  filter: blur(28px);
+  transition: opacity 320ms ease;
+}
+
+.how-glass-card {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 28px 24px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+  transition:
+    flex-grow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.how-glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.how-step-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  max-height: 0;
+  margin-top: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.how-glass-card:hover,
+.how-glass-card:focus-visible,
+.how-glass-card:focus-within {
+  flex-grow: 2.4;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.37),
+    0 0 0 1px color-mix(in oklch, var(--primary) 35%, transparent),
+    0 18px 60px -28px color-mix(in oklch, var(--primary) 50%, transparent);
+}
+
+.how-glass-card:hover .how-step-reveal,
+.how-glass-card:focus-visible .how-step-reveal,
+.how-glass-card:focus-within .how-step-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 400px;
+  margin-top: 20px;
+  pointer-events: auto;
+}
+
+.how-step-number {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: color-mix(in oklch, var(--primary) 85%, white);
+}
+
+.how-step-icon {
+  width: 32px;
+  height: 32px;
+  margin: 14px 0 18px;
+  color: var(--primary);
+  filter: drop-shadow(
+    0 0 12px color-mix(in oklch, var(--primary) 40%, transparent)
+  );
+}
+
+.how-step-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  line-height: 1.25;
+}
+
+.how-step-body {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: color-mix(in oklch, var(--muted-foreground) 90%, white);
+}
+
+.how-step-you-get {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: color-mix(in oklch, var(--primary) 8%, transparent);
+  border: 1px solid color-mix(in oklch, var(--primary) 18%, transparent);
+}
+
+.how-step-you-get-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.how-step-you-get-text {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: color-mix(in oklch, var(--foreground) 88%, transparent);
+}
+
+@media (max-width: 1023px) {
+  .how-glass-card,
+  .how-glass-card:hover,
+  .how-glass-card:focus-visible,
+  .how-glass-card:focus-within {
+    flex-grow: 1;
+  }
+  .how-step-reveal {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: none;
+    margin-top: 20px;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .how-glass-card,
+  .how-step-reveal,
+  .how-glass-row::before {
+    transition: none !important;
+  }
+}
+
 /* ─── Finance Command Centre tiles (hero dashboard) ─────────────────────── */
 .fcc-tile {
   transition:
