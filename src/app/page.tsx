@@ -89,7 +89,7 @@ export default async function HomePage() {
 
       {/* 1. Hero */}
       <HeroSection />
-      {/* 2. Trust strip */}
+      {/* 2. Floating trust banner (stats + partners + credentials, overlaps the hero/reality transition) */}
       <SocialProofStrip />
       {/* 3. Problem */}
       <ProblemCards />

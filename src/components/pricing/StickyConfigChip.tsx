@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { ChevronUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { monthlyTotal } from '@/lib/pricing';
@@ -55,36 +56,51 @@ export function StickyConfigChip({
     : 0;
 
   return (
-    <button
-      type="button"
-      onClick={scrollToCalculator}
-      aria-label="Return to calculator"
-      className={cn(
-        'hidden lg:inline-flex fixed bottom-6 right-6 z-30 items-center gap-3 rounded-full bg-card/95 backdrop-blur border border-border shadow-lg pl-4 pr-2 py-2 text-left',
-        'transition-all duration-300 hover:border-primary/40 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-        visible
-          ? 'opacity-100 translate-y-0 pointer-events-auto'
-          : 'opacity-0 translate-y-3 pointer-events-none'
+    <AnimatePresence>
+      {visible && (
+        <motion.button
+          layout
+          type="button"
+          onClick={scrollToCalculator}
+          aria-label="Return to calculator"
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={cn(
+            'hidden lg:inline-flex fixed bottom-8 right-8 z-30 items-center gap-3 rounded-full bg-card/70 backdrop-blur-xl saturate-150 border border-primary/20 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.4)] pl-5 pr-2 py-2 text-left transition-colors duration-300 hover:border-primary/50'
+          )}
+        >
+          <div className="flex flex-col leading-tight">
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+              {tier ? `${tier.name} plan` : `${activeSlugs.length} service${activeSlugs.length === 1 ? '' : 's'}`}
+            </span>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={total > 0 ? 'price' : 'empty'}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-sm"
+              >
+                {total > 0 ? (
+                  <>
+                    <AnimatedPrice amount={total} className="text-sm font-bold" />
+                    <span className="text-[10px] font-normal text-muted-foreground ml-1">/mo</span>
+                  </>
+                ) : (
+                  <span className="text-xs text-muted-foreground">
+                    {tier ? 'Configure' : 'Pick a tier'}
+                  </span>
+                )}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+            <ChevronUp className="h-4 w-4" />
+          </span>
+        </motion.button>
       )}
-    >
-      <div className="flex flex-col leading-tight">
-        <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-          {tier ? `${tier.name} plan` : `${activeSlugs.length} service${activeSlugs.length === 1 ? '' : 's'}`}
-        </span>
-        {total > 0 ? (
-          <span className="text-sm">
-            <AnimatedPrice amount={total} className="text-sm font-bold" />
-            <span className="text-[10px] font-normal text-muted-foreground ml-1">/mo</span>
-          </span>
-        ) : (
-          <span className="text-xs text-muted-foreground">
-            {tier ? 'Configure' : 'Pick a tier'}
-          </span>
-        )}
-      </div>
-      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-        <ChevronUp className="h-4 w-4" />
-      </span>
-    </button>
+    </AnimatePresence>
   );
 }

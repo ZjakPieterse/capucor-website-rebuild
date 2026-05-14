@@ -5,41 +5,46 @@ import { ArrowRight, Calendar } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { useCursorGlow } from '@/hooks/useCursorGlow';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 
 export function FinalCTA() {
   const sectionRef = useCursorGlow<HTMLElement>();
   return (
     <section
       ref={sectionRef}
-      className="cursor-glow premium-section relative border-t border-white/8 py-28 lg:py-40"
+      className="cursor-glow relative py-24 lg:py-32 bg-muted/50 border-t border-border"
     >
       <div className="max-w-3xl mx-auto px-6 text-center">
         <ScrollReveal>
-          <h2 className="mb-5 text-4xl font-extralight tracking-[-0.055em] lg:text-6xl">
+          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">
             Ready to make finance work better?
           </h2>
-          <p className="mb-10 text-lg font-light leading-relaxed text-muted-foreground">
+          <p className="text-lg text-muted-foreground mb-10">
             Build your subscription in a few minutes, or book a short fit call and we&apos;ll help you choose the right level of monthly support.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/pricing"
-              className="premium-button inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-primary/95 sm:w-auto"
-            >
-              Build your subscription
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <MagneticButton>
+              <Link
+                href="/pricing"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
+              >
+                Build your subscription
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </MagneticButton>
 
-            <a
-              href={siteConfig.links.booking}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="premium-button inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.045] px-6 py-3 text-sm font-semibold backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-primary/35 hover:bg-white/[0.075] sm:w-auto"
-            >
-              <Calendar className="h-4 w-4" />
-              Book a 15-minute fit call
-            </a>
+            <MagneticButton>
+              <a
+                href={siteConfig.links.booking}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg border border-input bg-input/30 px-6 py-3 text-sm font-semibold hover:bg-input/50 transition-all hover:scale-[1.03]"
+              >
+                <Calendar className="h-4 w-4" />
+                Book a 15-minute fit call
+              </a>
+            </MagneticButton>
           </div>
         </ScrollReveal>
       </div>

@@ -47,6 +47,3 @@ export const TIER_BUYER_FIT: Record<string, string> = {
   pro: 'For businesses that want monthly visibility and a more active finance rhythm.',
   premium: 'For businesses that want closer advisory, live KPIs and deeper monthly planning.',
 };
-
-export const TIER_MOST_POPULAR_NOTE =
-  'Most SMEs choose Pro because it balances monthly reporting with fixed pricing.';
