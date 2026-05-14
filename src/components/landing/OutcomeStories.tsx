@@ -11,14 +11,7 @@ import {
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import { cn } from "@/lib/utils";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface DayStop {
   day: number;
@@ -61,44 +54,14 @@ const DAY_STOPS: DayStop[] = [
 ];
 
 export function OutcomeStories() {
-  const containerRef = useRef<HTMLElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
-  const dayRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const dayRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [highlight, setHighlight] = useState({
     left: 0,
     width: 0,
     ready: false,
   });
-
-  useGSAP(
-    () => {
-      const scrubArea =
-        containerRef.current?.querySelector<HTMLElement>(".day-scrub-area");
-      if (!scrubArea) return;
-
-      const trigger = ScrollTrigger.create({
-        trigger: scrubArea,
-        start: "top top",
-        end: `+=${DAY_STOPS.length * 28}%`,
-        pin: true,
-        scrub: 0.5,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          const idx = Math.min(
-            DAY_STOPS.length - 1,
-            Math.floor(self.progress * DAY_STOPS.length),
-          );
-          setActiveIndex(idx);
-        },
-      });
-
-      return () => {
-        trigger.kill();
-      };
-    },
-    { scope: containerRef },
-  );
 
   useEffect(() => {
     const update = () => {
@@ -121,22 +84,19 @@ export function OutcomeStories() {
   const active = DAY_STOPS[activeIndex];
 
   return (
-    <section
-      ref={containerRef}
-      className="premium-section premium-section-muted border-t border-white/10 overflow-hidden"
-    >
+    <section className="premium-section premium-section-muted border-t border-white/10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 py-24 lg:py-32">
         <ScrollReveal>
           <SectionHeading
             eyebrow="A month with Capucor"
             title="What actually happens between the 1st and the 30th"
-            subtitle="Most accounting firms surface once a year, at audit time. We work to the month. Scroll through what that rhythm looks like in practice."
+            subtitle="Most accounting firms surface once a year, at audit time. We work to the month. Choose a day to see what that rhythm looks like in practice."
           />
         </ScrollReveal>
       </div>
 
-      {/* Pinned calendar UI */}
-      <div className="day-scrub-area min-h-screen flex flex-col justify-center">
+      {/* Calendar UI */}
+      <div className="pb-24 lg:pb-32">
         <div className="max-w-5xl mx-auto px-6 w-full">
           <p className="text-center text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-6">
             A typical Capucor month
@@ -167,14 +127,17 @@ export function OutcomeStories() {
               {DAY_STOPS.map((stop, i) => {
                 const isActive = i === activeIndex;
                 return (
-                  <div
+                  <button
                     key={stop.day}
                     ref={(el) => {
                       dayRefs.current[i] = el;
                     }}
+                    type="button"
                     data-active={isActive}
+                    aria-pressed={isActive}
+                    onClick={() => setActiveIndex(i)}
                     className={cn(
-                      "day-pill premium-glass relative z-10 inline-flex flex-col items-center justify-center rounded-full border bg-card/75 px-4 py-3 sm:px-6 sm:py-4 min-w-[78px] sm:min-w-[110px]",
+                      "day-pill premium-glass relative z-10 inline-flex flex-col items-center justify-center rounded-full border bg-card/75 px-4 py-3 sm:px-6 sm:py-4 min-w-[78px] sm:min-w-[110px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background",
                       isActive
                         ? "border-transparent text-primary-foreground"
                         : "border-border text-muted-foreground",
@@ -186,7 +149,7 @@ export function OutcomeStories() {
                     <span className="font-mono text-xl sm:text-2xl font-bold leading-none">
                       {stop.day}
                     </span>
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -223,11 +186,6 @@ export function OutcomeStories() {
               </motion.div>
             </AnimatePresence>
           </div>
-
-          {/* Scroll hint */}
-          <p className="mt-8 text-center text-xs text-muted-foreground">
-            Keep scrolling to move through the month.
-          </p>
         </div>
       </div>
     </section>

@@ -1,27 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
-import Link from "next/link";
-import {
-  Inbox,
-  Cog,
-  BarChart2,
-  MessageSquare,
-  ArrowRight,
-  Calendar,
-} from "lucide-react";
+import { useState } from "react";
+import { Inbox, Cog, BarChart2, MessageSquare } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { siteConfig } from "@/config/site";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import { cn } from "@/lib/utils";
-import { MagneticButton } from "@/components/ui/MagneticButton";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 const STEPS = [
   {
     icon: Inbox,
@@ -58,48 +40,13 @@ const STEPS = [
 ];
 
 export function HowItWorks() {
-  const containerRef = useRef<HTMLElement>(null);
   const [activeStep, setActiveStep] = useState(0);
-
-  useGSAP(
-    () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "center center",
-          end: `+=${STEPS.length * 32}%`,
-          pin: true,
-          scrub: 0.4,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            const progress = self.progress;
-            const currentStep = Math.min(
-              STEPS.length - 1,
-              Math.floor(progress * STEPS.length),
-            );
-            setActiveStep(currentStep);
-          },
-        },
-      });
-
-      tl.fromTo(
-        ".progress-fill",
-        { width: "0%" },
-        { width: "100%", ease: "none" },
-      );
-
-      return () => {
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
-    },
-    { scope: containerRef },
-  );
+  const progressWidth = `${(activeStep / (STEPS.length - 1)) * 100}%`;
 
   return (
     <section
-      ref={containerRef}
       id="how-it-works"
-      className="premium-section py-16 bg-background min-h-screen flex flex-col justify-center overflow-hidden"
+      className="premium-section py-16 bg-background overflow-hidden"
     >
       <div className="max-w-3xl mx-auto px-6 w-full">
         <SectionHeading
@@ -115,28 +62,38 @@ export function HowItWorks() {
             aria-hidden
           />
           <div
-            className="progress-fill absolute left-0 top-1/2 -translate-y-1/2 h-[2px]"
+            className="absolute left-0 top-1/2 h-[2px] -translate-y-1/2 transition-[width] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
             style={{
               background:
                 "linear-gradient(to right, var(--primary), color-mix(in oklch, var(--primary) 70%, var(--brand-cyan)))",
-              width: "0%",
+              width: progressWidth,
               boxShadow:
                 "0 0 14px color-mix(in oklch, var(--primary) 60%, transparent)",
             }}
             aria-hidden
           />
-          <div className="relative flex items-center justify-between">
+          <div
+            className="relative flex items-center justify-between"
+            role="tablist"
+            aria-label="How it works steps"
+          >
             {STEPS.map((step, i) => {
               const isActive = i === activeStep;
               const isPassed = i <= activeStep;
               return (
-                <div
+                <button
                   key={step.title}
-                  className="flex flex-col items-center gap-2"
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`how-step-panel-${step.number}`}
+                  id={`how-step-tab-${step.number}`}
+                  onClick={() => setActiveStep(i)}
+                  className="group flex flex-col items-center gap-2 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
                 >
                   <div
                     className={cn(
-                      "flex items-center justify-center rounded-full border-4 border-background transition-all duration-500 ease-out",
+                      "flex items-center justify-center rounded-full border-4 border-background transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105",
                       isActive
                         ? "w-14 h-14 bg-primary shadow-[0_0_28px_rgba(46,216,137,0.45)] scale-110"
                         : isPassed
@@ -146,7 +103,7 @@ export function HowItWorks() {
                   >
                     <step.icon
                       className={cn(
-                        "transition-all duration-500",
+                        "transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                         isActive
                           ? "h-6 w-6 text-primary-foreground"
                           : isPassed
@@ -157,13 +114,13 @@ export function HowItWorks() {
                   </div>
                   <span
                     className={cn(
-                      "text-[10px] font-bold uppercase tracking-widest transition-colors duration-300",
+                      "text-[10px] font-bold uppercase tracking-widest transition-colors duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                       isActive ? "text-primary" : "text-muted-foreground/70",
                     )}
                   >
                     Step {step.number}
                   </span>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -177,8 +134,11 @@ export function HowItWorks() {
             return (
               <div
                 key={step.title}
+                id={`how-step-panel-${step.number}`}
+                role="tabpanel"
+                aria-labelledby={`how-step-tab-${step.number}`}
                 className={cn(
-                  "absolute inset-0 text-center transition-all duration-700 ease-in-out",
+                  "absolute inset-0 text-center transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                   isActive
                     ? "opacity-100 translate-y-0 pointer-events-auto"
                     : isPast
@@ -192,7 +152,7 @@ export function HowItWorks() {
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6 max-w-2xl mx-auto">
                   {step.body}
                 </p>
-                <div className="premium-glass bg-primary/5 border border-primary/20 rounded-2xl p-5 max-w-xl mx-auto text-left">
+                <div className="premium-glass bg-primary/5 border-[0.5px] border-primary/20 rounded-2xl p-5 max-w-xl mx-auto text-left">
                   <span className="font-semibold uppercase tracking-wider text-[10px] text-primary mr-2">
                     You get
                   </span>
@@ -203,35 +163,6 @@ export function HowItWorks() {
               </div>
             );
           })}
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="mt-16 text-center relative z-10">
-          <p className="text-sm text-muted-foreground mb-6">
-            Ready to put a proper monthly finance rhythm in place?
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <MagneticButton>
-              <Link
-                href="/pricing"
-                className="premium-button inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors w-full sm:w-auto justify-center"
-              >
-                Build your subscription
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </MagneticButton>
-            <MagneticButton>
-              <a
-                href={siteConfig.links.booking}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="premium-button inline-flex items-center gap-2 rounded-xl border border-input bg-background/70 px-6 py-3 text-sm font-medium hover:bg-muted transition-colors w-full sm:w-auto justify-center"
-              >
-                <Calendar className="h-4 w-4" />
-                Book a 15-minute fit call
-              </a>
-            </MagneticButton>
-          </div>
         </div>
       </div>
     </section>
