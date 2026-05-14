@@ -263,16 +263,11 @@ function FinanceCommandCentre() {
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2.5">
             SARS / CIPC Compliance
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div className="flex flex-wrap gap-x-5 gap-y-1.5">
             {["Provisional Tax", "EMP201", "CIPC Annual Return"].map((item) => (
-              <div
-                key={item}
-                className="flex items-center gap-1.5 rounded-lg border-[0.5px] border-white/10 bg-background/30 px-3 py-2"
-              >
-                <CheckCircle2
-                  className="h-3.5 w-3.5 shrink-0 text-success"
-                />
-                <span className="text-xs font-medium">{item}</span>
+              <div key={item} className="flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-success" />
+                <span className="text-xs font-medium text-foreground/80">{item}</span>
               </div>
             ))}
           </div>
