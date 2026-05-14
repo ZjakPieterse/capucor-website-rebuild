@@ -1,16 +1,22 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Landmark, ReceiptText, ClipboardCheck, FileBarChart, ScrollText } from 'lucide-react';
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
-import { SectionHeading } from '@/components/ui/SectionHeading';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
-import { cn } from '@/lib/utils';
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import {
+  Landmark,
+  ReceiptText,
+  ClipboardCheck,
+  FileBarChart,
+  ScrollText,
+} from "lucide-react";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { cn } from "@/lib/utils";
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
@@ -25,67 +31,74 @@ const DAY_STOPS: DayStop[] = [
   {
     day: 1,
     icon: Landmark,
-    title: 'Bank feeds pulled, transactions classified',
-    body: 'Xero pulls the previous month’s bank activity overnight. By the time the new month starts, your bookkeeper is already categorising and reconciling. Nothing waits a quarter to be sorted out.',
+    title: "Bank feeds pulled, transactions classified",
+    body: "Xero pulls the previous month’s bank activity overnight. By the time the new month starts, your bookkeeper is already categorising and reconciling. Nothing waits a quarter to be sorted out.",
   },
   {
     day: 7,
     icon: ReceiptText,
-    title: 'Payroll, EMP201 and UIF handled',
-    body: 'Payslips are generated and approved. EMP201 is calculated, submitted and paid. UIF and PAYE move on the dates SARS expects, not the dates you remembered.',
+    title: "Payroll, EMP201 and UIF handled",
+    body: "Payslips are generated and approved. EMP201 is calculated, submitted and paid. UIF and PAYE move on the dates SARS expects, not the dates you remembered.",
   },
   {
     day: 15,
     icon: ClipboardCheck,
-    title: 'Senior review, then your management report',
-    body: 'A SAICA-registered AGA(SA) accountant signs off on the month before anything reaches you. You receive a concise P&L, balance sheet and cash position, with the items worth a conversation flagged at the top.',
+    title: "Senior review, then your management report",
+    body: "A SAICA-registered AGA(SA) accountant signs off on the month before anything reaches you. You receive a concise P&L, balance sheet and cash position, with the items worth a conversation flagged at the top.",
   },
   {
     day: 25,
     icon: FileBarChart,
-    title: 'VAT201 prepared and submitted',
-    body: 'VAT is calculated from the reconciled ledger, not from invoice piles. You see the figure before it is submitted, and the SARS confirmation gets logged in your file the same day.',
+    title: "VAT201 prepared and submitted",
+    body: "VAT is calculated from the reconciled ledger, not from invoice piles. You see the figure before it is submitted, and the SARS confirmation gets logged in your file the same day.",
   },
   {
     day: 30,
     icon: ScrollText,
-    title: 'Next month already on the schedule',
-    body: 'Provisional tax, CIPC returns, IRP5 windows: everything that is approaching in the next 60 days is already on a workflow, with you and your bookkeeper assigned to it.',
+    title: "Next month already on the schedule",
+    body: "Provisional tax, CIPC returns, IRP5 windows: everything that is approaching in the next 60 days is already on a workflow, with you and your bookkeeper assigned to it.",
   },
 ];
-
 
 export function OutcomeStories() {
   const containerRef = useRef<HTMLElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
   const dayRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [highlight, setHighlight] = useState({ left: 0, width: 0, ready: false });
+  const [highlight, setHighlight] = useState({
+    left: 0,
+    width: 0,
+    ready: false,
+  });
 
-  useGSAP(() => {
-    const scrubArea = containerRef.current?.querySelector<HTMLElement>('.day-scrub-area');
-    if (!scrubArea) return;
+  useGSAP(
+    () => {
+      const scrubArea =
+        containerRef.current?.querySelector<HTMLElement>(".day-scrub-area");
+      if (!scrubArea) return;
 
-    const trigger = ScrollTrigger.create({
-      trigger: scrubArea,
-      start: 'top top',
-      end: `+=${DAY_STOPS.length * 28}%`,
-      pin: true,
-      scrub: 0.5,
-      anticipatePin: 1,
-      onUpdate: (self) => {
-        const idx = Math.min(
-          DAY_STOPS.length - 1,
-          Math.floor(self.progress * DAY_STOPS.length),
-        );
-        setActiveIndex(idx);
-      },
-    });
+      const trigger = ScrollTrigger.create({
+        trigger: scrubArea,
+        start: "top top",
+        end: `+=${DAY_STOPS.length * 28}%`,
+        pin: true,
+        scrub: 0.5,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const idx = Math.min(
+            DAY_STOPS.length - 1,
+            Math.floor(self.progress * DAY_STOPS.length),
+          );
+          setActiveIndex(idx);
+        },
+      });
 
-    return () => {
-      trigger.kill();
-    };
-  }, { scope: containerRef });
+      return () => {
+        trigger.kill();
+      };
+    },
+    { scope: containerRef },
+  );
 
   useEffect(() => {
     const update = () => {
@@ -101,14 +114,17 @@ export function OutcomeStories() {
       });
     };
     update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, [activeIndex]);
 
   const active = DAY_STOPS[activeIndex];
 
   return (
-    <section ref={containerRef} className="bg-muted/30 border-t border-border overflow-hidden">
+    <section
+      ref={containerRef}
+      className="premium-section premium-section-muted border-t border-white/10 overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-6 py-24 lg:py-32">
         <ScrollReveal>
           <SectionHeading
@@ -122,7 +138,6 @@ export function OutcomeStories() {
       {/* Pinned calendar UI */}
       <div className="day-scrub-area min-h-screen flex flex-col justify-center">
         <div className="max-w-5xl mx-auto px-6 w-full">
-
           <p className="text-center text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-6">
             A typical Capucor month
           </p>
@@ -144,8 +159,8 @@ export function OutcomeStories() {
                 width: highlight.width,
                 opacity: highlight.ready ? 1 : 0,
               }}
-              transition={{ type: 'spring', stiffness: 220, damping: 30 }}
-              style={{ height: 'calc(100% + 4px)' }}
+              transition={{ type: "spring", stiffness: 220, damping: 30 }}
+              style={{ height: "calc(100% + 4px)" }}
             />
             {/* Day pills */}
             <div className="relative flex justify-between items-center gap-2">
@@ -154,13 +169,15 @@ export function OutcomeStories() {
                 return (
                   <div
                     key={stop.day}
-                    ref={(el) => { dayRefs.current[i] = el; }}
+                    ref={(el) => {
+                      dayRefs.current[i] = el;
+                    }}
                     data-active={isActive}
                     className={cn(
-                      'day-pill relative z-10 inline-flex flex-col items-center justify-center rounded-full border bg-card px-4 py-3 sm:px-6 sm:py-4 min-w-[78px] sm:min-w-[110px]',
+                      "day-pill premium-glass relative z-10 inline-flex flex-col items-center justify-center rounded-full border bg-card/75 px-4 py-3 sm:px-6 sm:py-4 min-w-[78px] sm:min-w-[110px]",
                       isActive
-                        ? 'border-transparent text-primary-foreground'
-                        : 'border-border text-muted-foreground',
+                        ? "border-transparent text-primary-foreground"
+                        : "border-border text-muted-foreground",
                     )}
                   >
                     <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest leading-none mb-1">
@@ -176,7 +193,7 @@ export function OutcomeStories() {
           </div>
 
           {/* Glassmorphic panel with active day narrative */}
-          <div className="calendar-panel mt-10 lg:mt-12 rounded-2xl p-8 lg:p-10 min-h-[260px] relative overflow-hidden">
+          <div className="calendar-panel premium-card mt-10 lg:mt-12 rounded-2xl p-8 lg:p-10 min-h-[260px] relative overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active.day}
@@ -193,7 +210,8 @@ export function OutcomeStories() {
                 </div>
                 <div className="flex-1">
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-primary mb-2">
-                    {String(activeIndex + 1).padStart(2, '0')} of {DAY_STOPS.length} · Day {active.day}
+                    {String(activeIndex + 1).padStart(2, "0")} of{" "}
+                    {DAY_STOPS.length} · Day {active.day}
                   </p>
                   <h3 className="text-2xl lg:text-3xl font-bold tracking-tight mb-3 leading-tight">
                     {active.title}

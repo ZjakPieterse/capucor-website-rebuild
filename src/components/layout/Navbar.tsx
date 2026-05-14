@@ -1,27 +1,30 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { siteConfig } from '@/config/site';
+} from "@/components/ui/sheet";
+import { siteConfig } from "@/config/site";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/70 shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
       <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
         {/* Logo */}
-        <Link href="/" className="hover:opacity-80 transition-opacity flex items-center">
+        <Link
+          href="/"
+          className="hover:opacity-80 transition-opacity flex items-center"
+        >
           <Image
             src="/brand/logo-dark.png"
             alt="Capucor Business Solutions"
@@ -29,7 +32,7 @@ export function Navbar() {
             width={200}
             priority
             className="h-8 w-auto"
-            style={{ width: 'auto' }}
+            style={{ width: "auto" }}
           />
         </Link>
 
@@ -39,7 +42,7 @@ export function Navbar() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
                 {item.label}
               </Link>
@@ -83,7 +86,7 @@ export function Navbar() {
                     {item.label}
                   </Link>
                 ))}
-                <div className="pt-4 border-t border-border">
+                <div className="pt-4 border-t border-white/10">
                   <Button
                     nativeButton={false}
                     render={<Link href="/client-portal" />}
