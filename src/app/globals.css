@@ -202,6 +202,20 @@
     0 22px 44px -30px rgba(0, 0, 0, 0.9);
 }
 
+.tilt-card {
+  will-change: transform;
+}
+
+.premium-card.tilt-card,
+.premium-card.tilt-card:hover {
+  transform: none;
+  transition:
+    border-color 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 260ms ease;
+}
+
 .premium-card svg,
 .feature-card svg,
 .problem-card svg,
@@ -686,7 +700,8 @@
   .outcome-card:hover,
   .fcc-tile:hover,
   .premium-card:hover,
-  .premium-button:hover {
+  .premium-button:hover,
+  .tilt-card {
     transform: none !important;
   }
 

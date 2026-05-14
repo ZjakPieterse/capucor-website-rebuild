@@ -1,6 +1,7 @@
 "use client";
 
 import { useCursorGlow } from "@/hooks/useCursorGlow";
+import { use3DTilt } from "@/hooks/use3DTilt";
 import { motion } from "motion/react";
 import Link from "next/link";
 import {
@@ -82,9 +83,23 @@ const VAT_STATUS_STYLES: Record<VatStatus, { bg: string; color: string }> = {
 function FinanceCommandCentre() {
   const dates = computeDashboardDates();
   const vatStyle = VAT_STATUS_STYLES[dates.vatStatus];
+  const { ref: tiltRef, rotateX, rotateY, lift, scale, onMouseMove, onMouseLeave } =
+    use3DTilt<HTMLDivElement>();
 
   return (
-    <div className="fcc-container premium-card relative rounded-2xl border-[0.5px] border-white/10 bg-card/80 shadow-2xl p-5 overflow-hidden min-h-[420px] transition-all duration-500">
+    <motion.div
+      ref={tiltRef}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        y: lift,
+        scale,
+        transformPerspective: 1200,
+        transformStyle: "preserve-3d",
+      }}
+      className="fcc-container tilt-card premium-card relative rounded-2xl border-[0.5px] border-white/10 bg-card/80 shadow-2xl p-5 overflow-hidden min-h-[420px] transition-[border-color,box-shadow,background-color] duration-500">
       <div
         aria-hidden
         className="pointer-events-none absolute -inset-16 z-0 rounded-full bg-primary/10 blur-3xl"
@@ -273,7 +288,7 @@ function FinanceCommandCentre() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
