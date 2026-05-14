@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import { useCursorGlow } from "@/hooks/useCursorGlow";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -11,24 +10,10 @@ import {
   CheckCircle2,
   Clock,
   AlertCircle,
-  Receipt,
-  FileSpreadsheet,
-  FileText,
-  Calculator,
-  Mail,
-  FileWarning,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 // ── Date helpers ──────────────────────────────────────────────────────────────────
 const MONTH_SHORT = [
   "Jan",
@@ -92,140 +77,6 @@ const VAT_STATUS_STYLES: Record<VatStatus, { bg: string; color: string }> = {
   red: { bg: "rgba(239,68,68,.15)", color: "#ef4444" },
 };
 
-// ── Chaos items (Hyper-realistic mini-docs) ──────────────────────────────────────
-const CHAOS_ITEMS = [
-  {
-    id: 1,
-    type: "invoice",
-    label: "Invoice #8402",
-    detail: "R 45,210.00",
-    status: "OVERDUE",
-    color: "#ef4444",
-    icon: FileText,
-    x: "8%",
-    y: "12%",
-    rot: -12,
-    float: "chaos-float-a",
-  },
-  {
-    id: 2,
-    type: "receipt",
-    label: "Uber Receipt",
-    detail: "VAT missing",
-    status: "FLAGGED",
-    color: "#f59e0b",
-    icon: Receipt,
-    x: "62%",
-    y: "8%",
-    rot: 10,
-    float: "chaos-float-b",
-  },
-  {
-    id: 3,
-    type: "sheet",
-    label: "Payroll_Draft",
-    detail: "Formula error",
-    status: "CONFLICT",
-    color: "#ef4444",
-    icon: FileSpreadsheet,
-    x: "85%",
-    y: "38%",
-    rot: -6,
-    float: "chaos-float-c",
-  },
-  {
-    id: 4,
-    type: "alert",
-    label: "SARS Notice",
-    detail: "Immediate req",
-    status: "URGENT",
-    color: "#ef4444",
-    icon: FileWarning,
-    x: "12%",
-    y: "72%",
-    rot: 8,
-    float: "chaos-float-d",
-  },
-  {
-    id: 5,
-    type: "receipt",
-    label: "Lunch_Exp",
-    detail: "Unallocated",
-    status: "MISSING",
-    color: "#71717a",
-    icon: Receipt,
-    x: "42%",
-    y: "58%",
-    rot: -18,
-    float: "chaos-float-a",
-  },
-  {
-    id: 6,
-    type: "invoice",
-    label: "Statement_X",
-    detail: "R 12,400.00",
-    status: "REVIEW",
-    color: "#f59e0b",
-    icon: FileText,
-    x: "72%",
-    y: "78%",
-    rot: 4,
-    float: "chaos-float-b",
-  },
-  {
-    id: 7,
-    type: "sheet",
-    label: "Bank_Rec_v2",
-    detail: "Unbalanced",
-    status: "ERROR",
-    color: "#ef4444",
-    icon: FileSpreadsheet,
-    x: "3%",
-    y: "42%",
-    rot: 15,
-    float: "chaos-float-c",
-  },
-  {
-    id: 8,
-    type: "alert",
-    label: "Bank_Feed",
-    detail: "Auth failure",
-    status: "DISCONN",
-    color: "#ef4444",
-    icon: Calculator,
-    x: "32%",
-    y: "3%",
-    rot: -4,
-    float: "chaos-float-d",
-  },
-  {
-    id: 9,
-    type: "receipt",
-    label: "Hardware_Exp",
-    detail: "R 1,250.00",
-    status: "UNPAID",
-    color: "#f59e0b",
-    icon: Receipt,
-    x: "88%",
-    y: "10%",
-    rot: 22,
-    float: "chaos-float-a",
-  },
-  {
-    id: 10,
-    type: "invoice",
-    label: "Rent April",
-    detail: "Outstanding",
-    status: "WAITING",
-    color: "#71717a",
-    icon: FileText,
-    x: "52%",
-    y: "82%",
-    rot: -10,
-    float: "chaos-float-b",
-  },
-];
-
 // ── Finance Command Centre ────────────────────────────────────────────────────────
 
 function FinanceCommandCentre() {
@@ -233,51 +84,14 @@ function FinanceCommandCentre() {
   const vatStyle = VAT_STATUS_STYLES[dates.vatStatus];
 
   return (
-    <div className="fcc-container premium-card relative rounded-2xl border border-white/10 bg-card/80 shadow-2xl p-5 overflow-hidden min-h-[420px] transition-all duration-500">
-      {/* ── Chaos State Overlay ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
-        <div className="chaos-core absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-primary/20 blur-[100px]" />
-        {CHAOS_ITEMS.map((item, i) => (
-          <div
-            key={item.id}
-            className={`chaos-item absolute ${item.float}`}
-            style={{
-              left: item.x,
-              top: item.y,
-              rotate: `${item.rot}deg`,
-            }}
-          >
-            <div className="flex items-center gap-3 bg-background/60 backdrop-blur-md border border-white/10 rounded-lg p-2.5 shadow-xl min-w-[140px]">
-              <div
-                className="p-2 rounded-md bg-white/5"
-                style={{ color: item.color }}
-              >
-                <item.icon className="w-5 h-5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold tracking-tight text-white/90 leading-none mb-1">
-                  {item.label}
-                </span>
-                <span className="text-[9px] font-medium text-white/50 leading-none">
-                  {item.detail}
-                </span>
-              </div>
-              <div
-                className="ml-auto px-1.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter"
-                style={{
-                  backgroundColor: `${item.color}20`,
-                  color: item.color,
-                }}
-              >
-                {item.status}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="fcc-container premium-card relative rounded-2xl border-[0.5px] border-white/10 bg-card/80 shadow-2xl p-5 overflow-hidden min-h-[420px] transition-all duration-500">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-16 z-0 rounded-full bg-primary/10 blur-3xl"
+      />
 
       {/* Header */}
-      <div className="fcc-header opacity-0 flex items-center justify-between mb-4 relative z-20">
+      <div className="fcc-header flex items-center justify-between mb-4 relative z-20">
         <div>
           <div className="text-sm font-bold tracking-tight">
             Finance Command Centre
@@ -307,7 +121,7 @@ function FinanceCommandCentre() {
       {/* Tile grid */}
       <div className="fcc-grid grid grid-cols-1 sm:grid-cols-3 gap-2.5 relative z-20">
         {/* Cash Runway */}
-        <div className="fcc-tile premium-glass opacity-0 rounded-xl border border-white/10 bg-background/40 p-3.5">
+        <div className="fcc-tile premium-glass rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Cash Runway
           </div>
@@ -344,7 +158,7 @@ function FinanceCommandCentre() {
         </div>
 
         {/* Debtor Days */}
-        <div className="fcc-tile premium-glass opacity-0 rounded-xl border border-white/10 bg-background/40 p-3.5">
+        <div className="fcc-tile premium-glass rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Debtor Days
           </div>
@@ -365,7 +179,7 @@ function FinanceCommandCentre() {
         </div>
 
         {/* VAT Due Date */}
-        <div className="fcc-tile premium-glass opacity-0 rounded-xl border border-white/10 bg-background/40 p-3.5">
+        <div className="fcc-tile premium-glass rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             VAT Due
           </div>
@@ -391,7 +205,7 @@ function FinanceCommandCentre() {
         </div>
 
         {/* Monthly Close */}
-        <div className="fcc-tile premium-glass opacity-0 rounded-xl border border-white/10 bg-background/40 p-3.5">
+        <div className="fcc-tile premium-glass rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Monthly Close
           </div>
@@ -410,7 +224,7 @@ function FinanceCommandCentre() {
         </div>
 
         {/* Payroll */}
-        <div className="fcc-tile premium-glass opacity-0 rounded-xl border border-white/10 bg-background/40 p-3.5">
+        <div className="fcc-tile premium-glass rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Payroll
           </div>
@@ -434,7 +248,7 @@ function FinanceCommandCentre() {
         </div>
 
         {/* Management Report */}
-        <div className="fcc-tile premium-glass opacity-0 rounded-xl border border-white/10 bg-background/40 p-3.5">
+        <div className="fcc-tile premium-glass rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Management Report
           </div>
@@ -456,22 +270,23 @@ function FinanceCommandCentre() {
         </div>
 
         {/* SARS / CIPC Compliance — Standardized look */}
-        <div className="fcc-tile premium-glass opacity-0 col-span-1 sm:col-span-3 rounded-xl border border-white/10 bg-background/40 p-3.5">
+        <div className="fcc-tile premium-glass col-span-1 sm:col-span-3 rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2.5">
             SARS / CIPC Compliance
           </div>
-          <div className="flex items-center gap-5 flex-wrap">
-            {["Provisional Tax", "EMP201", "CIPC Annual Return"].map(
-              (item, i) => (
-                <div key={item} className="flex items-center gap-1.5">
-                  <CheckCircle2
-                    className="h-3.5 w-3.5 shrink-0"
-                    style={{ color: "#2ED889" }}
-                  />
-                  <span className="text-xs font-medium">{item}</span>
-                </div>
-              ),
-            )}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            {["Provisional Tax", "EMP201", "CIPC Annual Return"].map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-1.5 rounded-lg border-[0.5px] border-white/10 bg-background/30 px-3 py-2"
+              >
+                <CheckCircle2
+                  className="h-3.5 w-3.5 shrink-0"
+                  style={{ color: "#2ED889" }}
+                />
+                <span className="text-xs font-medium">{item}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -481,103 +296,9 @@ function FinanceCommandCentre() {
 
 // ── Hero Section ──────────────────────────────────────────────────────────────────
 export function HeroSection() {
-  const sectionRef = useRef<HTMLElement>(null);
   const headline = "Make your finance function work harder";
 
-  useGSAP(
-    () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=150%",
-          pin: true,
-          scrub: 1.2,
-          anticipatePin: 1,
-        },
-      });
-
-      // 1. SORTING PHASE - Items move to a grid and align
-      tl.to(
-        ".chaos-item",
-        {
-          x: (i) => `${(i % 5) * 20 + 10}%`,
-          y: (i) => `${Math.floor(i / 5) * 35 + 25}%`,
-          rotation: 0,
-          scale: 1,
-          duration: 1.5,
-          ease: "expo.inOut",
-        },
-        0.2,
-      );
-
-      // 2. EXIT PHASE - Items disappear COMPLETELY before dashboard enters
-      tl.to(
-        ".chaos-item",
-        {
-          opacity: 0,
-          scale: 0.2,
-          y: "-=50", // fly up slightly
-          duration: 0.8,
-          stagger: 0.03,
-          ease: "power2.in",
-        },
-        1.7,
-      );
-
-      tl.to(
-        ".chaos-core",
-        {
-          scale: 5,
-          opacity: 0,
-          duration: 1,
-          ease: "power3.out",
-        },
-        1.7,
-      );
-
-      // 3. DASHBOARD ENTRANCE - Starts after chaos is gone
-      tl.fromTo(
-        ".fcc-tile",
-        { opacity: 0, scale: 0.9, y: 30, filter: "blur(15px)" },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 1.2,
-          stagger: 0.08,
-          ease: "expo.out",
-          onComplete: () => {
-            gsap.set(".fcc-tile", {
-              className:
-                "fcc-tile premium-glass rounded-xl border border-white/10 bg-background/40 p-3.5 fcc-breathe",
-            });
-          },
-        },
-        2.4,
-      );
-
-      tl.fromTo(
-        ".fcc-header",
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-        2.4,
-      );
-
-      // Subtle shift on the copy to acknowledge the transition
-      tl.to(
-        ".hero-copy-container",
-        {
-          y: -10,
-          duration: 1,
-          ease: "power2.inOut",
-        },
-        1,
-      );
-    },
-    { scope: sectionRef },
-  );
+  const sectionRef = useCursorGlow<HTMLElement>();
 
   return (
     <section
@@ -692,7 +413,7 @@ export function HeroSection() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: 1 }}
             >
-              Scroll to see the chaos become a controlled month.
+              Your finance command centre is ready from the first scroll.
             </motion.p>
           </div>
 

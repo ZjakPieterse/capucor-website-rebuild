@@ -390,75 +390,6 @@
   );
 }
 
-/* ─── Hero chaos float (continuous loop) ─────────────────────────────────── */
-@keyframes chaos-float-a {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(12deg);
-  }
-  50% {
-    transform: translate(8px, -10px) rotate(8deg);
-  }
-}
-@keyframes chaos-float-b {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(-12deg);
-  }
-  50% {
-    transform: translate(-6px, 8px) rotate(-16deg);
-  }
-}
-@keyframes chaos-float-c {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(-6deg);
-  }
-  50% {
-    transform: translate(10px, 6px) rotate(-2deg);
-  }
-}
-@keyframes chaos-float-d {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(45deg);
-  }
-  50% {
-    transform: translate(-8px, -8px) rotate(38deg);
-  }
-}
-
-.chaos-item {
-  will-change: transform;
-}
-.chaos-float-a {
-  animation: chaos-float-a 4.5s ease-in-out infinite;
-}
-.chaos-float-b {
-  animation: chaos-float-b 5.2s ease-in-out infinite;
-}
-.chaos-float-c {
-  animation: chaos-float-c 4.1s ease-in-out infinite;
-}
-.chaos-float-d {
-  animation: chaos-float-d 5.8s ease-in-out infinite;
-}
-
-/* Continuous breathing on assembled tiles after the assembly */
-@keyframes fcc-breathe {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-2px);
-  }
-}
-
-.fcc-breathe {
-  animation: fcc-breathe 6s ease-in-out infinite;
-}
-
 /* ─── Calendar UI (OutcomeStories) ───────────────────────────────────────── */
 .day-pill {
   transition:
@@ -569,14 +500,6 @@
   }
 
   .fcc-heartbeat {
-    animation: none !important;
-  }
-
-  .chaos-float-a,
-  .chaos-float-b,
-  .chaos-float-c,
-  .chaos-float-d,
-  .fcc-breathe {
     animation: none !important;
   }
 
