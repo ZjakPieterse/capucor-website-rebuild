@@ -41,7 +41,7 @@ export function GET(req: NextRequest) {
             width: '500px',
             height: '500px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, #0EA870 0%, transparent 70%)',
+            background: 'radial-gradient(circle, #2dd4ff 0%, transparent 70%)',
             opacity: 0.15,
           }}
         />
@@ -60,7 +60,7 @@ export function GET(req: NextRequest) {
               width: '40px',
               height: '40px',
               borderRadius: '10px',
-              background: '#0EA870',
+              background: '#2dd4ff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -128,11 +128,11 @@ export function GET(req: NextRequest) {
             <div
               key={tag}
               style={{
-                background: 'rgba(14, 168, 112, 0.15)',
-                border: '1px solid rgba(14, 168, 112, 0.3)',
+                background: 'rgba(45, 212, 255, 0.15)',
+                border: '1px solid rgba(45, 212, 255, 0.3)',
                 borderRadius: '8px',
                 padding: '6px 14px',
-                color: '#0EA870',
+                color: '#2dd4ff',
                 fontSize: '14px',
                 fontWeight: 600,
               }}

@@ -60,7 +60,7 @@ export function HowItWorks() {
           subtitle="Great finance work needs a clear monthly rhythm. We process, review, report and advise so the month closes properly. Tap a step to see the handoff."
         />
 
-        <div className="relative mt-14 rounded-[2rem] border border-white/10 bg-card/35 p-4 shadow-[0_24px_80px_-52px_rgba(46,216,137,0.65)] backdrop-blur-xl sm:p-6">
+        <div className="relative mt-14 rounded-[2rem] border border-white/10 bg-card/35 p-4 shadow-[0_24px_80px_-52px_rgba(45,212,255,0.65)] backdrop-blur-xl sm:p-6">
           <div className="absolute left-8 right-8 top-[4.65rem] hidden h-px bg-border sm:block" />
           <div
             className="absolute left-8 top-[4.65rem] hidden h-[2px] origin-left -translate-y-px rounded-full transition-[width] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] sm:block"
@@ -94,9 +94,9 @@ export function HowItWorks() {
                   id={`how-step-tab-${step.number}`}
                   onClick={() => setActiveStep(i)}
                   className={cn(
-                    "group relative rounded-3xl border p-4 text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background",
+                    "feature-card group relative rounded-3xl border p-4 text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background",
                     isActive
-                      ? "border-primary/45 bg-primary/10 shadow-[0_18px_46px_-30px_rgba(46,216,137,0.75)]"
+                      ? "border-primary/45 bg-primary/10 shadow-[0_18px_46px_-30px_rgba(45,212,255,0.75)]"
                       : "border-white/10 bg-background/30 opacity-70 hover:opacity-100 hover:border-primary/25 hover:bg-primary/5",
                   )}
                 >
@@ -105,7 +105,7 @@ export function HowItWorks() {
                       className={cn(
                         "relative mb-0 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] sm:mb-4 group-hover:-translate-y-1 group-hover:scale-105",
                         isActive
-                          ? "border-primary/50 bg-primary text-primary-foreground shadow-[0_0_34px_rgba(46,216,137,0.45)]"
+                          ? "border-primary/50 bg-primary text-primary-foreground shadow-[0_0_34px_rgba(45,212,255,0.45)]"
                           : isPassed
                             ? "border-primary/30 bg-primary/70 text-primary-foreground"
                             : "border-white/10 bg-muted text-muted-foreground",
@@ -170,7 +170,7 @@ export function HowItWorks() {
                 <div className="relative flex h-44 w-44 items-center justify-center rounded-[2rem] border border-primary/25 bg-primary/10">
                   <div className="absolute inset-5 rounded-[1.5rem] border border-white/10" />
                   <div className="absolute -inset-10 rounded-full bg-primary/10 blur-3xl" />
-                  <ActiveIcon className="relative h-20 w-20 text-primary drop-shadow-[0_0_24px_rgba(46,216,137,0.34)]" />
+                  <ActiveIcon className="relative h-20 w-20 text-primary drop-shadow-[0_0_24px_rgba(45,212,255,0.34)]" />
                 </div>
               </div>
               <div className="flex flex-col justify-center text-center lg:text-left">

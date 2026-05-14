@@ -72,7 +72,7 @@ function computeDashboardDates(): DashboardDates {
 }
 
 const VAT_STATUS_STYLES: Record<VatStatus, { bg: string; color: string }> = {
-  green: { bg: "rgba(46,216,137,.15)", color: "#2ED889" },
+  green: { bg: "var(--success-soft)", color: "var(--success)" },
   amber: { bg: "rgba(234,179,8,.15)", color: "#eab308" },
   red: { bg: "rgba(239,68,68,.15)", color: "#ef4444" },
 };
@@ -125,10 +125,7 @@ function FinanceCommandCentre() {
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Cash Runway
           </div>
-          <div
-            className="font-mono font-bold text-xl leading-none"
-            style={{ color: "#22d3ee" }}
-          >
+          <div className="gradient-stat font-mono font-bold text-xl leading-none">
             4.2
           </div>
           <div className="text-xs text-muted-foreground mt-0.5">months</div>
@@ -139,7 +136,8 @@ function FinanceCommandCentre() {
             <motion.div
               className="h-full rounded-full"
               style={{
-                background: "linear-gradient(to right, #22d3ee, #2ED889)",
+                background:
+                  "linear-gradient(to right, var(--brand-cyan), var(--success))",
               }}
               initial={{ width: 0 }}
               animate={{ width: "35%" }}
@@ -166,13 +164,9 @@ function FinanceCommandCentre() {
           <div className="text-xs text-muted-foreground mt-0.5">days</div>
           <div className="flex items-center gap-1 mt-2">
             <TrendingDown
-              className="h-3.5 w-3.5 shrink-0"
-              style={{ color: "#2ED889" }}
+              className="h-3.5 w-3.5 shrink-0 text-success"
             />
-            <span
-              className="text-[11px] font-medium"
-              style={{ color: "#2ED889" }}
-            >
+            <span className="text-[11px] font-medium text-success">
               −4 vs last month
             </span>
           </div>
@@ -211,8 +205,7 @@ function FinanceCommandCentre() {
           </div>
           <div className="flex items-center gap-1.5">
             <CheckCircle2
-              className="h-4 w-4 shrink-0"
-              style={{ color: "#2ED889" }}
+              className="h-4 w-4 shrink-0 text-success"
             />
             <span className="text-xs font-semibold" suppressHydrationWarning>
               {dates.closeMonth}: reviewed
@@ -230,15 +223,11 @@ function FinanceCommandCentre() {
           </div>
           <div className="flex items-center gap-1.5">
             <motion.div
-              className="w-2 h-2 rounded-full shrink-0"
-              style={{ background: "#2ED889" }}
+              className="w-2 h-2 rounded-full shrink-0 bg-success"
               animate={{ opacity: [1, 0.4, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
-            <span
-              className="text-xs font-semibold"
-              style={{ color: "#2ED889" }}
-            >
+            <span className="text-xs font-semibold text-success">
               EMP201 submitted
             </span>
           </div>
@@ -281,8 +270,7 @@ function FinanceCommandCentre() {
                 className="flex items-center gap-1.5 rounded-lg border-[0.5px] border-white/10 bg-background/30 px-3 py-2"
               >
                 <CheckCircle2
-                  className="h-3.5 w-3.5 shrink-0"
-                  style={{ color: "#2ED889" }}
+                  className="h-3.5 w-3.5 shrink-0 text-success"
                 />
                 <span className="text-xs font-medium">{item}</span>
               </div>
@@ -345,9 +333,10 @@ export function HeroSection() {
             </motion.p>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6 flex flex-wrap gap-[0.25em]">
-              {headline.split(" ").map((word, i) => (
+              {headline.split(" ").map((word, i, arr) => (
                 <motion.span
                   key={i}
+                  className={i === arr.length - 1 ? "gradient-text-brand" : undefined}
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -383,9 +372,11 @@ export function HeroSection() {
                   nativeButton={false}
                   render={<Link href="/pricing" />}
                   size="lg"
-                  className="gap-2 w-full sm:w-auto hover:bg-primary/90 transition-colors"
+                  className="gradient-cta gradient-border-cta cta-cursor-glow gap-2 w-full sm:w-auto"
                 >
-                  Build your subscription <ArrowRight className="h-4 w-4" />
+                  <span className="relative z-[2] inline-flex items-center gap-2">
+                    Build your subscription <ArrowRight className="h-4 w-4" />
+                  </span>
                 </Button>
               </MagneticButton>
               <MagneticButton>

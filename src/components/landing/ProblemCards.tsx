@@ -118,7 +118,7 @@ export function ProblemCards() {
                   className={cn(
                     "problem-card premium-card h-full rounded-2xl border p-6 flex flex-col transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
                     isResolved
-                      ? "border-primary/30 bg-card shadow-[0_0_20px_rgba(46,216,137,0.05)]"
+                      ? "border-primary/30 bg-card shadow-[0_0_20px_rgba(45,212,255,0.05)]"
                       : "border-destructive/30 bg-destructive/5",
                   )}
                 >

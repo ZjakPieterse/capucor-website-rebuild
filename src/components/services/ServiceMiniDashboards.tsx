@@ -33,12 +33,12 @@ function Header({ eyebrow, status }: { eyebrow: string; status: string }) {
         </div>
       </div>
       <div
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
-        style={{ background: 'rgba(46,216,137,.12)', color: '#2ED889' }}
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-success"
+        style={{ background: 'var(--success-soft)' }}
       >
         <motion.div
-          className="w-1.5 h-1.5 rounded-full"
-          style={{ background: '#2ED889', boxShadow: '0 0 5px #2ED889' }}
+          className="w-1.5 h-1.5 rounded-full bg-success"
+          style={{ boxShadow: '0 0 5px var(--success)' }}
           animate={{ opacity: [1, 0.4, 1] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         />
@@ -84,7 +84,7 @@ export function BookkeepingDashboard() {
             </div>
             <div className="text-right shrink-0">
               <div className="font-mono font-bold text-xs whitespace-nowrap">{r.amount}</div>
-              <div className="text-[10px] mt-0.5" style={{ color: '#2ED889' }}>{r.status}</div>
+              <div className="text-[10px] mt-0.5 text-success">{r.status}</div>
             </div>
           </motion.div>
         ))}
@@ -95,9 +95,9 @@ export function BookkeepingDashboard() {
         initial="hidden"
         animate="visible"
         className="mt-3 flex items-center gap-2 rounded-xl px-3.5 py-2.5"
-        style={{ border: '1px solid rgba(46,216,137,.2)', background: 'rgba(46,216,137,.05)' }}
+        style={{ border: '1px solid var(--success-border)', background: 'var(--success-soft)' }}
       >
-        <CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: '#2ED889' }} />
+        <CheckCircle2 className="h-4 w-4 shrink-0 text-success" />
         <span className="text-xs font-medium">All accounts reconciled. Ledger sealed.</span>
       </motion.div>
     </Shell>
@@ -122,8 +122,8 @@ export function AccountingDashboard() {
           </div>
           <div className="font-mono font-bold text-lg leading-none">R 1.42m</div>
           <div className="flex items-center gap-1 mt-2">
-            <TrendingUp className="h-3.5 w-3.5 shrink-0" style={{ color: '#2ED889' }} />
-            <span className="text-[11px] font-medium" style={{ color: '#2ED889' }}>+8.4%</span>
+            <TrendingUp className="h-3.5 w-3.5 shrink-0 text-success" />
+            <span className="text-[11px] font-medium text-success">+8.4%</span>
           </div>
         </motion.div>
         <motion.div
@@ -152,7 +152,7 @@ export function AccountingDashboard() {
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
             Net cash
           </div>
-          <div className="font-mono font-bold text-lg leading-none" style={{ color: '#22d3ee' }}>R 612k</div>
+          <div className="gradient-stat font-mono font-bold text-lg leading-none">R 612k</div>
           <div className="text-[10px] text-muted-foreground mt-2">After SARS provisions</div>
         </motion.div>
       </div>
@@ -187,9 +187,9 @@ export function AccountingDashboard() {
         initial="hidden"
         animate="visible"
         className="mt-3 flex items-center gap-2 rounded-xl px-3.5 py-2.5"
-        style={{ border: '1px solid rgba(46,216,137,.2)', background: 'rgba(46,216,137,.05)' }}
+        style={{ border: '1px solid var(--success-border)', background: 'var(--success-soft)' }}
       >
-        <ShieldCheck className="h-4 w-4 shrink-0" style={{ color: '#2ED889' }} />
+        <ShieldCheck className="h-4 w-4 shrink-0 text-success" />
         <span className="text-xs font-medium">
           Reviewed and signed off by a SAICA-registered AGA(SA) accountant.
         </span>
@@ -219,7 +219,7 @@ export function PayrollDashboard() {
           </div>
           <div className="text-right">
             <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Net pay</div>
-            <div className="font-mono font-bold text-base" style={{ color: '#2ED889' }}>R 32,184</div>
+            <div className="font-mono font-bold text-base text-success">R 32,184</div>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-3 pt-2 border-t border-border">
@@ -250,7 +250,7 @@ export function PayrollDashboard() {
             EMP201
           </div>
           <div className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: '#2ED889' }} />
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-success" />
             <span className="text-xs font-semibold">Submitted</span>
           </div>
           <div className="text-[10px] text-muted-foreground mt-1.5">Reference 21/03/2026</div>
@@ -279,9 +279,9 @@ export function PayrollDashboard() {
         initial="hidden"
         animate="visible"
         className="mt-3 flex items-center gap-2 rounded-xl px-3.5 py-2.5"
-        style={{ border: '1px solid rgba(46,216,137,.2)', background: 'rgba(46,216,137,.05)' }}
+        style={{ border: '1px solid var(--success-border)', background: 'var(--success-soft)' }}
       >
-        <Clock3 className="h-4 w-4 shrink-0" style={{ color: '#2ED889' }} />
+        <Clock3 className="h-4 w-4 shrink-0 text-success" />
         <span className="text-xs font-medium">
           UIF and PAYE paid on the dates SARS expects.
         </span>

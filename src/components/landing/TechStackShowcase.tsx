@@ -83,7 +83,7 @@ export function TechStackShowcase() {
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {TOOLS.map((tool, i) => (
             <ScrollReveal key={tool.name} delay={i * 0.07}>
-              <div className="premium-card rounded-2xl border border-white/10 bg-card/80 p-6 h-full transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-lg hover:border-primary/30">
+              <div className="feature-card premium-card rounded-2xl border border-white/10 bg-card/80 p-6 h-full">
                 {/* Tool name badge */}
                 <div className="mb-4 inline-flex items-center rounded-xl border border-primary/30 bg-primary/8 px-3 py-1.5">
                   <span className="text-sm font-semibold text-primary">

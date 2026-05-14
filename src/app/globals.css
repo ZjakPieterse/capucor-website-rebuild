@@ -26,9 +26,12 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-brand-cyan: var(--brand-cyan);
   --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-deep: var(--brand-navy-deep);
+  --color-brand-blue-glow: var(--brand-blue-glow);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -52,17 +55,20 @@
   --muted-foreground: #90a1b9;
   --border: #1e283d;
   --input: #ffffff1f;
-  --ring: #28e493;
+  --ring: #2dd4ff;
 
-  /* Brand primary */
-  --primary: #28e493;
-  --primary-foreground: #020618;
+  /* Brand primary — electric cyan-blue, anchored to logo */
+  --primary: #2dd4ff;
+  --primary-foreground: #02101f;
   --accent: #1e283d;
   --accent-foreground: #f8fafc;
 
   /* Semantic */
   --destructive: #ff6568;
-  --success: #52c248;
+  --success: #34d399;
+  --success-foreground: #02101f;
+  --success-soft: rgba(52, 211, 153, 0.12);
+  --success-border: rgba(52, 211, 153, 0.22);
   --warning: #f99c00;
 
   --radius: 0.75rem;
@@ -101,8 +107,10 @@
 
 /* ─── Brand accent tokens ─────────────────────────────────────────────────── */
 :root {
-  --brand-navy: #7ba8f5;
+  --brand-navy: #1e3a8a;
+  --brand-navy-deep: #001a47;
   --brand-cyan: #22d3ee;
+  --brand-blue-glow: #38bdf8;
 }
 
 /* ─── Premium surface, button and divider primitives ─────────────────────── */
@@ -240,10 +248,133 @@
   background: linear-gradient(
     90deg,
     transparent,
-    color-mix(in oklch, var(--primary) 16%, transparent),
-    color-mix(in oklch, white 12%, transparent),
+    color-mix(in oklch, var(--brand-navy) 30%, transparent) 20%,
+    color-mix(in oklch, var(--primary) 38%, transparent) 50%,
+    color-mix(in oklch, var(--brand-cyan) 30%, transparent) 80%,
     transparent
   );
+}
+
+/* ─── Gradient utility classes ───────────────────────────────────────────── */
+
+/* Premium filled CTA — used on the two flagship buttons (hero + activate).
+   Hover slides the background-position across to create a shimmer. */
+.gradient-cta {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    color-mix(in oklch, var(--primary) 55%, var(--brand-cyan)) 50%,
+    var(--brand-cyan) 100%
+  );
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  color: var(--primary-foreground);
+  transition: background-position 480ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gradient-cta:hover {
+  background-position: 100% 50%;
+}
+
+/* Animated brand-clip text — used on a single hero verb and section titles.
+   Subtle 7-second sweep so the page stays alive. */
+.gradient-text-brand {
+  background: linear-gradient(
+    100deg,
+    var(--foreground) 0%,
+    color-mix(in oklch, var(--primary) 55%, var(--foreground)) 38%,
+    var(--brand-cyan) 62%,
+    var(--foreground) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-text-sweep 7s ease-in-out infinite;
+}
+
+@keyframes gradient-text-sweep {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Static clipped gradient for dashboard stat numbers. */
+.gradient-stat {
+  background: linear-gradient(135deg, var(--brand-cyan), var(--primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Animated conic gradient border for flagship CTAs. Two CTAs sitewide.
+   Uses the same mask-composite technique proven in .trust-banner::before. */
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.gradient-border-cta {
+  position: relative;
+  isolation: isolate;
+}
+
+.gradient-border-cta::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  z-index: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--gradient-angle, 0deg),
+    var(--primary),
+    var(--brand-cyan),
+    var(--brand-navy),
+    var(--primary)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: gradient-border-spin 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes gradient-border-spin {
+  to {
+    --gradient-angle: 360deg;
+  }
+}
+
+/* Button-scope cursor-follow glow — pairs with the existing useCursorGlow
+   hook, scoped tighter (160px) than the section-wide .cursor-glow (600px). */
+.cta-cursor-glow {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.cta-cursor-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: var(--cursor-glow-opacity, 0);
+  background: radial-gradient(
+    160px circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
+    color-mix(in oklch, white 22%, transparent),
+    transparent 70%
+  );
+  mix-blend-mode: overlay;
+  transition: opacity 220ms ease;
 }
 
 /* ─── Marquee carousel ────────────────────────────────────────────────────── */
@@ -267,6 +398,7 @@
 /* ─── Service / outcome card hover ─────────────────────────────────────────── */
 .feature-card,
 .outcome-card {
+  position: relative;
   transition:
     transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 360ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -279,6 +411,36 @@
   border-color: color-mix(in oklch, var(--primary) 38%, var(--border));
   box-shadow: 0 28px 70px -36px
     color-mix(in oklch, var(--primary) 52%, transparent);
+}
+
+/* Shine sweep: a thin diagonal of light crosses the card once on hover.
+   Uses background-position animation so the pseudo stays inside the card's
+   inset:0 bounds — no overflow:hidden needed, SVG drop-shadows still bleed. */
+.feature-card::after,
+.outcome-card::after,
+.problem-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 65%
+  );
+  background-size: 250% 100%;
+  background-position: 150% 0%;
+  transition: background-position 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+
+.feature-card:hover::after,
+.outcome-card:hover::after,
+.problem-card:hover::after {
+  background-position: -150% 0%;
 }
 
 /* ─── Problem card hover ─────────────────────────────────────────────────── */
@@ -443,6 +605,24 @@
     inset 0 1px 0 color-mix(in oklch, white 6%, transparent);
 }
 
+/* ─── FAQ accordion item open-state glow (no lift; content jumping is bad UX) */
+[data-slot="accordion-item"] {
+  transition:
+    border-color 360ms ease,
+    box-shadow 360ms ease;
+  border-radius: calc(var(--radius) * 0.8);
+  padding: 0 0.75rem;
+  margin: 0.25rem -0.75rem;
+  border: 1px solid transparent;
+}
+
+[data-slot="accordion-item"][data-open] {
+  border-color: color-mix(in oklch, var(--primary) 28%, var(--border));
+  box-shadow:
+    0 12px 36px -22px color-mix(in oklch, var(--primary) 38%, transparent),
+    inset 0 1px 0 color-mix(in oklch, white 6%, transparent);
+}
+
 /* ─── Animated price first-reveal glow ───────────────────────────────────── */
 @keyframes price-first-reveal {
   0% {
@@ -514,8 +694,29 @@
     animation: none !important;
   }
 
-  .cursor-glow::before {
+  .cursor-glow::before,
+  .cta-cursor-glow::before {
     opacity: 0 !important;
+  }
+
+  .gradient-text-brand {
+    animation: none !important;
+    background-position: 0% 50% !important;
+  }
+
+  .gradient-border-cta::before {
+    animation: none !important;
+  }
+
+  .feature-card::after,
+  .outcome-card::after,
+  .problem-card::after {
+    transition: none !important;
+    background-position: 150% 0% !important;
+  }
+
+  .gradient-cta {
+    transition: none !important;
   }
 }
 

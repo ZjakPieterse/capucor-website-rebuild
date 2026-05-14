@@ -50,7 +50,7 @@ const WEEKS: WeekStop[] = [
     before: "Unclear filing status and owner-memory deadline tracking.",
     after: "Protected compliance cards with confirmations logged in one place.",
     icon: ShieldCheck,
-    accent: "from-blue-500/22 via-primary/14 to-emerald-400/16",
+    accent: "from-brand-navy/22 via-primary/14 to-brand-cyan/16",
   },
   {
     week: "Week 3",
@@ -72,7 +72,7 @@ const WEEKS: WeekStop[] = [
     before: "Reactive finance and late questions after the fact.",
     after: "A board-ready dashboard with decisions, risks and next steps.",
     icon: LayoutDashboard,
-    accent: "from-primary/24 via-emerald-400/16 to-green-300/18",
+    accent: "from-primary/24 via-brand-cyan/16 to-brand-navy/18",
   },
 ];
 
@@ -83,7 +83,7 @@ function ImpactVisual({ active }: { active: WeekStop }) {
 
   return (
     <div className="relative min-h-[360px] overflow-hidden rounded-[2rem] border border-white/10 bg-background/35 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-      <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.08),transparent_34%,rgba(46,216,137,0.08)_72%,transparent)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.08),transparent_34%,rgba(45,212,255,0.08)_72%,transparent)]" />
       <div className="relative grid h-full gap-4 sm:grid-cols-2">
         <div className="rounded-3xl border border-destructive/20 bg-destructive/5 p-4">
           <p className="mb-4 text-[10px] font-bold uppercase tracking-widest text-destructive/80">
@@ -106,7 +106,7 @@ function ImpactVisual({ active }: { active: WeekStop }) {
           </p>
         </div>
 
-        <div className="rounded-3xl border border-primary/25 bg-primary/10 p-4 shadow-[0_20px_70px_-44px_rgba(46,216,137,0.9)]">
+        <div className="rounded-3xl border border-primary/25 bg-primary/10 p-4 shadow-[0_20px_70px_-44px_rgba(45,212,255,0.9)]">
           <p className="mb-4 text-[10px] font-bold uppercase tracking-widest text-primary">
             After
           </p>
@@ -156,7 +156,7 @@ function ImpactVisual({ active }: { active: WeekStop }) {
       </div>
 
       <div className="pointer-events-none absolute left-1/2 top-5 bottom-5 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-primary/35 to-transparent" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-primary/30 bg-background/90 shadow-[0_0_36px_rgba(46,216,137,0.35)]">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-primary/30 bg-background/90 shadow-[0_0_36px_rgba(45,212,255,0.35)]">
         <Sparkles className="h-5 w-5 text-primary" />
       </div>
     </div>
@@ -179,7 +179,7 @@ export function OutcomeStories() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <div className="relative mt-14 overflow-hidden rounded-[2.25rem] border border-white/10 bg-card/35 p-4 shadow-[0_34px_120px_-78px_rgba(46,216,137,0.75)] backdrop-blur-2xl sm:p-6 lg:p-8">
+          <div className="relative mt-14 overflow-hidden rounded-[2.25rem] border border-white/10 bg-card/35 p-4 shadow-[0_34px_120px_-78px_rgba(45,212,255,0.75)] backdrop-blur-2xl sm:p-6 lg:p-8">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={active.week}
@@ -214,9 +214,9 @@ export function OutcomeStories() {
                         aria-pressed={isActive}
                         onClick={() => setActiveIndex(i)}
                         className={cn(
-                          "group relative flex w-full items-center gap-4 rounded-3xl border p-4 text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background",
+                          "feature-card group relative flex w-full items-center gap-4 rounded-3xl border p-4 text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background",
                           isActive
-                            ? "border-primary/45 bg-primary/12 shadow-[0_18px_52px_-34px_rgba(46,216,137,0.9)]"
+                            ? "border-primary/45 bg-primary/12 shadow-[0_18px_52px_-34px_rgba(45,212,255,0.9)]"
                             : "border-white/10 bg-background/35 opacity-70 hover:border-primary/25 hover:bg-primary/5 hover:opacity-100",
                         )}
                       >
@@ -224,7 +224,7 @@ export function OutcomeStories() {
                           className={cn(
                             "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105",
                             isActive
-                              ? "border-primary/50 bg-primary text-primary-foreground shadow-[0_0_30px_rgba(46,216,137,0.45)]"
+                              ? "border-primary/50 bg-primary text-primary-foreground shadow-[0_0_30px_rgba(45,212,255,0.45)]"
                               : isPassed
                                 ? "border-primary/30 bg-primary/65 text-primary-foreground"
                                 : "border-white/10 bg-muted text-muted-foreground",
