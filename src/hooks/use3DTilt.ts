@@ -12,7 +12,7 @@ interface Tilt3DOptions {
 const SPRING_CONFIG = { damping: 18, stiffness: 180, mass: 0.4 };
 
 export function use3DTilt<T extends HTMLElement>({
-  maxTiltDeg = 8,
+  maxTiltDeg = 6,
   liftPx = 6,
   hoverScale = 1.012,
 }: Tilt3DOptions = {}) {
