@@ -407,14 +407,6 @@ export function HeroSection() {
               </MagneticButton>
             </motion.div>
 
-            <motion.p
-              className="mt-6 text-xs text-muted-foreground"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 1 }}
-            >
-              Your finance command centre is ready from the first scroll.
-            </motion.p>
           </div>
 
           {/* Dashboard */}
