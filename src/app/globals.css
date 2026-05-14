@@ -276,14 +276,14 @@
   background-position: 100% 50%;
 }
 
-/* Animated brand-clip text — used on a single hero verb and section titles.
-   Subtle 7-second sweep so the page stays alive. */
+/* Animated brand-clip text — used on a single hero verb and section titles. */
 .gradient-text-brand {
   background: linear-gradient(
     100deg,
     var(--foreground) 0%,
-    color-mix(in oklch, var(--primary) 55%, var(--foreground)) 38%,
-    var(--brand-cyan) 62%,
+    color-mix(in oklch, var(--primary) 80%, var(--foreground)) 30%,
+    var(--primary) 50%,
+    var(--brand-cyan) 68%,
     var(--foreground) 100%
   );
   background-size: 200% 100%;

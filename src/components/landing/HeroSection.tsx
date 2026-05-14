@@ -284,7 +284,7 @@ function FinanceCommandCentre() {
 
 // ── Hero Section ──────────────────────────────────────────────────────────────────
 export function HeroSection() {
-  const headline = "Make your finance function work harder";
+  const headline = "Make your finance functions work harder for you";
 
   const sectionRef = useCursorGlow<HTMLElement>();
 
@@ -323,8 +323,7 @@ export function HeroSection() {
           {/* Copy */}
           <div className="hero-copy-container">
             <motion.p
-              className="text-sm font-medium uppercase tracking-widest mb-4"
-              style={{ color: "var(--brand-navy)" }}
+              className="text-sm font-medium uppercase tracking-widest mb-4 text-primary"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
@@ -332,11 +331,11 @@ export function HeroSection() {
               Outsourced finance team for your growing business
             </motion.p>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6 flex flex-wrap gap-[0.25em]">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-6 flex flex-wrap gap-[0.25em]">
               {headline.split(" ").map((word, i, arr) => (
                 <motion.span
                   key={i}
-                  className={i === arr.length - 1 ? "gradient-text-brand" : undefined}
+                  className={i >= arr.length - 3 ? "gradient-text-brand" : undefined}
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
