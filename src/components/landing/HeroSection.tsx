@@ -318,8 +318,8 @@ export function HeroSection() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 h-full flex flex-col justify-center">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div className="max-w-7xl mx-auto px-8 lg:px-14 h-full flex flex-col justify-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           {/* Copy */}
           <div className="hero-copy-container">
             <motion.p
