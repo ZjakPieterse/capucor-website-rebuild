@@ -1,58 +1,67 @@
-'use client';
+"use client";
 
-import { BarChart2, BookMarked, Users } from 'lucide-react';
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
-import { SectionHeading } from '@/components/ui/SectionHeading';
+import { BarChart2, BookMarked, Users } from "lucide-react";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 
 const SERVICES = [
   {
     icon: BarChart2,
-    title: 'Accounting',
-    pitch: 'Annual financials, tax and statutory compliance handled properly and on time.',
-    bestFor: 'Companies that need AFS, income tax, VAT and CIPC responsibilities managed by professionals.',
+    title: "Accounting",
+    pitch:
+      "Annual financials, tax and statutory compliance handled properly and on time.",
+    bestFor:
+      "Companies that need AFS, income tax, VAT and CIPC responsibilities managed by professionals.",
     bullets: [
-      'Annual financial statements',
-      'Income tax and provisional tax',
-      'VAT201 reporting and submission',
-      'CIPC annual return filings',
+      "Annual financial statements",
+      "Income tax and provisional tax",
+      "VAT201 reporting and submission",
+      "CIPC annual return filings",
     ],
-    href: '/accounting',
-    ctaLabel: 'View accounting support',
+    href: "/accounting",
+    ctaLabel: "View accounting support",
   },
   {
     icon: BookMarked,
-    title: 'Bookkeeping',
-    pitch: 'Current Xero records and monthly management accounts you can actually use.',
-    bestFor: 'Businesses that want their ledger processed, reconciled and ready for decisions every month.',
+    title: "Bookkeeping",
+    pitch:
+      "Current Xero records and monthly management accounts you can actually use.",
+    bestFor:
+      "Businesses that want their ledger processed, reconciled and ready for decisions every month.",
     bullets: [
-      'Xero business software included',
-      'Transaction processing and categorisation',
-      'Monthly bank reconciliations',
-      'Monthly management accounts',
+      "Xero business software included",
+      "Transaction processing and categorisation",
+      "Monthly bank reconciliations",
+      "Monthly management accounts",
     ],
-    href: '/bookkeeping',
-    ctaLabel: 'View bookkeeping support',
+    href: "/bookkeeping",
+    ctaLabel: "View bookkeeping support",
     featured: true,
   },
   {
     icon: Users,
-    title: 'Payroll',
-    pitch: 'Accurate payroll, payslips and SARS/UIF compliance without spreadsheet risk.',
-    bestFor: 'Employers that want payroll handled correctly, confidentially and on time.',
+    title: "Payroll",
+    pitch:
+      "Accurate payroll, payslips and SARS/UIF compliance without spreadsheet risk.",
+    bestFor:
+      "Employers that want payroll handled correctly, confidentially and on time.",
     bullets: [
-      'Payroll processing and payslips',
-      'PAYE and UIF submissions',
-      'COIDA compliance',
-      'IRP5 certificates',
+      "Payroll processing and payslips",
+      "PAYE and UIF submissions",
+      "COIDA compliance",
+      "IRP5 certificates",
     ],
-    href: '/payroll',
-    ctaLabel: 'View payroll support',
+    href: "/payroll",
+    ctaLabel: "View payroll support",
   },
 ];
 
 export function ServicePillars() {
   return (
-    <section id="services" className="py-24 lg:py-32 bg-muted/30">
+    <section
+      id="services"
+      className="premium-section premium-section-muted py-28 lg:py-36"
+    >
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
@@ -65,18 +74,20 @@ export function ServicePillars() {
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map((svc, i) => (
             <ScrollReveal key={svc.title} delay={i * 0.1}>
-              <div
-                className="feature-card group rounded-xl border border-border bg-card p-8 h-full"
-              >
-                <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-muted">
+              <div className="feature-card premium-card group rounded-2xl border border-white/10 bg-card/80 p-8 h-full">
+                <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-muted/70">
                   <svc.icon className="h-5 w-5 text-foreground" />
                 </div>
 
                 <h3 className="text-xl font-semibold mb-2">{svc.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{svc.pitch}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                  {svc.pitch}
+                </p>
 
                 <p className="text-xs leading-relaxed mb-5">
-                  <span className="font-semibold text-foreground">Best for: </span>
+                  <span className="font-semibold text-foreground">
+                    Best for:{" "}
+                  </span>
                   <span className="text-muted-foreground">{svc.bestFor}</span>
                 </p>
 
@@ -106,7 +117,7 @@ export function ServicePillars() {
           <div className="mt-12 text-center">
             <a
               href="/pricing"
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+              className="premium-button inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
             >
               Build your subscription →
             </a>
