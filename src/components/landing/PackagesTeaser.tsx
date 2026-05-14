@@ -8,7 +8,6 @@ import {
   TIER_CUMULATIVE_LABELS,
   PACKAGE_COMMON_ITEMS,
   TIER_BUYER_FIT,
-  TIER_MOST_POPULAR_NOTE,
 } from '@/config/tiers';
 import type { Service, Tier } from '@/types';
 
@@ -30,7 +29,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
   const sortedTiers = [...tiers].sort((a, b) => a.display_order - b.display_order);
 
   return (
-    <section className="premium-section py-28 lg:py-40">
+    <section className="py-24 lg:py-32 bg-muted/30">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
@@ -42,7 +41,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
 
         {/* Included in every package */}
         <ScrollReveal delay={0.1}>
-        <div className="premium-panel mt-12 rounded-[1.75rem] px-8 py-7">
+        <div className="mt-10 rounded-xl border border-border bg-card px-8 py-6">
           <p className="text-xs font-medium uppercase tracking-widest text-center text-muted-foreground mb-5">
             Included in every package
           </p>
@@ -66,7 +65,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
           </p>
         </ScrollReveal>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedTiers.map((tier, i) => {
             const isMiddle = i === 1;
             const displayItems = getDisplayItems(tier.slug);
@@ -75,11 +74,11 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
               <ScrollReveal key={tier.slug} delay={i * 0.1}>
               <div
                 className={cn(
-                  'premium-card flex h-full flex-col rounded-[1.75rem] p-8',
-
+                  'rounded-xl border bg-card p-8 flex flex-col h-full transition-all duration-[250ms]',
+                  'hover:-translate-y-1 hover:shadow-lg',
                   isMiddle
-                    ? 'relative border-primary/40 shadow-primary/10'
-                    : ''
+                    ? 'border-primary/40 shadow-lg shadow-primary/10 relative hover:shadow-primary/15'
+                    : 'border-border hover:border-primary/20'
                 )}
               >
                 {isMiddle && (
@@ -97,11 +96,6 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
                   ) : tier.tagline ? (
                     <p className="text-sm text-muted-foreground">{tier.tagline}</p>
                   ) : null}
-                  {isMiddle && (
-                    <p className="mt-3 text-xs leading-relaxed text-primary/90">
-                      {TIER_MOST_POPULAR_NOTE}
-                    </p>
-                  )}
                 </div>
 
                 <ul className="space-y-2 flex-1">
@@ -116,7 +110,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
                 <div className="mt-6 flex justify-center">
                   <Link
                     href="/pricing"
-                    className="premium-button inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-primary/95"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
                   >
                     Build your subscription →
                   </Link>

@@ -18,8 +18,8 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/8 bg-background/55 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/45">
-      <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
+      <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
         {/* Logo */}
         <Link href="/" className="hover:opacity-80 transition-opacity flex items-center">
           <Image
@@ -39,7 +39,7 @@ export function Navbar() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="text-sm font-medium text-muted-foreground transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-foreground"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {item.label}
               </Link>

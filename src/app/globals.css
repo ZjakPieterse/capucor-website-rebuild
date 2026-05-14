@@ -163,6 +163,119 @@
 .fcc-heartbeat:nth-child(2) { animation-delay: 0.2s; }
 .fcc-heartbeat:nth-child(3) { animation-delay: 0.4s; }
 
+/* ─── Glassmorphic Trust Banner ──────────────────────────────────────────── */
+.trust-banner {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--card) 92%, transparent) 0%,
+    color-mix(in oklch, var(--card) 78%, transparent) 100%
+  );
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid color-mix(in oklch, var(--primary) 20%, var(--border));
+  box-shadow:
+    0 24px 60px -20px color-mix(in oklch, var(--primary) 18%, transparent),
+    0 8px 24px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 color-mix(in oklch, white 8%, transparent);
+}
+
+.trust-banner::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--primary) 60%, transparent),
+    transparent 40%,
+    color-mix(in oklch, var(--brand-cyan) 30%, transparent) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.trust-banner-glow {
+  background: radial-gradient(
+    600px circle at 20% 50%,
+    color-mix(in oklch, var(--primary) 10%, transparent),
+    transparent 60%
+  );
+}
+
+/* ─── Hero chaos float (continuous loop) ─────────────────────────────────── */
+@keyframes chaos-float-a {
+  0%, 100% { transform: translate(0, 0) rotate(12deg); }
+  50%      { transform: translate(8px, -10px) rotate(8deg); }
+}
+@keyframes chaos-float-b {
+  0%, 100% { transform: translate(0, 0) rotate(-12deg); }
+  50%      { transform: translate(-6px, 8px) rotate(-16deg); }
+}
+@keyframes chaos-float-c {
+  0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+  50%      { transform: translate(10px, 6px) rotate(-2deg); }
+}
+@keyframes chaos-float-d {
+  0%, 100% { transform: translate(0, 0) rotate(45deg); }
+  50%      { transform: translate(-8px, -8px) rotate(38deg); }
+}
+
+.chaos-item {
+  will-change: transform;
+}
+.chaos-float-a { animation: chaos-float-a 4.5s ease-in-out infinite; }
+.chaos-float-b { animation: chaos-float-b 5.2s ease-in-out infinite; }
+.chaos-float-c { animation: chaos-float-c 4.1s ease-in-out infinite; }
+.chaos-float-d { animation: chaos-float-d 5.8s ease-in-out infinite; }
+
+/* Continuous breathing on assembled tiles after the assembly */
+@keyframes fcc-breathe {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+.fcc-breathe {
+  animation: fcc-breathe 6s ease-in-out infinite;
+}
+
+/* ─── Calendar UI (OutcomeStories) ───────────────────────────────────────── */
+.day-pill {
+  transition: color 250ms ease, background-color 250ms ease, border-color 250ms ease, transform 250ms ease;
+}
+
+.day-pill:hover {
+  border-color: color-mix(in oklch, var(--primary) 45%, transparent);
+  color: var(--foreground);
+}
+
+.day-pill[data-active="true"] {
+  color: var(--primary-foreground);
+}
+
+.calendar-highlight {
+  background: linear-gradient(135deg, var(--primary), color-mix(in oklch, var(--primary) 70%, var(--brand-cyan)));
+  box-shadow: 0 6px 24px -8px color-mix(in oklch, var(--primary) 60%, transparent);
+}
+
+.calendar-panel {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--card) 88%, transparent) 0%,
+    color-mix(in oklch, var(--card) 72%, transparent) 100%
+  );
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid color-mix(in oklch, var(--primary) 18%, var(--border));
+  box-shadow:
+    0 20px 50px -16px color-mix(in oklch, var(--primary) 16%, transparent),
+    inset 0 1px 0 color-mix(in oklch, white 6%, transparent);
+}
+
 /* ─── Animated price first-reveal glow ───────────────────────────────────── */
 @keyframes price-first-reveal {
   0%   { text-shadow: 0 0 0 transparent; transform: scale(0.94); }
@@ -223,174 +336,15 @@
     animation: none !important;
   }
 
+  .chaos-float-a,
+  .chaos-float-b,
+  .chaos-float-c,
+  .chaos-float-d,
+  .fcc-breathe {
+    animation: none !important;
+  }
+
   .cursor-glow::before {
     opacity: 0 !important;
-  }
-}
-
-/* ─── Premium minimalist atmosphere ──────────────────────────────────────── */
-:root {
-  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
-  --surface-glass: color-mix(in oklch, var(--card) 78%, transparent);
-  --surface-line: color-mix(in oklch, white 11%, transparent);
-}
-
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    background:
-      radial-gradient(circle at 50% -20%, color-mix(in oklch, var(--primary) 18%, transparent), transparent 34rem),
-      radial-gradient(circle at 88% 12%, color-mix(in oklch, var(--brand-cyan) 12%, transparent), transparent 30rem),
-      linear-gradient(180deg, #02040a 0%, #050814 46%, #02040a 100%);
-    letter-spacing: -0.01em;
-  }
-
-  body::before {
-    pointer-events: none;
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    opacity: 0.12;
-    mix-blend-mode: soft-light;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-  }
-
-  body > * {
-    position: relative;
-    z-index: 1;
-  }
-}
-
-.premium-section {
-  position: relative;
-  isolation: isolate;
-}
-
-.premium-section::before {
-  pointer-events: none;
-  content: "";
-  position: absolute;
-  inset: -12rem 0 auto;
-  z-index: -1;
-  height: 28rem;
-  opacity: 0.72;
-  background:
-    radial-gradient(circle at 18% 35%, color-mix(in oklch, var(--primary) 9%, transparent), transparent 20rem),
-    radial-gradient(circle at 78% 12%, color-mix(in oklch, var(--brand-cyan) 8%, transparent), transparent 24rem);
-  filter: blur(10px);
-}
-
-.premium-panel {
-  border: 1px solid var(--surface-line);
-  background:
-    linear-gradient(145deg, color-mix(in oklch, white 8%, transparent), transparent 34%),
-    color-mix(in oklch, var(--card) 72%, transparent);
-  box-shadow: 0 28px 90px -60px color-mix(in oklch, var(--primary) 42%, transparent);
-  backdrop-filter: blur(18px) saturate(125%);
-}
-
-.premium-button {
-  transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0);
-  will-change: transform;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .premium-button:hover {
-    transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) translateY(-1px) scale(1.018);
-  }
-}
-
-.premium-card {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--surface-line);
-  background:
-    linear-gradient(145deg, color-mix(in oklch, white 7%, transparent), transparent 38%),
-    color-mix(in oklch, var(--card) 76%, transparent);
-  box-shadow: 0 20px 70px -58px color-mix(in oklch, black 80%, transparent);
-  backdrop-filter: blur(16px) saturate(120%);
-  transition:
-    transform 520ms var(--ease-premium),
-    border-color 520ms var(--ease-premium),
-    box-shadow 520ms var(--ease-premium),
-    background-color 520ms var(--ease-premium);
-}
-
-.premium-card::after {
-  pointer-events: none;
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  background: radial-gradient(circle at 50% 0%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 52%);
-  transition: opacity 520ms var(--ease-premium);
-}
-
-.premium-card:hover {
-  transform: translateY(-8px);
-  border-color: color-mix(in oklch, var(--primary) 42%, white 6%);
-  box-shadow: 0 30px 90px -46px color-mix(in oklch, var(--primary) 36%, transparent);
-}
-
-.premium-card:hover::after {
-  opacity: 1;
-}
-
-.premium-card .premium-icon,
-.premium-card svg {
-  transition:
-    transform 520ms var(--ease-premium),
-    color 520ms var(--ease-premium),
-    background-color 520ms var(--ease-premium),
-    border-color 520ms var(--ease-premium);
-}
-
-.premium-card:hover .premium-icon {
-  transform: translateY(-2px) scale(1.06);
-  border-color: color-mix(in oklch, var(--primary) 38%, transparent);
-}
-
-.premium-card:hover .premium-icon svg {
-  transform: scale(1.08) rotate(-2deg);
-  color: var(--primary);
-}
-
-.feature-card,
-.problem-card,
-.outcome-card,
-.fcc-tile {
-  transition:
-    transform 520ms var(--ease-premium),
-    opacity 520ms var(--ease-premium),
-    border-color 520ms var(--ease-premium),
-    box-shadow 520ms var(--ease-premium);
-}
-
-.feature-card:hover,
-.problem-card:hover,
-.outcome-card:hover {
-  transform: translateY(-8px);
-  border-color: color-mix(in oklch, var(--primary) 42%, transparent);
-  box-shadow: 0 30px 90px -50px color-mix(in oklch, var(--primary) 32%, transparent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .premium-button,
-  .premium-button:hover,
-  .premium-card,
-  .premium-card:hover,
-  .feature-card:hover,
-  .problem-card:hover,
-  .outcome-card:hover,
-  .fcc-tile:hover {
-    transform: none;
   }
 }

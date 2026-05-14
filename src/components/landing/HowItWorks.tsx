@@ -1,11 +1,19 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { Inbox, Cog, BarChart2, MessageSquare, ArrowRight, Calendar } from 'lucide-react';
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { siteConfig } from '@/config/site';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { cn } from '@/lib/utils';
+import { MagneticButton } from '@/components/ui/MagneticButton';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const STEPS = [
   {
@@ -39,148 +47,166 @@ const STEPS = [
 ];
 
 export function HowItWorks() {
+  const containerRef = useRef<HTMLElement>(null);
+  const [activeStep, setActiveStep] = useState(0);
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'center center',
+        end: `+=${STEPS.length * 32}%`,
+        pin: true,
+        scrub: 0.4,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const currentStep = Math.min(
+            STEPS.length - 1,
+            Math.floor(progress * STEPS.length),
+          );
+          setActiveStep(currentStep);
+        },
+      },
+    });
+
+    tl.fromTo('.progress-fill',
+      { width: '0%' },
+      { width: '100%', ease: 'none' },
+    );
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, { scope: containerRef });
+
   return (
-    <section id="how-it-works" className="premium-section py-28 lg:py-40">
-      <div className="max-w-7xl mx-auto px-6">
-        <ScrollReveal>
-          <SectionHeading
-            eyebrow="How it works"
-            title="A monthly rhythm that keeps you in control"
-            subtitle="Great finance work needs a clear monthly rhythm. You provide the documents, approvals and answers we need. We process, review, report and advise from there. So the month closes properly and your business stays in control."
+    <section
+      ref={containerRef}
+      id="how-it-works"
+      className="py-12 bg-background min-h-screen flex flex-col justify-center overflow-hidden"
+    >
+      <div className="max-w-3xl mx-auto px-6 w-full">
+        <SectionHeading
+          eyebrow="How it works"
+          title="A monthly rhythm that keeps you in control"
+          subtitle="Great finance work needs a clear monthly rhythm. We process, review, report and advise so the month closes properly."
+        />
+
+        {/* Horizontal step indicator */}
+        <div className="relative mt-14 mb-12">
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-border" aria-hidden />
+          <div
+            className="progress-fill absolute left-0 top-1/2 -translate-y-1/2 h-[2px]"
+            style={{
+              background: 'linear-gradient(to right, var(--primary), color-mix(in oklch, var(--primary) 70%, var(--brand-cyan)))',
+              width: '0%',
+              boxShadow: '0 0 14px color-mix(in oklch, var(--primary) 60%, transparent)',
+            }}
+            aria-hidden
           />
-        </ScrollReveal>
-
-        {/* ── Desktop: horizontal timeline ─────────────────────────── */}
-        <div className="mt-16 hidden lg:block">
-          {/* gap-0 is required: the line positioning math assumes columns are flush.
-              left: calc(50%+32px) = right edge of the icon (centered in column).
-              right: calc(-50%+32px) = extends past the column boundary by exactly
-              col_width/2 - 32px, landing at the left edge of the next icon. */}
-          <div className="grid grid-cols-4 gap-0">
-            {STEPS.map((step, i) => (
-              <ScrollReveal key={step.title} delay={i * 0.1}>
-                <div className="relative flex flex-col items-center text-center px-3">
-                  {i < STEPS.length - 1 && (
-                    <motion.div
-                      aria-hidden
-                      className="absolute top-8 h-0.5 pointer-events-none origin-left"
-                      style={{
-                        left: 'calc(50% + 32px)',
-                        right: 'calc(-50% + 32px)',
-                        background:
-                          'linear-gradient(to right, color-mix(in oklch, var(--primary) 70%, transparent), transparent)',
-                      }}
-                      initial={{ scaleX: 0, opacity: 0.4 }}
-                      whileInView={{ scaleX: 1, opacity: 1 }}
-                      viewport={{ once: true, margin: '0px 0px -25% 0px' }}
-                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 + i * 0.1 }}
+          <div className="relative flex items-center justify-between">
+            {STEPS.map((step, i) => {
+              const isActive = i === activeStep;
+              const isPassed = i <= activeStep;
+              return (
+                <div key={step.title} className="flex flex-col items-center gap-2">
+                  <div
+                    className={cn(
+                      'flex items-center justify-center rounded-full border-4 border-background transition-all duration-500 ease-out',
+                      isActive
+                        ? 'w-14 h-14 bg-primary shadow-[0_0_28px_rgba(46,216,137,0.45)] scale-110'
+                        : isPassed
+                          ? 'w-10 h-10 bg-primary/80'
+                          : 'w-10 h-10 bg-muted',
+                    )}
+                  >
+                    <step.icon
+                      className={cn(
+                        'transition-all duration-500',
+                        isActive ? 'h-6 w-6 text-primary-foreground' : isPassed ? 'h-4 w-4 text-primary-foreground' : 'h-4 w-4 text-muted-foreground',
+                      )}
                     />
-                  )}
-
-                  {/* Icon */}
-                  <div className="premium-icon relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-primary/35 bg-primary/10 backdrop-blur-md">
-                    <motion.span
-                      aria-hidden
-                      className="absolute inset-0 rounded-full border-2 border-primary"
-                      initial={{ scale: 1, opacity: 0 }}
-                      whileInView={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-                      viewport={{ once: true, margin: '0px 0px -30% 0px' }}
-                      transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 + i * 0.1 }}
-                    />
-                    <step.icon className="relative z-10 h-6 w-6 text-primary" />
                   </div>
-
-                  {/* Content */}
-                  <div className="w-full border-t border-white/10 pt-5">
-                    <h3 className="text-base font-semibold mb-2 leading-snug">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
-                    <p className="mt-3 text-xs leading-relaxed text-primary/90">
-                      <span className="font-semibold uppercase tracking-wider text-[10px] mr-1.5">You get</span>
-                      {step.deliverable}
-                    </p>
-                  </div>
+                  <span
+                    className={cn(
+                      'text-[10px] font-bold uppercase tracking-widest transition-colors duration-300',
+                      isActive ? 'text-primary' : 'text-muted-foreground/70',
+                    )}
+                  >
+                    Step {step.number}
+                  </span>
                 </div>
-              </ScrollReveal>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* ── Mobile: vertical left-side timeline ──────────────────── */}
-        <div className="mt-12 lg:hidden">
+        {/* Centered active content */}
+        <div className="relative min-h-[280px]">
           {STEPS.map((step, i) => {
-            const isLast = i === STEPS.length - 1;
+            const isActive = i === activeStep;
+            const isPast = i < activeStep;
             return (
-              <ScrollReveal key={step.title} delay={i * 0.1}>
-                <div className="relative flex gap-5 pb-10">
-                  {/* Vertical line segment — hidden on last step */}
-                  {!isLast && (
-                    <motion.div
-                      aria-hidden
-                      className="absolute left-6 top-12 bottom-0 w-[2px] pointer-events-none origin-top"
-                      style={{
-                        background:
-                          'linear-gradient(to bottom, color-mix(in oklch, var(--primary) 70%, transparent), color-mix(in oklch, var(--border) 20%, transparent))',
-                      }}
-                      initial={{ scaleY: 0, opacity: 0.4 }}
-                      whileInView={{ scaleY: 1, opacity: 1 }}
-                      viewport={{ once: true, margin: '0px 0px -15% 0px' }}
-                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-                    />
-                  )}
-
-                  {/* Node */}
-                  <div className="premium-icon relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-primary/35 bg-primary/10 ring-4 ring-background">
-                    <motion.span
-                      aria-hidden
-                      className="absolute inset-0 rounded-full border-2 border-primary"
-                      initial={{ scale: 1, opacity: 0 }}
-                      whileInView={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-                      viewport={{ once: true, margin: '0px 0px -15% 0px' }}
-                      transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 }}
-                    />
-                    <step.icon className="relative z-10 h-5 w-5 text-primary" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 pt-2">
-                    <h3 className="text-base font-semibold mb-1.5 leading-snug">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
-                    <p className="mt-2.5 text-xs leading-relaxed text-primary/90">
-                      <span className="font-semibold uppercase tracking-wider text-[10px] mr-1.5">You get</span>
-                      {step.deliverable}
-                    </p>
-                  </div>
+              <div
+                key={step.title}
+                className={cn(
+                  'absolute inset-0 text-center transition-all duration-700 ease-in-out',
+                  isActive
+                    ? 'opacity-100 translate-y-0 pointer-events-auto'
+                    : isPast
+                      ? 'opacity-0 -translate-y-6 pointer-events-none'
+                      : 'opacity-0 translate-y-6 pointer-events-none',
+                )}
+              >
+                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
+                  {step.title}
+                </h3>
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6 max-w-2xl mx-auto">
+                  {step.body}
+                </p>
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-5 max-w-xl mx-auto text-left">
+                  <span className="font-semibold uppercase tracking-wider text-[10px] text-primary mr-2">
+                    You get
+                  </span>
+                  <span className="text-sm font-medium text-foreground/90">
+                    {step.deliverable}
+                  </span>
                 </div>
-              </ScrollReveal>
+              </div>
             );
           })}
         </div>
-      </div>
 
-      {/* Bottom CTA */}
-      <ScrollReveal delay={0.4}>
-        <div className="mt-16 text-center">
-          <p className="text-sm text-muted-foreground mb-6">Ready to put a proper monthly finance rhythm in place?</p>
+        {/* Bottom CTA */}
+        <div className="mt-16 text-center relative z-10">
+          <p className="text-sm text-muted-foreground mb-6">
+            Ready to put a proper monthly finance rhythm in place?
+          </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              href="/pricing"
-              className="premium-button inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-primary/95"
-            >
-              Build your subscription
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <a
-              href={siteConfig.links.booking}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="premium-button inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.045] px-5 py-2.5 text-sm font-semibold text-foreground backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-primary/35 hover:bg-white/[0.075]"
-            >
-              <Calendar className="h-4 w-4" />
-              Book a 15-minute fit call
-            </a>
+            <MagneticButton>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors w-full sm:w-auto justify-center"
+              >
+                Build your subscription
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </MagneticButton>
+            <MagneticButton>
+              <a
+                href={siteConfig.links.booking}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-input bg-background px-6 py-3 text-sm font-medium hover:bg-muted transition-colors w-full sm:w-auto justify-center"
+              >
+                <Calendar className="h-4 w-4" />
+                Book a 15-minute fit call
+              </a>
+            </MagneticButton>
           </div>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   );
 }

@@ -1,5 +1,5 @@
 'use client';
-
+import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import type { CalculatorStep } from '@/types';
 
@@ -28,28 +28,39 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
               className={cn('flex items-start', i === STEPS.length - 1 ? '' : 'flex-1')}
             >
               <div className="flex flex-col items-center shrink-0">
-                <div
+                <motion.div
+                  initial={false}
+                  animate={{
+                    borderColor: isDone || isActive ? 'var(--brand-primary)' : 'var(--border)',
+                    backgroundColor: isDone ? 'var(--brand-primary)' : isActive ? 'color-mix(in oklch, var(--brand-primary) 10%, transparent)' : 'transparent',
+                    color: isDone ? 'var(--brand-primary-foreground)' : isActive ? 'var(--brand-primary)' : 'var(--muted-foreground)',
+                    scale: isActive ? 1.15 : 1,
+                  }}
                   className={cn(
-                    'relative h-8 w-8 rounded-full border-2 flex items-center justify-center text-sm font-semibold transition-all duration-200',
-                    isDone
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : isActive
-                      ? 'border-primary bg-primary/10 text-primary scale-110'
-                      : 'border-border bg-background text-muted-foreground'
+                    'relative h-8 w-8 rounded-full border-2 flex items-center justify-center text-sm font-semibold transition-all duration-300'
                   )}
                   aria-current={isActive ? 'step' : undefined}
                 >
                   {isActive && (
-                    <span
-                      aria-hidden
-                      className="absolute inset-0 rounded-full ring-4 ring-primary/15 animate-pulse"
+                    <motion.span
+                      layoutId="glow"
+                      className="absolute inset-0 rounded-full ring-4 ring-primary/20"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
                     />
                   )}
-                  <span className="relative">{isDone ? '✓' : step.number}</span>
-                </div>
+                  {isActive && (
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 rounded-full ring-2 ring-primary/30 animate-pulse"
+                    />
+                  )}
+                  <span className="relative z-10">{isDone ? '✓' : step.number}</span>
+                </motion.div>
                 <span
                   className={cn(
-                    'mt-2 text-[10px] sm:text-xs font-medium text-center max-w-[80px] leading-tight',
+                    'mt-2 text-[10px] sm:text-xs font-medium text-center max-w-[80px] leading-tight transition-colors duration-300',
                     isActive ? 'text-foreground' : 'text-muted-foreground'
                   )}
                 >
@@ -58,13 +69,20 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
               </div>
 
               {i < STEPS.length - 1 && (
-                <div className="flex-1 h-px mt-4 mx-2 sm:mx-3 bg-border relative overflow-hidden">
-                  <div
-                    className={cn(
-                      'absolute inset-0 bg-primary origin-left transition-transform duration-500 ease-out',
-                      isDone ? 'scale-x-100' : 'scale-x-0'
-                    )}
+                <div className="flex-1 h-[2px] mt-4 mx-2 sm:mx-3 bg-border relative overflow-hidden rounded-full">
+                  <motion.div
+                    className="absolute inset-0 bg-primary origin-left"
+                    initial={false}
+                    animate={{ scaleX: isDone ? 1 : 0 }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   />
+                  {isActive && (
+                    <motion.div
+                      className="absolute inset-0 bg-primary/30 origin-left"
+                      animate={{ x: ['-100%', '200%'] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                    />
+                  )}
                 </div>
               )}
             </li>

@@ -46,7 +46,7 @@ const WORKFLOW_STEPS = ['Capture', 'Reconcile', 'Track', 'Report', 'Pay', 'Final
 
 export function TechStackShowcase() {
   return (
-    <section id="tech-stack" className="premium-section py-28 lg:py-40">
+    <section id="tech-stack" className="py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
@@ -69,12 +69,12 @@ export function TechStackShowcase() {
           </div>
         </ScrollReveal>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {TOOLS.map((tool, i) => (
             <ScrollReveal key={tool.name} delay={i * 0.07}>
-              <div className="premium-card h-full rounded-[1.5rem] p-6">
+              <div className="rounded-xl border border-border bg-card p-6 h-full transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-lg hover:border-primary/20">
                 {/* Tool name badge */}
-                <div className="mb-5 inline-flex items-center rounded-full border border-primary/25 bg-primary/8 px-3 py-1.5">
+                <div className="mb-4 inline-flex items-center rounded-lg border border-primary/30 bg-primary/8 px-3 py-1.5">
                   <span className="text-sm font-semibold text-primary">{tool.name}</span>
                 </div>
 

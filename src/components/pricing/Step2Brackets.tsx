@@ -8,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useCursorGlow } from '@/hooks/useCursorGlow';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 import type { Bracket, BracketValue, Service } from '@/types';
 
 interface Step2BracketsProps {
@@ -32,6 +34,7 @@ export function Step2Brackets({
   canProceed,
 }: Step2BracketsProps) {
   const activeServices = services.filter((s) => selectedServices.has(s.slug));
+  const containerRef = useCursorGlow<HTMLDivElement>();
 
   return (
     <div className="space-y-8">
@@ -42,7 +45,7 @@ export function Step2Brackets({
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div ref={containerRef} className="cursor-glow space-y-4">
         {activeServices.map((svc) => {
           const svcBrackets = brackets
             .filter((b) => b.service_slug === svc.slug && !b.is_enterprise)
@@ -53,7 +56,7 @@ export function Step2Brackets({
           return (
             <div
               key={svc.slug}
-              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 rounded-xl border border-border bg-card px-5 py-4"
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 rounded-xl border border-border bg-card/40 backdrop-blur-md px-5 py-4"
             >
               <div className="min-w-0">
                 <p className="font-semibold text-sm">{svc.name}</p>
@@ -91,12 +94,16 @@ export function Step2Brackets({
       </p>
 
       <div className="flex justify-between pt-2">
-        <Button variant="outline" onClick={onBack}>
-          ← Back
-        </Button>
-        <Button onClick={onNext} disabled={!canProceed} className="gap-2">
-          Continue →
-        </Button>
+        <MagneticButton>
+          <Button variant="outline" onClick={onBack}>
+            ← Back
+          </Button>
+        </MagneticButton>
+        <MagneticButton>
+          <Button onClick={onNext} disabled={!canProceed} className="gap-2">
+            Continue →
+          </Button>
+        </MagneticButton>
       </div>
     </div>
   );

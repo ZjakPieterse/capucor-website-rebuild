@@ -33,10 +33,10 @@ export function AnimatedPrice({
       return;
     }
 
-    const isFirstReveal = from === 0 && to > 0;
+    const hasChanged = from !== to;
     let revealTimeout: ReturnType<typeof setTimeout> | null = null;
 
-    if (isFirstReveal) {
+    if (hasChanged) {
       el.classList.remove('price-first-reveal');
       // force reflow so the animation re-triggers if it fires repeatedly
       void el.offsetWidth;
@@ -47,7 +47,7 @@ export function AnimatedPrice({
     }
 
     const controls = animate(from, to, {
-      duration: isFirstReveal ? 0.8 : duration,
+      duration: (from === 0 && to > 0) ? 0.8 : duration,
       ease: [0.16, 1, 0.3, 1],
       onUpdate(value) {
         el.textContent = formatZAR(Math.round(value));

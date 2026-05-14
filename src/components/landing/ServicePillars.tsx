@@ -52,7 +52,7 @@ const SERVICES = [
 
 export function ServicePillars() {
   return (
-    <section id="services" className="premium-section py-28 lg:py-40">
+    <section id="services" className="py-24 lg:py-32 bg-muted/30">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
@@ -62,13 +62,13 @@ export function ServicePillars() {
           />
         </ScrollReveal>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map((svc, i) => (
             <ScrollReveal key={svc.title} delay={i * 0.1}>
               <div
-                className="premium-card feature-card group h-full rounded-[1.75rem] p-8"
+                className="feature-card group rounded-xl border border-border bg-card p-8 h-full"
               >
-                <div className="premium-icon mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]">
+                <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-muted">
                   <svc.icon className="h-5 w-5 text-foreground" />
                 </div>
 
@@ -106,7 +106,7 @@ export function ServicePillars() {
           <div className="mt-12 text-center">
             <a
               href="/pricing"
-              className="premium-button inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-primary/95"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
             >
               Build your subscription →
             </a>
