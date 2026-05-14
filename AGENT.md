@@ -41,7 +41,7 @@ cp .env.example .env.local
 | `REVALIDATE_SECRET` | Any long random string — `openssl rand -hex 32` |
 | `RESEND_API_KEY` | Resend dashboard (optional — logs to console if absent) |
 | `OWNER_NOTIFICATION_EMAIL` | e.g. `zjak@capucor.com` |
-| `NEXT_PUBLIC_CALENDLY_URL` | Your Calendly booking link |
+| `NEXT_PUBLIC_BOOKING_URL` | Your booking/calendar link (falls back to Google Calendar URL if absent) |
 
 ## Dev Scripts
 
