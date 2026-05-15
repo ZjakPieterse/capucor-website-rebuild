@@ -517,6 +517,9 @@
   width: 2px;
   border-radius: 1px;
   pointer-events: none;
+  z-index: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background: linear-gradient(
     to bottom,
     transparent 0%,
@@ -524,8 +527,6 @@
     color-mix(in oklch, var(--primary) 18%, transparent) 92%,
     transparent 100%
   );
-  /* mobile: centred in the 48px badge column */
-  left: 24px;
 }
 
 .how-spine::after {
@@ -547,18 +548,17 @@
 
 .how-step-row {
   display: grid;
-  grid-template-columns: 48px 1fr;
+  grid-template-columns: 1fr;
   align-items: start;
-  column-gap: 16px;
 }
 
 .how-badge {
+  display: none;
   position: relative;
   z-index: 2;
   width: 48px;
   height: 48px;
   border-radius: 999px;
-  display: flex;
   align-items: center;
   justify-content: center;
   background: var(--background);
@@ -625,6 +625,30 @@
   }
 }
 
+.how-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.how-card-number {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--primary) 8%, var(--background));
+  border: 1px solid color-mix(in oklch, var(--primary) 32%, transparent);
+  box-shadow: 0 0 16px color-mix(in oklch, var(--primary) 14%, transparent);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+}
+
 .how-card-title {
   margin: 0;
   font-size: 1.5rem;
@@ -675,8 +699,12 @@
     column-gap: 24px;
   }
   .how-badge {
+    display: flex;
     grid-column: 2;
     grid-row: 1;
+  }
+  .how-card-number {
+    display: none;
   }
   .how-step-row[data-side="left"] .how-card {
     grid-column: 1;
@@ -685,10 +713,6 @@
   .how-step-row[data-side="right"] .how-card {
     grid-column: 3;
     grid-row: 1;
-  }
-  .how-spine {
-    left: 50%;
-    transform: translateX(-50%);
   }
   .how-card-title {
     font-size: 1.75rem;

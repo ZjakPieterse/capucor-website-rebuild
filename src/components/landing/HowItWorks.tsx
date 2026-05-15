@@ -72,7 +72,12 @@ export function HowItWorks() {
                 className="how-card"
                 aria-label={`Step ${step.number}: ${step.title}`}
               >
-                <h3 className="how-card-title">{step.title}</h3>
+                <header className="how-card-header">
+                  <span className="how-card-number" aria-hidden="true">
+                    {step.number}
+                  </span>
+                  <h3 className="how-card-title">{step.title}</h3>
+                </header>
                 <p className="how-card-body">{step.body}</p>
                 <div className="how-card-you-get">
                   <span className="how-card-you-get-label">You get</span>
