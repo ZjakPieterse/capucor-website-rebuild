@@ -13,13 +13,16 @@ export function useSectionScrollProgress<T extends HTMLElement>() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setProgress(1);
-      return;
-    }
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
 
     let rafId = 0;
     const update = () => {
+      if (reduceMotion) {
+        setProgress((prev) => (prev === 1 ? prev : 1));
+        return;
+      }
       const el = ref.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
@@ -34,8 +37,10 @@ export function useSectionScrollProgress<T extends HTMLElement>() {
       rafId = requestAnimationFrame(update);
     };
     update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    if (!reduceMotion) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+    }
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll);
