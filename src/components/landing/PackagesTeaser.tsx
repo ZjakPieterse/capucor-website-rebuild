@@ -64,13 +64,6 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
           </div>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.15}>
-          <p className="mt-6 text-center text-xs text-muted-foreground">
-            Every month-end is reviewed and signed off by a SAICA-registered
-            AGA(SA) accountant before it reaches you.
-          </p>
-        </ScrollReveal>
-
         <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedTiers.map((tier, i) => {
             const isMiddle = i === 1;
