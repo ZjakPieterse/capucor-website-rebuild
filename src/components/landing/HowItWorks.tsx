@@ -1,8 +1,9 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useCursorGlow } from "@/hooks/useCursorGlow";
-import { useHowItWorksScroll } from "@/hooks/useHowItWorksScroll";
+import { useSectionScrollProgress } from "@/hooks/useSectionScrollProgress";
 
 const STEPS = [
   {
@@ -37,51 +38,48 @@ const STEPS = [
 
 export function HowItWorks() {
   const rowRef = useCursorGlow<HTMLDivElement>();
-  const { activeStep, sectionRef } = useHowItWorksScroll(STEPS.length);
+  const { ref: sectionRef, progress } = useSectionScrollProgress<HTMLElement>();
 
   return (
     <section
       id="how-it-works"
       ref={sectionRef}
-      className="how-pin-section premium-section bg-background overflow-hidden"
+      className="how-timeline-section premium-section bg-background"
     >
-      <div className="how-pin-inner mx-auto w-full max-w-6xl px-6">
+      <div className="mx-auto w-full max-w-6xl px-6">
         <SectionHeading
           eyebrow="How it works"
           title="A monthly rhythm that keeps you in control"
-          subtitle="Great finance work needs a clear monthly rhythm. We process, review, report and advise so the month closes properly. Scroll to walk through each step."
+          subtitle="Great finance work needs a clear monthly rhythm. We process, review, report and advise so the month closes properly."
         />
 
         <div
           ref={rowRef}
-          data-active-step={activeStep}
-          className="how-glass-row relative mt-10 flex flex-col gap-4 lg:flex-row"
+          className="how-timeline mt-12"
+          style={{ "--scroll-progress": progress } as CSSProperties}
         >
+          <div className="how-spine" aria-hidden="true" />
           {STEPS.map((step, i) => (
-            <article
+            <div
               key={step.number}
-              data-step={i}
-              data-active={i === activeStep}
-              tabIndex={0}
-              className="how-glass-card"
-              aria-label={`Step ${step.number}: ${step.title}`}
-              aria-current={i === activeStep ? "step" : undefined}
+              className="how-step-row"
+              data-side={i % 2 === 0 ? "left" : "right"}
             >
-              <div className="how-step-header">
-                <span className="how-numeral" aria-hidden="true">
-                  {step.number}
-                </span>
-                <h3 className="how-step-title">{step.title}</h3>
+              <div className="how-badge" aria-hidden="true">
+                {step.number}
               </div>
-
-              <div className="how-step-reveal">
-                <p className="how-step-body">{step.body}</p>
-                <div className="how-step-you-get">
-                  <span className="how-step-you-get-label">You get</span>
-                  <p className="how-step-you-get-text">{step.deliverable}</p>
+              <article
+                className="how-card"
+                aria-label={`Step ${step.number}: ${step.title}`}
+              >
+                <h3 className="how-card-title">{step.title}</h3>
+                <p className="how-card-body">{step.body}</p>
+                <div className="how-card-you-get">
+                  <span className="how-card-you-get-label">You get</span>
+                  <p className="how-card-you-get-text">{step.deliverable}</p>
                 </div>
-              </div>
-            </article>
+              </article>
+            </div>
           ))}
         </div>
       </div>

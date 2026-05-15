@@ -481,25 +481,20 @@
     color-mix(in oklch, var(--primary) 18%, transparent);
 }
 
-/* ─── How It Works — scroll-pinned scrollytelling ─────────────────────── */
-.how-pin-section {
-  /* Section is what GSAP ScrollTrigger pins. Keep contents centered vertically
-     so the pinned frame feels intentional rather than top-aligned. */
-  display: flex;
-  align-items: center;
-  min-height: 100vh;
+/* ─── How It Works: static alternating timeline ─────────────────────── */
+.how-timeline-section {
   padding: 80px 0;
 }
 
-.how-pin-inner {
-  width: 100%;
-}
-
-.how-glass-row {
+.how-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   isolation: isolate;
 }
 
-.how-glass-row::before {
+.how-timeline::before {
   content: "";
   position: absolute;
   inset: -40px;
@@ -515,77 +510,86 @@
   transition: opacity 320ms ease;
 }
 
-.how-glass-card {
-  position: relative;
-  flex: 1 1 0;
-  min-width: 0;
-  padding: 28px 24px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  overflow: hidden;
-  outline: none;
-  will-change: flex-grow, background-color, box-shadow;
-  transition:
-    flex-grow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+.how-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  border-radius: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in oklch, var(--primary) 18%, transparent) 8%,
+    color-mix(in oklch, var(--primary) 18%, transparent) 92%,
+    transparent 100%
+  );
+  /* mobile: centred in the 48px badge column */
+  left: 24px;
 }
 
-.how-glass-card::before {
+.how-spine::after {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--scroll-progress, 0) * 100%);
+  border-radius: 1px;
   background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.2),
-    rgba(255, 255, 255, 0)
+    to bottom,
+    color-mix(in oklch, var(--primary) 30%, transparent) 0%,
+    color-mix(in oklch, var(--primary) 65%, transparent) 60%,
+    var(--primary) 100%
   );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
+  box-shadow: 0 0 12px color-mix(in oklch, var(--primary) 35%, transparent);
 }
 
-.how-glass-card[data-active="true"] {
-  flex-grow: 2.4;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 8px 32px 0 rgba(0, 0, 0, 0.37),
-    0 0 0 1px color-mix(in oklch, var(--primary) 35%, transparent),
-    0 18px 60px -28px color-mix(in oklch, var(--primary) 50%, transparent);
+.how-step-row {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  align-items: start;
+  column-gap: 16px;
 }
 
-.how-step-header {
+.how-badge {
+  position: relative;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  overflow: hidden;
-}
-
-.how-numeral {
-  display: block;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+  border: 1px solid color-mix(in oklch, var(--primary) 35%, transparent);
+  box-shadow: 0 0 24px color-mix(in oklch, var(--primary) 18%, transparent);
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 1rem;
-  line-height: 1;
-  letter-spacing: 0.2em;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--primary);
+  justify-self: center;
+  margin-top: 12px;
 }
 
-.how-step-title {
+.how-card {
+  position: relative;
+  padding: 24px 28px;
+  border-radius: 16px;
+  background: color-mix(in oklch, var(--background) 88%, transparent);
+  border: 1px solid color-mix(in oklch, var(--primary) 12%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.how-card-title {
+  margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -593,116 +597,73 @@
   line-height: 1.15;
 }
 
-.how-step-reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  max-height: 0;
-  margin-top: 0;
-  pointer-events: none;
-  transition:
-    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
-    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
-    max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+.how-card-body {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--muted-foreground);
 }
 
-.how-glass-card[data-active="true"] .how-step-reveal {
-  opacity: 1;
-  transform: translateY(0);
-  max-height: 400px;
-  margin-top: 20px;
-  pointer-events: auto;
+.how-card-you-get {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: color-mix(in oklch, var(--primary) 6%, transparent);
+  border: 1px solid color-mix(in oklch, var(--primary) 14%, transparent);
 }
 
-.how-step-body {
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: color-mix(in oklch, var(--muted-foreground) 90%, white);
-}
-
-.how-step-you-get {
-  margin-top: 16px;
-  padding: 14px 16px;
-  border-radius: 14px;
-  background: color-mix(in oklch, var(--primary) 8%, transparent);
-  border: 1px solid color-mix(in oklch, var(--primary) 18%, transparent);
-}
-
-.how-step-you-get-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
+.how-card-you-get-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--primary);
 }
 
-.how-step-you-get-text {
-  font-size: 0.8125rem;
-  line-height: 1.55;
-  color: color-mix(in oklch, var(--foreground) 88%, transparent);
+.how-card-you-get-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--foreground);
 }
 
-@media (max-width: 1023px) {
-  .how-pin-section {
-    min-height: 100vh;
-    padding: 32px 0 24px;
+@media (min-width: 1024px) {
+  .how-timeline {
+    gap: 56px;
   }
-  .how-glass-row {
-    flex-direction: column;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
+  .how-step-row {
+    grid-template-columns: 1fr 64px 1fr;
+    column-gap: 24px;
   }
-  /* Each step shifts the row up by one collapsed-card stride
-     (5.5rem min-height + 1rem gap = 6.5rem) so the active card always
-     lands where card 0 used to sit. */
-  .how-glass-row[data-active-step="0"] { transform: translateY(0); }
-  .how-glass-row[data-active-step="1"] { transform: translateY(-6.5rem); }
-  .how-glass-row[data-active-step="2"] { transform: translateY(-13rem); }
-  .how-glass-row[data-active-step="3"] { transform: translateY(-19.5rem); }
-
-  .how-glass-card {
-    padding: 16px 20px;
+  .how-badge {
+    grid-column: 2;
+    grid-row: 1;
   }
-  .how-glass-card,
-  .how-glass-card[data-active="true"] {
-    flex: 1 1 auto;
+  .how-step-row[data-side="left"] .how-card {
+    grid-column: 1;
+    grid-row: 1;
   }
-  .how-glass-card[data-active="false"] {
-    min-height: 5.5rem;
+  .how-step-row[data-side="right"] .how-card {
+    grid-column: 3;
+    grid-row: 1;
   }
-  .how-step-title {
-    font-size: 1.25rem;
+  .how-spine {
+    left: 50%;
+    transform: translateX(-50%);
   }
-  .how-glass-card[data-active="false"] .how-step-reveal {
-    display: none;
-  }
-  .how-glass-card[data-active="true"] .how-step-reveal {
-    max-height: 60vh;
+  .how-card-title {
+    font-size: 1.75rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .how-pin-section {
-    min-height: auto;
+  .how-spine::after {
+    transition: none;
   }
-  .how-glass-row,
-  .how-glass-card,
-  .how-step-reveal,
-  .how-glass-row::before {
-    transition: none !important;
-  }
-  .how-glass-row {
-    transform: none !important;
-  }
-  .how-glass-card .how-step-reveal {
-    opacity: 1;
-    transform: none;
-    max-height: 400px;
-    margin-top: 20px;
-    pointer-events: auto;
-    display: block;
+  .how-timeline::before {
+    transition: none;
   }
 }
 
