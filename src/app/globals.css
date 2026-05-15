@@ -481,7 +481,20 @@
     color-mix(in oklch, var(--primary) 18%, transparent);
 }
 
-/* ─── How It Works — minimalist expansion glass cards ─────────────────── */
+/* ─── How It Works — scroll-pinned scrollytelling ─────────────────────── */
+.how-pin-section {
+  /* Section is what GSAP ScrollTrigger pins. Keep contents centered vertically
+     so the pinned frame feels intentional rather than top-aligned. */
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  padding: 80px 0;
+}
+
+.how-pin-inner {
+  width: 100%;
+}
+
 .how-glass-row {
   isolation: isolate;
 }
@@ -515,8 +528,8 @@
   background-clip: padding-box;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   overflow: hidden;
-  cursor: pointer;
   outline: none;
+  will-change: flex-grow, background-color, box-shadow;
   transition:
     flex-grow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -545,22 +558,7 @@
   pointer-events: none;
 }
 
-.how-step-reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  max-height: 0;
-  margin-top: 0;
-  pointer-events: none;
-  transition:
-    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.how-glass-card:hover,
-.how-glass-card:focus-visible,
-.how-glass-card:focus-within {
+.how-glass-card[data-active="true"] {
   flex-grow: 2.4;
   background: rgba(255, 255, 255, 0.08);
   box-shadow:
@@ -569,40 +567,72 @@
     0 18px 60px -28px color-mix(in oklch, var(--primary) 50%, transparent);
 }
 
-.how-glass-card:hover .how-step-reveal,
-.how-glass-card:focus-visible .how-step-reveal,
-.how-glass-card:focus-within .how-step-reveal {
+.how-step-header {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  overflow: hidden;
+  min-height: 4.5rem;
+}
+
+.how-numeral {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 700;
+  font-size: clamp(3rem, 5vw, 5.25rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  transition:
+    color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    text-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.how-glass-card[data-active="true"] .how-numeral {
+  color: var(--foreground);
+  text-shadow:
+    0 0 24px color-mix(in oklch, var(--primary) 60%, transparent),
+    0 0 48px color-mix(in oklch, var(--primary) 30%, transparent);
+}
+
+.how-step-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+  line-height: 1.05;
+  opacity: 0;
+  transform: translateX(-12px);
+  white-space: nowrap;
+  transition:
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
+}
+
+.how-glass-card[data-active="true"] .how-step-title {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.how-step-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  max-height: 0;
+  margin-top: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
+    max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.how-glass-card[data-active="true"] .how-step-reveal {
   opacity: 1;
   transform: translateY(0);
   max-height: 400px;
   margin-top: 20px;
   pointer-events: auto;
-}
-
-.how-step-number {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: color-mix(in oklch, var(--primary) 85%, white);
-}
-
-.how-step-icon {
-  width: 32px;
-  height: 32px;
-  margin: 14px 0 18px;
-  color: var(--primary);
-  filter: drop-shadow(
-    0 0 12px color-mix(in oklch, var(--primary) 40%, transparent)
-  );
-}
-
-.how-step-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--foreground);
-  line-height: 1.25;
 }
 
 .how-step-body {
@@ -636,26 +666,61 @@
 }
 
 @media (max-width: 1023px) {
+  .how-pin-section {
+    min-height: 100vh;
+    padding: 48px 0;
+  }
+  .how-glass-row {
+    flex-direction: column;
+  }
   .how-glass-card,
-  .how-glass-card:hover,
-  .how-glass-card:focus-visible,
-  .how-glass-card:focus-within {
-    flex-grow: 1;
+  .how-glass-card[data-active="true"] {
+    flex: 1 1 auto;
+  }
+  .how-step-header {
+    min-height: auto;
+    align-items: center;
+  }
+  .how-numeral {
+    font-size: clamp(2.25rem, 9vw, 3.5rem);
+  }
+  .how-step-title {
+    font-size: 1.25rem;
+    opacity: 1;
+    transform: translateX(0);
   }
   .how-step-reveal {
-    opacity: 1;
-    transform: translateY(0);
-    max-height: none;
-    margin-top: 20px;
-    pointer-events: auto;
+    max-height: 0;
+  }
+  .how-glass-card[data-active="true"] .how-step-reveal {
+    max-height: 360px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .how-pin-section {
+    min-height: auto;
+  }
   .how-glass-card,
   .how-step-reveal,
+  .how-numeral,
+  .how-step-title,
   .how-glass-row::before {
     transition: none !important;
+  }
+  .how-glass-card .how-step-reveal {
+    opacity: 1;
+    transform: none;
+    max-height: 400px;
+    margin-top: 20px;
+    pointer-events: auto;
+  }
+  .how-glass-card .how-step-title {
+    opacity: 1;
+    transform: none;
+  }
+  .how-glass-card .how-numeral {
+    color: var(--foreground);
   }
 }
 
