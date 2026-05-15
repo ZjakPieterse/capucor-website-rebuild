@@ -569,49 +569,28 @@
 
 .how-step-header {
   display: flex;
-  align-items: baseline;
-  gap: 18px;
+  flex-direction: column;
+  gap: 8px;
   overflow: hidden;
-  min-height: 4.5rem;
 }
 
 .how-numeral {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-weight: 700;
-  font-size: clamp(3rem, 5vw, 5.25rem);
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1rem;
   line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--muted-foreground);
-  flex-shrink: 0;
-  transition:
-    color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    text-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.how-glass-card[data-active="true"] .how-numeral {
-  color: var(--foreground);
-  text-shadow:
-    0 0 24px color-mix(in oklch, var(--primary) 60%, transparent),
-    0 0 48px color-mix(in oklch, var(--primary) 30%, transparent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
 }
 
 .how-step-title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--foreground);
-  line-height: 1.05;
-  opacity: 0;
-  transform: translateX(-12px);
-  white-space: nowrap;
-  transition:
-    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
-}
-
-.how-glass-card[data-active="true"] .how-step-title {
-  opacity: 1;
-  transform: translateX(0);
+  line-height: 1.15;
 }
 
 .how-step-reveal {
@@ -668,32 +647,39 @@
 @media (max-width: 1023px) {
   .how-pin-section {
     min-height: 100vh;
-    padding: 48px 0;
+    padding: 32px 0 24px;
   }
   .how-glass-row {
     flex-direction: column;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+  /* Each step shifts the row up by one collapsed-card stride
+     (5.5rem min-height + 1rem gap = 6.5rem) so the active card always
+     lands where card 0 used to sit. */
+  .how-glass-row[data-active-step="0"] { transform: translateY(0); }
+  .how-glass-row[data-active-step="1"] { transform: translateY(-6.5rem); }
+  .how-glass-row[data-active-step="2"] { transform: translateY(-13rem); }
+  .how-glass-row[data-active-step="3"] { transform: translateY(-19.5rem); }
+
+  .how-glass-card {
+    padding: 16px 20px;
   }
   .how-glass-card,
   .how-glass-card[data-active="true"] {
     flex: 1 1 auto;
   }
-  .how-step-header {
-    min-height: auto;
-    align-items: center;
-  }
-  .how-numeral {
-    font-size: clamp(2.25rem, 9vw, 3.5rem);
+  .how-glass-card[data-active="false"] {
+    min-height: 5.5rem;
   }
   .how-step-title {
     font-size: 1.25rem;
-    opacity: 1;
-    transform: translateX(0);
   }
-  .how-step-reveal {
-    max-height: 0;
+  .how-glass-card[data-active="false"] .how-step-reveal {
+    display: none;
   }
   .how-glass-card[data-active="true"] .how-step-reveal {
-    max-height: 360px;
+    max-height: 60vh;
   }
 }
 
@@ -701,12 +687,14 @@
   .how-pin-section {
     min-height: auto;
   }
+  .how-glass-row,
   .how-glass-card,
   .how-step-reveal,
-  .how-numeral,
-  .how-step-title,
   .how-glass-row::before {
     transition: none !important;
+  }
+  .how-glass-row {
+    transform: none !important;
   }
   .how-glass-card .how-step-reveal {
     opacity: 1;
@@ -714,13 +702,7 @@
     max-height: 400px;
     margin-top: 20px;
     pointer-events: auto;
-  }
-  .how-glass-card .how-step-title {
-    opacity: 1;
-    transform: none;
-  }
-  .how-glass-card .how-numeral {
-    color: var(--foreground);
+    display: block;
   }
 }
 

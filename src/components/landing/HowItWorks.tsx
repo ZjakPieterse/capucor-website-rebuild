@@ -54,6 +54,7 @@ export function HowItWorks() {
 
         <div
           ref={rowRef}
+          data-active-step={activeStep}
           className="how-glass-row relative mt-10 flex flex-col gap-4 lg:flex-row"
         >
           {STEPS.map((step, i) => (
