@@ -824,48 +824,6 @@
   );
 }
 
-/* ─── Calendar UI (OutcomeStories) ───────────────────────────────────────── */
-.day-pill {
-  transition:
-    color 250ms ease,
-    background-color 250ms ease,
-    border-color 250ms ease,
-    transform 250ms ease;
-}
-
-.day-pill:hover {
-  border-color: color-mix(in oklch, var(--primary) 45%, transparent);
-  color: var(--foreground);
-}
-
-.day-pill[data-active="true"] {
-  color: var(--primary-foreground);
-}
-
-.calendar-highlight {
-  background: linear-gradient(
-    135deg,
-    var(--primary),
-    color-mix(in oklch, var(--primary) 70%, var(--brand-cyan))
-  );
-  box-shadow: 0 6px 24px -8px
-    color-mix(in oklch, var(--primary) 60%, transparent);
-}
-
-.calendar-panel {
-  background: linear-gradient(
-    135deg,
-    color-mix(in oklch, var(--card) 88%, transparent) 0%,
-    color-mix(in oklch, var(--card) 72%, transparent) 100%
-  );
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid color-mix(in oklch, var(--primary) 18%, var(--border));
-  box-shadow:
-    0 20px 50px -16px color-mix(in oklch, var(--primary) 16%, transparent),
-    inset 0 1px 0 color-mix(in oklch, white 6%, transparent);
-}
-
 /* ─── FAQ accordion item open-state glow (no lift; content jumping is bad UX) */
 [data-slot="accordion-item"] {
   transition:

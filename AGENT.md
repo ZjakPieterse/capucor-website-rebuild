@@ -109,3 +109,11 @@ The following are intentional stubs awaiting Paystack integration:
 - `src/app/onboarding/page.tsx` — real transaction verification
 
 All TODOs are inline-documented in each file.
+
+## Pending Content: Client Testimonials / Social Proof
+
+The homepage section that used to live between Tech Stack (#7) and FAQ (#9) — formerly "A Month with Capucor" / `OutcomeStories.tsx` — has been removed and the slot is reserved for **real client testimonials / social proof**.
+
+- Placement: `src/app/page.tsx` between `TechStackShowcase` and `FaqAccordion` (look for the placeholder HTML comment).
+- Blocker: testimonials still need to be collected from clients. Once 3–5 quotes (name, role, company, quote, ideally a headshot) are in hand, build a new `Testimonials.tsx` landing component and slot it in.
+- Do not ship the old four-week timeline visual back — it was scrapped intentionally. Build fresh around the real quotes.

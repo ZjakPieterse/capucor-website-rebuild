@@ -10,7 +10,6 @@ import { ServicePillars } from '@/components/landing/ServicePillars';
 import { HowItWorks } from '@/components/landing/HowItWorks';
 import { PackagesTeaser } from '@/components/landing/PackagesTeaser';
 import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
-import { OutcomeStories } from '@/components/landing/OutcomeStories';
 import { FaqAccordion } from '@/components/landing/FaqAccordion';
 import { FinalCTA } from '@/components/landing/FinalCTA';
 
@@ -101,8 +100,7 @@ export default async function HomePage() {
       <PackagesTeaser services={services} tiers={tiers} />
       {/* 7. Tech stack */}
       <TechStackShowcase />
-      {/* 8. Client outcomes — proof after pricing */}
-      <OutcomeStories />
+      {/* 8. Testimonials / social proof — placeholder. Section is intentionally hidden until real client quotes are collected. See AGENT.md → Phase 2 Pending Items. */}
       {/* 9. FAQ */}
       <FaqAccordion />
       {/* 10. Final CTA */}
