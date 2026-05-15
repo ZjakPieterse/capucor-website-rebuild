@@ -4,7 +4,7 @@ import { siteConfig } from '@/config/site';
 import type { Service, Tier } from '@/types';
 
 import { HeroSection } from '@/components/landing/HeroSection';
-import { SocialProofStrip } from '@/components/landing/SocialProofStrip';
+import { PartnersAndTech } from '@/components/landing/PartnersAndTech';
 import { ProblemCards } from '@/components/landing/ProblemCards';
 import { ServicePillars } from '@/components/landing/ServicePillars';
 import { HowItWorks } from '@/components/landing/HowItWorks';
@@ -88,8 +88,8 @@ export default async function HomePage() {
 
       {/* 1. Hero */}
       <HeroSection />
-      {/* 2. Floating trust banner (stats + partners + credentials, overlaps the hero/reality transition) */}
-      <SocialProofStrip />
+      {/* 2. Partners & tech logo strip (placeholder badges until real logos land) */}
+      <PartnersAndTech />
       {/* 3. Problem */}
       <ProblemCards />
       {/* 4. How the monthly finance system works (now carries the outcome line per step) */}

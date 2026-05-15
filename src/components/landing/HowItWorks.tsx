@@ -48,7 +48,7 @@ export function HowItWorks() {
     >
       <div className="mx-auto w-full max-w-6xl px-6">
         <SectionHeading
-          eyebrow="How it works"
+          eyebrow="HOW WE WORK"
           title="A monthly rhythm that keeps you in control"
           subtitle="Great finance work needs a clear monthly rhythm. We process, review, report and advise so the month closes properly."
         />
