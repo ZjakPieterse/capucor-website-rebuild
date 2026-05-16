@@ -575,8 +575,9 @@
   border-radius: 1px;
   pointer-events: none;
   z-index: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  /* Mobile: left-aligned spine that the badge numbers sit on.
+     Desktop override below recenters this between the two card columns. */
+  left: 23px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
@@ -605,14 +606,21 @@
 
 .how-step-row {
   display: grid;
-  grid-template-columns: 1fr;
+  /* Mobile: 48px badge column + card column.
+     Desktop override below switches to 1fr 64px 1fr alternation. */
+  grid-template-columns: 48px 1fr;
+  column-gap: 20px;
   align-items: start;
 }
 
 .how-badge {
-  display: none;
+  /* Visible on mobile (the spine + badge pattern is the section's identity).
+     Desktop override moves it to grid-column 2. */
+  display: flex;
   position: relative;
   z-index: 2;
+  grid-column: 1;
+  grid-row: 1;
   width: 48px;
   height: 48px;
   border-radius: 999px;
@@ -627,13 +635,12 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--primary);
-  justify-self: center;
   margin-top: 12px;
 }
 
 .how-card {
   position: relative;
-  padding: 24px 28px;
+  padding: 20px 20px;
   border-radius: 16px;
   background: color-mix(in oklch, var(--background) 88%, transparent);
   border: 1px solid color-mix(in oklch, var(--primary) 12%, transparent);
@@ -689,21 +696,9 @@
 }
 
 .how-card-number {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  background: color-mix(in oklch, var(--primary) 8%, var(--background));
-  border: 1px solid color-mix(in oklch, var(--primary) 32%, transparent);
-  box-shadow: 0 0 16px color-mix(in oklch, var(--primary) 14%, transparent);
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  color: var(--primary);
+  /* Hidden in both layouts: the spine badge carries the number on mobile,
+     and the center spine badge carries it on desktop. */
+  display: none;
 }
 
 .how-card-title {
@@ -751,17 +746,18 @@
   .how-timeline {
     gap: 56px;
   }
+  .how-spine {
+    left: 50%;
+    transform: translateX(-50%);
+  }
   .how-step-row {
     grid-template-columns: 1fr 64px 1fr;
     column-gap: 24px;
   }
   .how-badge {
-    display: flex;
     grid-column: 2;
-    grid-row: 1;
-  }
-  .how-card-number {
-    display: none;
+    justify-self: center;
+    margin-top: 0;
   }
   .how-step-row[data-side="left"] .how-card {
     grid-column: 1;
@@ -773,6 +769,9 @@
   }
   .how-card-title {
     font-size: 1.75rem;
+  }
+  .how-card {
+    padding: 24px 28px;
   }
 }
 
