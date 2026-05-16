@@ -2,7 +2,6 @@
 
 import type { CSSProperties } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { useCursorGlow } from "@/hooks/useCursorGlow";
 import { useSectionScrollProgress } from "@/hooks/useSectionScrollProgress";
 
 const STEPS = [
@@ -37,17 +36,13 @@ const STEPS = [
 ];
 
 export function HowItWorks() {
-  const cursorGlowRef = useCursorGlow<HTMLElement>();
   const { ref: sectionRef, progress } = useSectionScrollProgress<HTMLElement>();
 
   return (
     <section
       id="how-it-works"
-      ref={(el) => {
-        sectionRef.current = el;
-        cursorGlowRef.current = el;
-      }}
-      className="how-timeline-section cursor-glow premium-section"
+      ref={sectionRef}
+      className="how-timeline-section premium-section"
     >
       <div className="mx-auto w-full max-w-6xl px-6">
         <SectionHeading

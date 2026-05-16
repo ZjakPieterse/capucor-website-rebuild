@@ -4,15 +4,12 @@ import Link from "next/link";
 import { ArrowRight, Calendar } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { useCursorGlow } from "@/hooks/useCursorGlow";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export function FinalCTA() {
-  const sectionRef = useCursorGlow<HTMLElement>();
   return (
     <section
-      ref={sectionRef}
-      className="cursor-glow premium-section relative py-28 lg:py-36"
+      className="premium-section relative py-16 lg:py-24"
     >
       <div className="max-w-3xl mx-auto px-6 text-center">
         <ScrollReveal>

@@ -12,6 +12,7 @@ import { PackagesTeaser } from '@/components/landing/PackagesTeaser';
 import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
 import { FaqAccordion } from '@/components/landing/FaqAccordion';
 import { FinalCTA } from '@/components/landing/FinalCTA';
+import { HomepageCursorGlow } from '@/components/landing/HomepageCursorGlow';
 
 export function generateMetadata(): Metadata {
   return {
@@ -86,25 +87,27 @@ export default async function HomePage() {
         }}
       />
 
-      {/* 1. Hero */}
-      <HeroSection />
-      {/* 2. Partners & tech logo strip (placeholder badges until real logos land) */}
-      <PartnersAndTech />
-      {/* 3. Problem */}
-      <ProblemCards />
-      {/* 4. How the monthly finance system works (now carries the outcome line per step) */}
-      <HowItWorks />
-      {/* 5. Services */}
-      <ServicePillars />
-      {/* 6. Packages */}
-      <PackagesTeaser services={services} tiers={tiers} />
-      {/* 7. Tech stack */}
-      <TechStackShowcase />
-      {/* 8. Testimonials / social proof — placeholder. Section is intentionally hidden until real client quotes are collected. See AGENT.md → Phase 2 Pending Items. */}
-      {/* 9. FAQ */}
-      <FaqAccordion />
-      {/* 10. Final CTA */}
-      <FinalCTA />
+      <HomepageCursorGlow>
+        {/* 1. Hero */}
+        <HeroSection />
+        {/* 2. Partners & tech logo strip (placeholder badges until real logos land) */}
+        <PartnersAndTech />
+        {/* 3. Problem */}
+        <ProblemCards />
+        {/* 4. How the monthly finance system works (now carries the outcome line per step) */}
+        <HowItWorks />
+        {/* 5. Services */}
+        <ServicePillars />
+        {/* 6. Packages */}
+        <PackagesTeaser services={services} tiers={tiers} />
+        {/* 7. Tech stack */}
+        <TechStackShowcase />
+        {/* 8. Testimonials / social proof — placeholder. Section is intentionally hidden until real client quotes are collected. See AGENT.md → Phase 2 Pending Items. */}
+        {/* 9. FAQ */}
+        <FaqAccordion />
+        {/* 10. Final CTA */}
+        <FinalCTA />
+      </HomepageCursorGlow>
     </>
   );
 }

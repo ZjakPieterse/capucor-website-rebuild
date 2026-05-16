@@ -1,6 +1,5 @@
 "use client";
 
-import { useCursorGlow } from "@/hooks/useCursorGlow";
 import { use3DTilt } from "@/hooks/use3DTilt";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -296,12 +295,9 @@ function FinanceCommandCentre() {
 export function HeroSection() {
   const headline = "Make your finance functions work harder for you";
 
-  const sectionRef = useCursorGlow<HTMLElement>();
-
   return (
     <section
-      ref={sectionRef}
-      className="cursor-glow premium-section relative overflow-hidden py-28 pb-36 lg:py-36 lg:pb-48"
+      className="premium-section relative overflow-hidden py-28 pb-36 lg:py-36 lg:pb-48"
     >
       <div
         aria-hidden
