@@ -82,13 +82,13 @@ export function Footer() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               {siteConfig.tagline}
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-1">
               <a
                 href={siteConfig.links.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-white/[0.04] hover:text-foreground active:bg-white/[0.07]"
               >
                 <IconFacebook className="h-5 w-5" />
               </a>
@@ -97,7 +97,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-white/[0.04] hover:text-foreground active:bg-white/[0.07]"
               >
                 <IconInstagram className="h-5 w-5" />
               </a>
@@ -106,7 +106,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-white/[0.04] hover:text-foreground active:bg-white/[0.07]"
               >
                 <IconLinkedIn className="h-5 w-5" />
               </a>

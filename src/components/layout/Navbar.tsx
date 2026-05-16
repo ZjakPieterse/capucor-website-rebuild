@@ -66,7 +66,12 @@ export function Navbar() {
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               render={
-                <Button variant="ghost" size="icon" aria-label="Open menu" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Open menu"
+                  className="!size-11 [&_svg:not([class*='size-'])]:size-5"
+                />
               }
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -75,22 +80,22 @@ export function Navbar() {
               <SheetHeader>
                 <SheetTitle className="text-left">Menu</SheetTitle>
               </SheetHeader>
-              <nav className="mt-8 flex flex-col gap-4">
+              <nav className="mt-8 flex flex-col gap-1">
                 {siteConfig.nav.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-base font-medium hover:text-primary transition-colors"
+                    className="flex min-h-11 items-center text-base font-medium text-foreground/90 hover:text-primary transition-colors"
                     onClick={() => setOpen(false)}
                   >
                     {item.label}
                   </Link>
                 ))}
-                <div className="pt-4 border-t border-white/10">
+                <div className="mt-4 pt-4 border-t border-white/10">
                   <Button
                     nativeButton={false}
                     render={<Link href="/client-portal" />}
-                    className="w-full"
+                    className="w-full h-11"
                   >
                     Client Portal
                   </Button>
