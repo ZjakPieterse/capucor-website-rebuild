@@ -37,14 +37,17 @@ const STEPS = [
 ];
 
 export function HowItWorks() {
-  const rowRef = useCursorGlow<HTMLDivElement>();
+  const cursorGlowRef = useCursorGlow<HTMLElement>();
   const { ref: sectionRef, progress } = useSectionScrollProgress<HTMLElement>();
 
   return (
     <section
       id="how-it-works"
-      ref={sectionRef}
-      className="how-timeline-section premium-section bg-background"
+      ref={(el) => {
+        sectionRef.current = el;
+        cursorGlowRef.current = el;
+      }}
+      className="how-timeline-section cursor-glow premium-section"
     >
       <div className="mx-auto w-full max-w-6xl px-6">
         <SectionHeading
@@ -54,7 +57,6 @@ export function HowItWorks() {
         />
 
         <div
-          ref={rowRef}
           className="how-timeline mt-12"
           style={{ "--scroll-progress": progress } as CSSProperties}
         >

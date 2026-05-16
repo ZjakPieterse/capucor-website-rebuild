@@ -136,7 +136,7 @@
       color-mix(in oklch, var(--brand-cyan) 6%, transparent),
       transparent 62%
     );
-  opacity: 0.9;
+  opacity: 0.55;
 }
 
 .premium-section-muted {
@@ -509,22 +509,6 @@
   flex-direction: column;
   gap: 40px;
   isolation: isolate;
-}
-
-.how-timeline::before {
-  content: "";
-  position: absolute;
-  inset: -40px;
-  z-index: -1;
-  pointer-events: none;
-  opacity: var(--cursor-glow-opacity, 0);
-  background: radial-gradient(
-    520px circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
-    color-mix(in oklch, var(--primary) 22%, transparent),
-    transparent 65%
-  );
-  filter: blur(28px);
-  transition: opacity 320ms ease;
 }
 
 .how-spine {

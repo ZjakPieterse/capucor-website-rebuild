@@ -65,7 +65,7 @@ export function ProblemCards() {
   const [isResolved, setIsResolved] = useState(false);
 
   return (
-    <section className="premium-section premium-section-muted py-28 lg:py-36">
+    <section className="premium-section py-28 lg:py-36">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading

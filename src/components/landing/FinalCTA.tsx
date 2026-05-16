@@ -12,7 +12,7 @@ export function FinalCTA() {
   return (
     <section
       ref={sectionRef}
-      className="cursor-glow premium-section premium-section-muted relative py-28 lg:py-36 border-t border-white/10"
+      className="cursor-glow premium-section relative py-28 lg:py-36"
     >
       <div className="max-w-3xl mx-auto px-6 text-center">
         <ScrollReveal>
