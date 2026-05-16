@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
   BookOpen,
   AlertCircle,
@@ -11,10 +10,10 @@ import {
   CalendarCheck,
   Link2,
   Zap,
-  ArrowRight,
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -79,7 +78,8 @@ export function ProblemCards() {
     : { duration: 0.4, ease: "backOut" as const };
 
   return (
-    <section className="premium-section py-16 lg:py-24">
+    <section className="premium-section py-14 lg:py-20">
+      <SectionDivider />
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
@@ -193,17 +193,6 @@ export function ProblemCards() {
           ))}
         </div>
 
-        <ScrollReveal delay={0.3}>
-          <div className="mt-12 flex justify-center">
-            <Link
-              href="#how-it-works"
-              className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-            >
-              See how the monthly system works
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </ScrollReveal>
       </div>
     </section>
   );

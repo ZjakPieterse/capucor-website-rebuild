@@ -3,6 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 
 const TOOLS = [
   {
@@ -60,7 +61,8 @@ const WORKFLOW_STEPS = [
 
 export function TechStackShowcase() {
   return (
-    <section id="tech-stack" className="premium-section py-16 lg:py-24">
+    <section id="tech-stack" className="premium-section py-14 lg:py-20">
+      <SectionDivider />
       <div className="max-w-7xl mx-auto px-5 sm:px-6">
         <ScrollReveal>
           <SectionHeading

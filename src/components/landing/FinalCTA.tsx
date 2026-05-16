@@ -4,15 +4,13 @@ import Link from "next/link";
 import { ArrowRight, Calendar } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export function FinalCTA() {
   return (
     <section className="premium-section relative overflow-hidden py-20 sm:py-24 lg:py-28">
-      <div
-        aria-hidden
-        className="premium-divider pointer-events-none absolute inset-x-0 top-0 h-px"
-      />
+      <SectionDivider />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"

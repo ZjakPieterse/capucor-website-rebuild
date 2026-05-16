@@ -4,6 +4,7 @@ import { ArrowRight, BookMarked, Users } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { AccountingDashboard } from '@/components/services/ServiceMiniDashboards';
 import { PageCursorGlow } from '@/components/landing/PageCursorGlow';
+import { SectionDivider } from '@/components/ui/SectionDivider';
 
 export const metadata: Metadata = {
   title: 'Accounting',
@@ -80,7 +81,8 @@ export default function AccountingPage() {
       </section>
 
       {/* What's included */}
-      <section className="premium-section py-16 lg:py-24">
+      <section className="premium-section py-14 lg:py-20">
+        <SectionDivider />
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-2xl font-semibold mb-8 text-center">What&apos;s included</h2>
           <div className="grid sm:grid-cols-2 gap-6">
@@ -98,7 +100,8 @@ export default function AccountingPage() {
       </section>
 
       {/* What this means for you */}
-      <section className="premium-section py-16 lg:py-24">
+      <section className="premium-section py-14 lg:py-20">
+        <SectionDivider />
         <div className="max-w-2xl mx-auto px-6">
           <h2 className="text-2xl font-semibold mb-4">What this means for you</h2>
           <p className="text-muted-foreground leading-relaxed">
@@ -111,7 +114,8 @@ export default function AccountingPage() {
       </section>
 
       {/* CTA */}
-      <section className="premium-section py-16 lg:py-24">
+      <section className="premium-section py-14 lg:py-20">
+        <SectionDivider />
         <div className="max-w-xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-semibold mb-3">See what it costs</h2>
           <p className="text-muted-foreground mb-8">
@@ -127,7 +131,8 @@ export default function AccountingPage() {
       </section>
 
       {/* Other services */}
-      <section className="premium-section py-16 lg:py-24">
+      <section className="premium-section py-14 lg:py-20">
+        <SectionDivider />
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-lg font-semibold mb-6 text-muted-foreground">Other services</h2>
           <div className="grid sm:grid-cols-2 gap-4">

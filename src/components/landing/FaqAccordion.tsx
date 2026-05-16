@@ -7,11 +7,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 import { faqs } from "@/config/faq";
 
 export function FaqAccordion() {
   return (
-    <section id="faq" className="premium-section py-16 lg:py-24">
+    <section id="faq" className="premium-section py-14 lg:py-20">
+      <SectionDivider />
       <div className="max-w-3xl mx-auto px-6">
         <ScrollReveal>
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl text-center">

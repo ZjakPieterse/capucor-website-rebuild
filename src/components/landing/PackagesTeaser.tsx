@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CalendarCheck, Check, Layers, Users } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 import { cn } from "@/lib/utils";
 import {
   TIER_HIGHLIGHTS,
@@ -33,7 +34,8 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
   );
 
   return (
-    <section className="premium-section py-16 lg:py-24">
+    <section className="premium-section py-14 lg:py-20">
+      <SectionDivider />
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading

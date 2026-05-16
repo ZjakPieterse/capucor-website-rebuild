@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 import { useSectionScrollProgress } from "@/hooks/useSectionScrollProgress";
 
 const STEPS = [
@@ -44,6 +45,7 @@ export function HowItWorks() {
       ref={sectionRef}
       className="how-timeline-section premium-section"
     >
+      <SectionDivider />
       <div className="mx-auto w-full max-w-6xl px-6">
         <SectionHeading
           eyebrow="HOW WE WORK"

@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 
 /**
- * Scroll progress (0..1) through a section: 0 when its top edge first touches
- * the viewport bottom, 1 when its bottom edge leaves the viewport top.
- * Honours prefers-reduced-motion by returning 1 with no listener attached.
+ * Scroll progress (0..1) anchored to viewport centre: 0 when the section's top
+ * edge reaches the viewport centre, 1 when its bottom edge does. This keeps the
+ * "tip" of a section-spanning progress element near vertical screen centre as
+ * the user scrolls. Honours prefers-reduced-motion by returning 1 with no listener.
  */
 export function useSectionScrollProgress<T extends HTMLElement>() {
   const ref = useRef<T>(null);
@@ -26,10 +27,10 @@ export function useSectionScrollProgress<T extends HTMLElement>() {
       const el = ref.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
+      if (rect.height <= 0) return;
       const vh = window.innerHeight;
-      const denom = rect.height + vh;
-      const traveled = vh - rect.top;
-      const p = Math.min(1, Math.max(0, traveled / denom));
+      const traveled = vh / 2 - rect.top;
+      const p = Math.min(1, Math.max(0, traveled / rect.height));
       setProgress((prev) => (Math.abs(prev - p) < 0.002 ? prev : p));
     };
     const onScroll = () => {

@@ -3,6 +3,7 @@
 import { BarChart2, BookMarked, Users } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 
 const SERVICES = [
   {
@@ -60,8 +61,9 @@ export function ServicePillars() {
   return (
     <section
       id="services"
-      className="premium-section py-16 lg:py-24"
+      className="premium-section py-14 lg:py-20"
     >
+      <SectionDivider />
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <SectionHeading
