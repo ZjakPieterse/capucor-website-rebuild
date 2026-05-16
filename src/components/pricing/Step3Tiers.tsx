@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, CornerDownRight, Plus, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { TestimonialSpotlight } from './TestimonialSpotlight';
@@ -11,7 +11,6 @@ import { bracketPrice } from '@/lib/pricing';
 import { useCursorGlow } from '@/hooks/useCursorGlow';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 import { TIER_HIGHLIGHTS, TIER_CUMULATIVE_LABELS } from '@/config/tiers';
-import type { TierHighlightItem } from '@/config/tiers';
 import type { Bracket, Service, Tier, BracketValue, Testimonial } from '@/types';
 
 interface Step3TiersProps {
@@ -54,11 +53,11 @@ export function Step3Tiers({
 
       <RiskReducerStrip />
 
-      <div ref={containerRef} className="cursor-glow grid sm:grid-cols-3 gap-4 sm:pt-3">
+      <div ref={containerRef} className="cursor-glow grid sm:grid-cols-3 gap-4 sm:pt-5">
         {sortedTiers.map((tier) => {
           const isSelected = selectedTier === tier.slug;
+          const isRecommended = tier.slug === 'pro';
 
-          // Compute per-service prices for this tier (enterprise paths removed)
           const regularTotal = activeServices.reduce((sum, svc) => {
             const sel = selectedBrackets[svc.slug];
             if (typeof sel !== 'number') return sum;
@@ -70,9 +69,6 @@ export function Step3Tiers({
             item.services.some((s) => selectedServices.has(s))
           );
           const cumulativeLabel = TIER_CUMULATIVE_LABELS[tier.slug];
-          const tierInclusions: TierHighlightItem[] = cumulativeLabel
-            ? [{ text: cumulativeLabel, services: [], tooltip: '' }, ...filteredItems]
-            : filteredItems;
 
           return (
             <button
@@ -80,14 +76,33 @@ export function Step3Tiers({
               type="button"
               onClick={() => onTierSelect(tier.slug)}
               aria-pressed={isSelected}
+              aria-label={`${isSelected ? 'Selected ' : ''}${tier.name} tier`}
               className={cn(
-                'feature-card rounded-xl border-2 p-6 text-left outline-none w-full relative',
+                'service-card relative rounded-xl border-2 p-6 pr-12 text-left outline-none w-full',
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isSelected
-                  ? 'border-primary bg-primary/10 backdrop-blur-md shadow-lg shadow-primary/10'
-                  : 'border-border bg-card/40 backdrop-blur-md'
+                  ? 'is-selected border-primary bg-primary/10 backdrop-blur-md shadow-lg shadow-primary/10'
+                  : 'border-border bg-card/40 backdrop-blur-md',
+                isRecommended && !isSelected && 'border-primary/40'
               )}
             >
+              {isRecommended && (
+                <span className="tier-ribbon" aria-hidden>
+                  <Sparkles className="h-2.5 w-2.5" /> Most chosen
+                </span>
+              )}
+
+              <span
+                aria-hidden
+                className={cn('service-card-toggle', isSelected && 'is-selected')}
+              >
+                {isSelected ? (
+                  <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                ) : (
+                  <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
+                )}
+              </span>
+
               <div className="mb-4">
                 <div className="font-semibold text-base">{tier.name}</div>
                 {tier.tagline && (
@@ -95,16 +110,21 @@ export function Step3Tiers({
                 )}
               </div>
 
-              {/* Price display */}
               <div className="mb-4">
                 <AnimatedPrice amount={regularTotal} size="lg" />
                 <div className="text-xs text-muted-foreground mt-0.5">/month</div>
               </div>
 
-              {/* Inclusions */}
-              {tierInclusions.length > 0 && (
-                <ul className="space-y-1.5 mb-4">
-                  {tierInclusions.map((item) => (
+              {cumulativeLabel && (
+                <div className="mb-2 inline-flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                  <CornerDownRight className="h-3 w-3 text-primary" />
+                  {cumulativeLabel}
+                </div>
+              )}
+
+              {filteredItems.length > 0 && (
+                <ul className="space-y-1.5">
+                  {filteredItems.map((item) => (
                     <li key={item.text} className="flex items-start gap-2 text-xs">
                       <Check className="h-3.5 w-3.5 shrink-0 mt-0.5 text-primary" />
                       <span className="text-muted-foreground">{item.text}</span>
@@ -112,16 +132,27 @@ export function Step3Tiers({
                   ))}
                 </ul>
               )}
-
-              {isSelected && (
-                <div className="text-xs font-semibold text-primary flex items-center gap-1">
-                  <Check className="h-3.5 w-3.5" /> Selected
-                </div>
-              )}
             </button>
           );
         })}
       </div>
+
+      {selectedTier && (
+        <div className="rounded-xl border border-primary/30 bg-primary/[0.08] backdrop-blur-md p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg shadow-primary/10">
+          <div>
+            <p className="font-semibold text-sm">Your subscription is ready.</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              A few details, then a secure Paystack checkout. Cancel any time with 30 days notice.
+            </p>
+          </div>
+          <MagneticButton>
+            <Button onClick={onActivate} className="shrink-0 gap-2 cta-armed">
+              Activate
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </MagneticButton>
+        </div>
+      )}
 
       <TierComparison
         tiers={tiers}
@@ -129,23 +160,6 @@ export function Step3Tiers({
         selectedServices={selectedServices}
         selectedBrackets={selectedBrackets}
       />
-
-      {selectedTier && (
-        <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <p className="font-semibold text-sm">Your subscription is ready.</p>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              A few details, then a secure Paystack checkout. You can cancel any time with 30 days notice.
-            </p>
-          </div>
-          <MagneticButton>
-            <Button onClick={onActivate} className="shrink-0 gap-2">
-              Activate
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </MagneticButton>
-        </div>
-      )}
 
       {testimonial && (
         <div className="pt-4">

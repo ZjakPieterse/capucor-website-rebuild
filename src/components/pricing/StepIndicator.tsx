@@ -70,11 +70,12 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
 
               {i < STEPS.length - 1 && (
                 <div className="flex-1 h-[2px] mt-4 mx-2 sm:mx-3 bg-border relative overflow-hidden rounded-full">
-                  <motion.div
-                    className="absolute inset-0 bg-primary origin-left"
-                    initial={false}
-                    animate={{ scaleX: isDone ? 1 : 0 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  <div
+                    className="absolute inset-0 bg-primary origin-left will-change-transform"
+                    style={{
+                      transform: isDone ? 'scaleX(1)' : 'scaleX(0)',
+                      transition: 'transform 600ms cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
                   />
                   {isActive && (
                     <motion.div

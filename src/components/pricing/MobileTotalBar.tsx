@@ -56,8 +56,12 @@ export function MobileTotalBar({
     >
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-            {tier ? `${tier.name} plan · excl. VAT` : 'Running total · excl. VAT'}
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium flex items-center gap-1.5">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-primary/15 text-primary font-semibold">
+              {activeSlugs.length} service{activeSlugs.length === 1 ? '' : 's'}
+            </span>
+            <span>·</span>
+            <span>{tier ? `${tier.name} plan` : 'excl. VAT'}</span>
           </p>
           {total > 0 ? (
             <motion.div
