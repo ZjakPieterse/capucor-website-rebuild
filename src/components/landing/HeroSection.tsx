@@ -1,7 +1,7 @@
 "use client";
 
 import { use3DTilt } from "@/hooks/use3DTilt";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -294,6 +294,7 @@ function FinanceCommandCentre() {
 // ── Hero Section ──────────────────────────────────────────────────────────────────
 export function HeroSection() {
   const headline = "Make your finance functions work harder for you";
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <section
@@ -305,7 +306,11 @@ export function HeroSection() {
       >
         <motion.div
           className="absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-primary/8 blur-3xl"
-          animate={{ scale: [1, 1.08, 1], opacity: [0.9, 1, 0.9] }}
+          animate={
+            prefersReducedMotion
+              ? undefined
+              : { scale: [1, 1.08, 1], opacity: [0.9, 1, 0.9] }
+          }
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
@@ -314,7 +319,11 @@ export function HeroSection() {
             background:
               "color-mix(in oklch, var(--brand-cyan) 18%, transparent)",
           }}
-          animate={{ scale: [1, 1.12, 1], opacity: [0.6, 0.85, 0.6] }}
+          animate={
+            prefersReducedMotion
+              ? undefined
+              : { scale: [1, 1.12, 1], opacity: [0.6, 0.85, 0.6] }
+          }
           transition={{
             duration: 11,
             repeat: Infinity,
@@ -330,7 +339,7 @@ export function HeroSection() {
           <div className="hero-copy-container">
             <motion.p
               className="text-sm font-medium uppercase tracking-widest mb-4 text-primary"
-              initial={{ opacity: 0, y: 10 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
             >
@@ -342,11 +351,11 @@ export function HeroSection() {
                 <motion.span
                   key={i}
                   className={i >= arr.length - 3 ? "gradient-text-brand" : undefined}
-                  initial={{ opacity: 0, y: 14 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
                     duration: 0.5,
-                    delay: 0.1 + i * 0.08,
+                    delay: prefersReducedMotion ? 0 : 0.1 + i * 0.08,
                     ease: "easeOut",
                   }}
                 >
@@ -357,9 +366,12 @@ export function HeroSection() {
 
             <motion.p
               className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg"
-              initial={{ opacity: 0, y: 14 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
+              transition={{
+                duration: 0.4,
+                delay: prefersReducedMotion ? 0 : 0.5,
+              }}
             >
               Monthly accounting, payroll, tax, and reporting handled by real
               accountants. Clean numbers, clear deadlines, and practical advice
@@ -368,9 +380,12 @@ export function HeroSection() {
 
             <motion.div
               className="flex flex-col sm:flex-row gap-3"
-              initial={{ opacity: 0, y: 14 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.7 }}
+              transition={{
+                duration: 0.4,
+                delay: prefersReducedMotion ? 0 : 0.7,
+              }}
             >
               <MagneticButton>
                 <Button

@@ -79,6 +79,7 @@ export function Footer() {
                 alt="Capucor Business Solutions"
                 height={28}
                 width={140}
+                sizes="140px"
                 className="h-7 w-auto"
                 style={{ width: "auto" }}
               />

@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 const PROBLEMS = [
@@ -63,6 +63,20 @@ const PROBLEMS = [
 
 export function ProblemCards() {
   const [isResolved, setIsResolved] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  const flipInitial = prefersReducedMotion
+    ? { opacity: 0 }
+    : { opacity: 0, rotateX: 90 };
+  const flipAnimate = prefersReducedMotion
+    ? { opacity: 1 }
+    : { opacity: 1, rotateX: 0 };
+  const flipExit = prefersReducedMotion
+    ? { opacity: 0 }
+    : { opacity: 0, rotateX: -90 };
+  const flipTransition = prefersReducedMotion
+    ? { duration: 0.15 }
+    : { duration: 0.4, ease: "backOut" as const };
 
   return (
     <section className="premium-section py-16 lg:py-24">
@@ -126,10 +140,10 @@ export function ProblemCards() {
                     {!isResolved ? (
                       <motion.div
                         key="problem"
-                        initial={{ opacity: 0, rotateX: 90 }}
-                        animate={{ opacity: 1, rotateX: 0 }}
-                        exit={{ opacity: 0, rotateX: -90 }}
-                        transition={{ duration: 0.4, ease: "backOut" }}
+                        initial={flipInitial}
+                        animate={flipAnimate}
+                        exit={flipExit}
+                        transition={flipTransition}
                         className="flex-1 origin-center"
                       >
                         <div className="mb-4 flex items-center gap-3">
@@ -150,10 +164,10 @@ export function ProblemCards() {
                     ) : (
                       <motion.div
                         key="solution"
-                        initial={{ opacity: 0, rotateX: 90 }}
-                        animate={{ opacity: 1, rotateX: 0 }}
-                        exit={{ opacity: 0, rotateX: -90 }}
-                        transition={{ duration: 0.4, ease: "backOut" }}
+                        initial={flipInitial}
+                        animate={flipAnimate}
+                        exit={flipExit}
+                        transition={flipTransition}
                         className="flex-1 origin-center"
                       >
                         <div className="mb-4 flex items-center gap-3">
