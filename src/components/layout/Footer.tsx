@@ -61,11 +61,15 @@ const company = [
 
 export function Footer() {
   return (
-    <footer className="premium-section border-t border-white/10 bg-card/70 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer className="premium-section relative border-t border-white/10 bg-card/70 backdrop-blur-xl">
+      <div
+        aria-hidden
+        className="premium-divider pointer-events-none absolute inset-x-0 top-0 h-px"
+      />
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 py-14 sm:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
           {/* Brand */}
-          <div className="md:col-span-1 space-y-4">
+          <div className="col-span-2 md:col-span-1 space-y-4">
             <Link
               href="/"
               className="hover:opacity-80 transition-opacity block"
@@ -148,17 +152,15 @@ export function Footer() {
           </div>
 
           {/* Credentials */}
-          <div className="space-y-3">
+          <div className="col-span-2 md:col-span-1 space-y-3">
             <p className="text-sm font-medium">Credentials</p>
             <div className="flex flex-wrap gap-2">
-              {["Xero Gold Partner", "SAICA Member"].map((badge) => (
-                <span
-                  key={badge}
-                  className="inline-block rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs font-medium text-muted-foreground"
-                >
-                  {badge}
-                </span>
-              ))}
+              <span className="inline-block rounded-lg border border-primary/25 bg-primary/[0.06] px-2.5 py-1 text-xs font-medium text-primary/90">
+                Xero Gold Partner
+              </span>
+              <span className="inline-block rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                SAICA Member
+              </span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed pt-2">
               POPIA compliant. Your data is always yours.

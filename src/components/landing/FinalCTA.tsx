@@ -8,27 +8,44 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export function FinalCTA() {
   return (
-    <section
-      className="premium-section relative py-16 lg:py-24"
-    >
-      <div className="max-w-3xl mx-auto px-6 text-center">
+    <section className="premium-section relative overflow-hidden py-20 sm:py-24 lg:py-28">
+      <div
+        aria-hidden
+        className="premium-divider pointer-events-none absolute inset-x-0 top-0 h-px"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      >
+        <div
+          className="absolute left-1/2 top-1/2 h-[440px] w-[640px] max-w-[140%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(closest-side, color-mix(in oklch, var(--primary) 18%, transparent), transparent 70%)",
+          }}
+        />
+      </div>
+
+      <div className="max-w-3xl mx-auto px-5 sm:px-6 text-center">
         <ScrollReveal>
-          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight mb-4 leading-[1.1]">
             Ready to make finance work better?
           </h2>
-          <p className="text-lg text-muted-foreground mb-10">
+          <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
             Build your subscription in a few minutes, or book a short fit call
             and we&apos;ll help you choose the right level of monthly support.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4">
             <MagneticButton>
               <Link
                 href="/pricing"
-                className="premium-button inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.03]"
+                className="premium-button gradient-cta gradient-border-cta inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl px-6 text-sm font-semibold text-primary-foreground transition-all"
               >
-                Build your subscription
-                <ArrowRight className="h-4 w-4" />
+                <span className="relative z-[2] inline-flex items-center gap-2">
+                  Build your subscription
+                  <ArrowRight className="h-4 w-4" />
+                </span>
               </Link>
             </MagneticButton>
 
@@ -37,7 +54,7 @@ export function FinalCTA() {
                 href={siteConfig.links.booking}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="premium-button inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-input bg-input/30 px-6 py-3 text-sm font-semibold hover:bg-input/50 transition-all hover:scale-[1.03]"
+                className="premium-button inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-input bg-input/30 backdrop-blur-md px-6 text-sm font-semibold hover:bg-input/50 transition-all"
               >
                 <Calendar className="h-4 w-4" />
                 Book a 15-minute fit call
