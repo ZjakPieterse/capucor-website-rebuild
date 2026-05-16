@@ -12,7 +12,7 @@ import { PackagesTeaser } from '@/components/landing/PackagesTeaser';
 import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
 import { FaqAccordion } from '@/components/landing/FaqAccordion';
 import { FinalCTA } from '@/components/landing/FinalCTA';
-import { HomepageCursorGlow } from '@/components/landing/HomepageCursorGlow';
+import { PageCursorGlow } from '@/components/landing/PageCursorGlow';
 
 export function generateMetadata(): Metadata {
   return {
@@ -87,7 +87,7 @@ export default async function HomePage() {
         }}
       />
 
-      <HomepageCursorGlow>
+      <PageCursorGlow>
         {/* 1. Hero */}
         <HeroSection />
         {/* 2. Partners & tech logo strip (placeholder badges until real logos land) */}
@@ -107,7 +107,7 @@ export default async function HomePage() {
         <FaqAccordion />
         {/* 10. Final CTA */}
         <FinalCTA />
-      </HomepageCursorGlow>
+      </PageCursorGlow>
     </>
   );
 }

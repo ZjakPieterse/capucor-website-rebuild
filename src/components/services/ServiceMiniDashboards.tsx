@@ -11,6 +11,7 @@ import {
   Wallet,
   TrendingUp,
 } from 'lucide-react';
+import { use3DTilt } from '@/hooks/use3DTilt';
 
 const tileVariants = {
   hidden: { opacity: 0, y: 8 },
@@ -49,10 +50,26 @@ function Header({ eyebrow, status }: { eyebrow: string; status: string }) {
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
+  const { ref, rotateX, rotateY, lift, scale, onMouseMove, onMouseLeave } =
+    use3DTilt<HTMLDivElement>();
+
   return (
-    <div className="fcc-grid relative rounded-2xl border border-border bg-card shadow-2xl p-5 overflow-hidden">
+    <motion.div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        y: lift,
+        scale,
+        transformPerspective: 1200,
+        transformStyle: 'preserve-3d',
+      }}
+      className="fcc-grid fcc-container tilt-card premium-card relative rounded-2xl border-[0.5px] border-white/10 bg-card/80 shadow-2xl p-5 overflow-hidden transition-[border-color,box-shadow,background-color] duration-500"
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }
 

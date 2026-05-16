@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight, BookMarked, Users } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { AccountingDashboard } from '@/components/services/ServiceMiniDashboards';
+import { PageCursorGlow } from '@/components/landing/PageCursorGlow';
 
 export const metadata: Metadata = {
   title: 'Accounting',
@@ -50,9 +51,9 @@ const OTHER_SERVICES = [
 
 export default function AccountingPage() {
   return (
-    <>
+    <PageCursorGlow>
       {/* Hero */}
-      <section className="py-24 lg:py-28">
+      <section className="premium-section relative py-24 lg:py-28">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
@@ -79,14 +80,14 @@ export default function AccountingPage() {
       </section>
 
       {/* What's included */}
-      <section className="py-16 bg-muted/30">
+      <section className="premium-section py-16 lg:py-24">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-2xl font-semibold mb-8 text-center">What&apos;s included</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {INCLUDED.map((item) => (
               <div
                 key={item.title}
-                className="feature-card rounded-xl border border-border bg-card p-6"
+                className="feature-card premium-card rounded-xl border border-white/10 bg-card/80 p-6"
               >
                 <h3 className="text-base font-semibold mb-2">{item.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
@@ -97,7 +98,7 @@ export default function AccountingPage() {
       </section>
 
       {/* What this means for you */}
-      <section className="py-16">
+      <section className="premium-section py-16 lg:py-24">
         <div className="max-w-2xl mx-auto px-6">
           <h2 className="text-2xl font-semibold mb-4">What this means for you</h2>
           <p className="text-muted-foreground leading-relaxed">
@@ -110,7 +111,7 @@ export default function AccountingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-muted/30">
+      <section className="premium-section py-16 lg:py-24">
         <div className="max-w-xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-semibold mb-3">See what it costs</h2>
           <p className="text-muted-foreground mb-8">
@@ -126,7 +127,7 @@ export default function AccountingPage() {
       </section>
 
       {/* Other services */}
-      <section className="py-16">
+      <section className="premium-section py-16 lg:py-24">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-lg font-semibold mb-6 text-muted-foreground">Other services</h2>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -134,7 +135,7 @@ export default function AccountingPage() {
               <a
                 key={svc.title}
                 href={svc.href}
-                className="feature-card flex items-center gap-4 rounded-xl border border-border bg-card px-6 py-5 hover:border-primary/50 transition-colors"
+                className="feature-card premium-card flex items-center gap-4 rounded-xl border border-white/10 bg-card/80 px-6 py-5 hover:border-primary/50 transition-colors"
               >
                 <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
                   <svc.icon className="h-5 w-5 text-foreground" />
@@ -146,6 +147,6 @@ export default function AccountingPage() {
           </div>
         </div>
       </section>
-    </>
+    </PageCursorGlow>
   );
 }
