@@ -98,7 +98,7 @@ function FinanceCommandCentre() {
         transformPerspective: 1200,
         transformStyle: "preserve-3d",
       }}
-      className="fcc-container tilt-card premium-card relative rounded-2xl border-[0.5px] border-white/10 bg-card/80 shadow-2xl p-5 overflow-hidden min-h-[420px] transition-[border-color,box-shadow,background-color] duration-500">
+      className="fcc-container tilt-card premium-card relative rounded-2xl border-[0.5px] border-white/10 bg-card/80 shadow-2xl p-4 sm:p-5 overflow-hidden min-h-[340px] sm:min-h-[380px] lg:min-h-[420px] transition-[border-color,box-shadow,background-color] duration-500">
       <div
         aria-hidden
         className="pointer-events-none absolute -inset-16 z-0 rounded-full bg-primary/10 blur-3xl"
@@ -133,7 +133,7 @@ function FinanceCommandCentre() {
       </div>
 
       {/* Tile grid */}
-      <div className="fcc-grid grid grid-cols-1 sm:grid-cols-3 gap-2.5 relative z-20">
+      <div className="fcc-grid grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 relative z-20">
         {/* Cash Runway */}
         <div className="fcc-tile premium-glass rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
@@ -273,7 +273,7 @@ function FinanceCommandCentre() {
         </div>
 
         {/* SARS / CIPC Compliance — Standardized look */}
-        <div className="fcc-tile premium-glass col-span-1 sm:col-span-3 rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
+        <div className="fcc-tile premium-glass col-span-2 sm:col-span-3 rounded-xl border-[0.5px] border-white/10 bg-background/40 p-3.5">
           <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2.5">
             SARS / CIPC Compliance
           </div>
@@ -297,7 +297,7 @@ export function HeroSection() {
 
   return (
     <section
-      className="premium-section relative overflow-hidden py-28 pb-36 lg:py-36 lg:pb-48"
+      className="premium-section relative overflow-hidden py-20 pb-28 sm:py-28 sm:pb-36 lg:py-36 lg:pb-48"
     >
       <div
         aria-hidden
@@ -324,7 +324,7 @@ export function HeroSection() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-8 lg:px-14 h-full flex flex-col justify-center">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14 h-full flex flex-col justify-center">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           {/* Copy */}
           <div className="hero-copy-container">
