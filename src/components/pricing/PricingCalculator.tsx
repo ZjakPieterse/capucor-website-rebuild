@@ -102,13 +102,12 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
           />
         </div>
 
-        <div className="premium-glass rounded-2xl px-5 py-8 sm:px-10 sm:py-10">
-          <div className="premium-divider w-full h-px mb-6" />
-          <p className="text-xs font-medium uppercase tracking-widest text-primary mb-6 text-center">
-            3 steps to your monthly price
-          </p>
-          <StepIndicator currentStep={state.step} />
-        </div>
+        <div className="premium-divider w-full h-px mb-6" />
+        <p className="text-xs font-medium uppercase tracking-widest text-primary mb-6 text-center">
+          3 steps to your monthly price
+        </p>
+        <StepIndicator currentStep={state.step} />
+        <div className="premium-divider w-full h-px mt-6" />
       </section>
 
       {/* Step content */}
