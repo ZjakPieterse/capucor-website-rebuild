@@ -6,6 +6,7 @@ import { BadgeCheck } from 'lucide-react';
 import { usePricingState } from '@/hooks/usePricingState';
 import { siteConfig } from '@/config/site';
 import { SectionDivider } from '@/components/ui/SectionDivider';
+import { PageCursorGlow } from '@/components/landing/PageCursorGlow';
 import { StepIndicator } from './StepIndicator';
 import { Step1Services } from './Step1Services';
 import { Step2Brackets } from './Step2Brackets';
@@ -84,140 +85,118 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
 
   return (
     <>
-      {/* Entry section — premium-section hero treatment with ambient orbs, no inline dividers */}
-      <section
-        id="pricing-summary"
-        className="premium-section relative py-14 lg:py-20 overflow-hidden"
-      >
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 pointer-events-none"
+      <PageCursorGlow>
+        {/* Merged entry + steps — eyebrow and StepIndicator sit at the top of the calculator section */}
+        <section
+          id="pricing-summary"
+          className="premium-section relative py-14 lg:py-20"
         >
-          <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 h-[320px] w-[420px] rounded-full bg-primary/8 blur-[90px]"
-            animate={{ scale: [1, 1.08, 1], opacity: [0.6, 0.85, 0.6] }}
-            transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute -top-6 right-[8%] h-[200px] w-[200px] rounded-full blur-[70px]"
-            style={{ background: 'color-mix(in oklch, var(--brand-cyan) 14%, transparent)' }}
-            animate={{ scale: [1, 1.12, 1], opacity: [0.4, 0.7, 0.4] }}
-            transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-          />
-        </div>
+          <div className="max-w-4xl mx-auto px-6">
+            <p className="text-xs font-medium uppercase tracking-widest text-primary mb-6 text-center">
+              3 steps to your monthly price
+            </p>
+            <StepIndicator currentStep={state.step} />
+            <div className="relative min-h-[500px]">
+              <AnimatePresence mode="wait">
+                {state.step === 1 && (
+                  <motion.div
+                    key="step1"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Step1Services
+                      services={services}
+                      selected={state.selectedServices}
+                      onToggle={toggleService}
+                      onNext={() => {
+                        if (canProceedStep1) setStep(2);
+                      }}
+                    />
+                  </motion.div>
+                )}
 
-        <div className="max-w-4xl mx-auto px-6">
-          <p className="text-xs font-medium uppercase tracking-widest text-primary mb-6 text-center">
-            3 steps to your monthly price
-          </p>
-          <StepIndicator currentStep={state.step} />
-        </div>
-      </section>
+                {state.step === 2 && (
+                  <motion.div
+                    key="step2"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Step2Brackets
+                      services={services}
+                      brackets={brackets}
+                      selectedServices={state.selectedServices}
+                      selectedBrackets={state.selectedBrackets}
+                      onBracketChange={setBracket}
+                      onBack={() => setStep(1)}
+                      onNext={() => {
+                        if (canProceedStep2) setStep(3);
+                      }}
+                      canProceed={canProceedStep2}
+                    />
+                  </motion.div>
+                )}
 
-      {/* Steps section */}
-      <section className="premium-section relative py-14 lg:py-20">
-        <SectionDivider />
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="relative min-h-[500px]">
-            <AnimatePresence mode="wait">
-              {state.step === 1 && (
-                <motion.div
-                  key="step1"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Step1Services
-                    services={services}
-                    selected={state.selectedServices}
-                    onToggle={toggleService}
-                    onNext={() => {
-                      if (canProceedStep1) setStep(2);
-                    }}
-                  />
-                </motion.div>
-              )}
+                {state.step === 3 && (
+                  <motion.div
+                    key="step3"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Step3Tiers
+                      services={services}
+                      brackets={brackets}
+                      tiers={tiers}
+                      selectedServices={state.selectedServices}
+                      selectedBrackets={state.selectedBrackets}
+                      selectedTier={state.selectedTier}
+                      onTierSelect={setTier}
+                      onBack={() => setStep(2)}
+                      onActivate={advanceToActivate}
+                      testimonial={spotlightTestimonial}
+                    />
+                  </motion.div>
+                )}
 
-              {state.step === 2 && (
-                <motion.div
-                  key="step2"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Step2Brackets
-                    services={services}
-                    brackets={brackets}
-                    selectedServices={state.selectedServices}
-                    selectedBrackets={state.selectedBrackets}
-                    onBracketChange={setBracket}
-                    onBack={() => setStep(1)}
-                    onNext={() => {
-                      if (canProceedStep2) setStep(3);
-                    }}
-                    canProceed={canProceedStep2}
-                  />
-                </motion.div>
-              )}
-
-              {state.step === 3 && (
-                <motion.div
-                  key="step3"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Step3Tiers
-                    services={services}
-                    brackets={brackets}
-                    tiers={tiers}
-                    selectedServices={state.selectedServices}
-                    selectedBrackets={state.selectedBrackets}
-                    selectedTier={state.selectedTier}
-                    onTierSelect={setTier}
-                    onBack={() => setStep(2)}
-                    onActivate={advanceToActivate}
-                    testimonial={spotlightTestimonial}
-                  />
-                </motion.div>
-              )}
-
-              {state.step === 4 && (
-                <motion.div
-                  key="step4"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Step4Activate
-                    services={services}
-                    brackets={brackets}
-                    tiers={tiers}
-                    selectedServices={state.selectedServices}
-                    selectedBrackets={state.selectedBrackets}
-                    selectedTier={state.selectedTier}
-                    onBack={() => setStep(3)}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
+                {state.step === 4 && (
+                  <motion.div
+                    key="step4"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Step4Activate
+                      services={services}
+                      brackets={brackets}
+                      tiers={tiers}
+                      selectedServices={state.selectedServices}
+                      selectedBrackets={state.selectedBrackets}
+                      selectedTier={state.selectedTier}
+                      onBack={() => setStep(3)}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Trust signals near commitment, not in the warm-up */}
-      <section className="premium-section relative py-14 lg:py-20">
-        <SectionDivider />
-        <div className="max-w-4xl mx-auto px-6">
-          <TrustBar />
-        </div>
-      </section>
+        {/* Trust signals near commitment, not in the warm-up */}
+        <section className="premium-section relative py-14 lg:py-20">
+          <SectionDivider />
+          <div className="max-w-4xl mx-auto px-6">
+            <TrustBar />
+          </div>
+        </section>
 
-      <BottomCTA />
+        <BottomCTA />
+      </PageCursorGlow>
 
       <MobileTotalBar
         selectedServices={state.selectedServices}
