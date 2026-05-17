@@ -12,35 +12,6 @@ const DEFAULT_STATE: PricingState = {
   selectedTier: null,
 };
 
-function hydrateFromStorage(): PricingState | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as unknown;
-    if (!parsed || typeof parsed !== 'object') return null;
-
-    const p = parsed as Record<string, unknown>;
-    const stepRaw = typeof p.step === 'number' ? p.step : 1;
-    const step: CalculatorStep = (stepRaw >= 1 && stepRaw <= 4 ? stepRaw : 1) as CalculatorStep;
-    const services = Array.isArray(p.selectedServices) ? p.selectedServices.filter((v): v is string => typeof v === 'string') : [];
-    const brackets =
-      p.selectedBrackets && typeof p.selectedBrackets === 'object'
-        ? (p.selectedBrackets as Record<string, BracketValue>)
-        : {};
-    const tier = typeof p.selectedTier === 'string' ? p.selectedTier : null;
-
-    return {
-      step,
-      selectedServices: new Set(services),
-      selectedBrackets: brackets,
-      selectedTier: tier,
-    };
-  } catch {
-    return null;
-  }
-}
-
 function persistToStorage(state: PricingState) {
   if (typeof window === 'undefined') return;
   try {
@@ -69,23 +40,14 @@ export function clearPricingDraft() {
 
 export function usePricingState() {
   const [state, setState] = useState<PricingState>(DEFAULT_STATE);
-  const [hydrated, setHydrated] = useState(false);
 
-  // One-time localStorage hydration after mount. Cannot use lazy useState init
-  // because the component server-renders with default state; hydrating in init
-  // would mismatch. Effect is the right place for this kind of external sync.
+  // Every visit to /pricing starts blank: the first persist overwrites any
+  // prior draft with DEFAULT_STATE. Continue/Back within the page don't
+  // unmount this hook, so in-session step state still flows; only fresh
+  // navigation or refresh resets it.
   useEffect(() => {
-    const restored = hydrateFromStorage();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (restored) setState(restored);
-    setHydrated(true);
-  }, []);
-
-  // Persist after hydration so we don't overwrite saved state with defaults.
-  useEffect(() => {
-    if (!hydrated) return;
     persistToStorage(state);
-  }, [state, hydrated]);
+  }, [state]);
 
   const setStep = useCallback((step: CalculatorStep) => {
     setState((s) => ({ ...s, step }));
