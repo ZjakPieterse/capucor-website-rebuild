@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart2, BookMarked, Users, Info } from 'lucide-react';
+import { BarChart2, BookMarked, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -47,27 +47,13 @@ export function Step2Brackets({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-semibold mb-1">
-            Choose the size bracket that matches the work we&apos;ll manage.
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Each service is priced by workload. Pick the range that fits your business today.
-          </p>
-        </div>
-        <details className="group shrink-0 relative">
-          <summary
-            className="list-none cursor-pointer inline-flex items-center gap-1 rounded-full border border-border bg-card/60 px-2.5 py-1 text-[11px] text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors"
-            aria-label="Help on choosing a bracket"
-          >
-            <Info className="h-3 w-3" />
-            Tips
-          </summary>
-          <div className="absolute right-0 mt-2 w-72 z-20 rounded-xl border border-border bg-popover p-3 text-xs text-muted-foreground leading-relaxed shadow-lg">
-            Between brackets? Choose the higher one for now. We can adjust your subscription at the next billing cycle if the workload changes.
-          </div>
-        </details>
+      <div>
+        <h2 className="text-xl font-semibold mb-1">
+          Tell us more about your business and activities.
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Each service is priced by size brackets. Pick the range that fits your business best today.
+        </p>
       </div>
 
       <div
@@ -110,7 +96,7 @@ export function Step2Brackets({
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-3">
+              <div className="step2-row__select">
                 <Select
                   value={selectValue}
                   onValueChange={(val) => onBracketChange(svc.slug, Number(val) as BracketValue)}
@@ -118,7 +104,7 @@ export function Step2Brackets({
                 >
                   <SelectTrigger
                     size="default"
-                    className="w-full sm:w-52 h-10 text-sm border-border bg-background/60"
+                    className="w-full h-10 text-sm border-border bg-background/60"
                   >
                     <SelectValue placeholder={`Select ${svc.bracket_unit_label ?? 'size'} range…`} />
                   </SelectTrigger>
@@ -130,14 +116,14 @@ export function Step2Brackets({
                     ))}
                   </SelectContent>
                 </Select>
-
-                <span
-                  className={cn('step2-price-chip', isSet && 'is-set')}
-                  aria-live="polite"
-                >
-                  {isSet ? `From ${formatZAR(fromPrice)}` : '—'}
-                </span>
               </div>
+
+              <span
+                className={cn('step2-price-chip', isSet && 'is-set')}
+                aria-live="polite"
+              >
+                {isSet ? `From ${formatZAR(fromPrice)}` : '—'}
+              </span>
             </div>
           );
         })}

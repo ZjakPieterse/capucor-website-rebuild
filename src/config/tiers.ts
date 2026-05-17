@@ -37,9 +37,9 @@ export const TIER_CUMULATIVE_LABELS: Record<string, string> = {
 };
 
 export const PACKAGE_COMMON_ITEMS = [
-  { text: 'Dedicated finance team', tooltip: 'A named team that knows your business.' },
-  { text: 'SARS & CIPC compliance', tooltip: 'Tax returns and annual filings done each year. Nothing to remember.' },
-  { text: 'Direct access to your consultant', tooltip: 'A named person who knows your file. Call, email, or message when something comes up.' },
+  { text: 'Dedicated Finance Team', tooltip: 'A named team that knows your business.' },
+  { text: 'SARS & CIPC Compliance', tooltip: 'Tax returns and annual filings done each year. Nothing to remember.' },
+  { text: 'Year-round Advisory', tooltip: 'Ongoing guidance from your accountant — not just at year-end.' },
 ];
 
 export const TIER_BUYER_FIT: Record<string, string> = {

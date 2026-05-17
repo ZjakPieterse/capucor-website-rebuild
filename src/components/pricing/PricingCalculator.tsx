@@ -205,7 +205,7 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
         </section>
 
         {/* Trust signals near commitment, not in the warm-up */}
-        <section className="premium-section relative py-14 lg:py-20">
+        <section className="premium-section relative pt-2 lg:pt-4 pb-14 lg:pb-20">
           <SectionDivider />
           <div className="max-w-4xl mx-auto px-6">
             <TrustBar />

@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, Check, CornerDownRight, Plus, Sparkles } from 'lucide-react';
+import { ArrowRight, Check, CornerDownRight, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatedPrice } from '@/components/ui/AnimatedPrice';
 import { TestimonialSpotlight } from './TestimonialSpotlight';
@@ -45,7 +45,7 @@ export function Step3Tiers({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Choose the depth of monthly support.</h2>
+        <h2 className="text-xl font-semibold mb-1">Choose the package that fits your needs best</h2>
         <p className="text-sm text-muted-foreground">
           Every plan includes your selected services, a dedicated finance team and SARS &amp; CIPC compliance. Higher tiers add more frequent processing, reporting depth and advisory involvement.
         </p>
@@ -56,7 +56,6 @@ export function Step3Tiers({
       <div ref={containerRef} className="cursor-glow grid sm:grid-cols-3 gap-4 sm:pt-5">
         {sortedTiers.map((tier) => {
           const isSelected = selectedTier === tier.slug;
-          const isRecommended = tier.slug === 'pro';
 
           const regularTotal = activeServices.reduce((sum, svc) => {
             const sel = selectedBrackets[svc.slug];
@@ -82,16 +81,9 @@ export function Step3Tiers({
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isSelected
                   ? 'is-selected border-primary bg-primary/10 backdrop-blur-md shadow-lg shadow-primary/10'
-                  : 'border-border bg-card/40 backdrop-blur-md',
-                isRecommended && !isSelected && 'border-primary/40'
+                  : 'border-border bg-card/40 backdrop-blur-md'
               )}
             >
-              {isRecommended && (
-                <span className="tier-ribbon" aria-hidden>
-                  <Sparkles className="h-2.5 w-2.5" /> Most chosen
-                </span>
-              )}
-
               <span
                 aria-hidden
                 className={cn('service-card-toggle', isSelected && 'is-selected')}

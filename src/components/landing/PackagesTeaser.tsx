@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarCheck, Check, Layers, Users } from "lucide-react";
+import { CalendarCheck, Check, ShieldCheck, Users } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { SectionDivider } from "@/components/ui/SectionDivider";
@@ -54,7 +54,7 @@ export function PackagesTeaser({ tiers }: PackagesTeaserProps) {
             <div className="flex flex-wrap justify-center gap-8">
               {PACKAGE_COMMON_ITEMS.map((item, idx) => {
                 const Icon =
-                  idx === 0 ? Users : idx === 1 ? Layers : CalendarCheck;
+                  idx === 0 ? Users : idx === 1 ? ShieldCheck : CalendarCheck;
                 return (
                   <div key={item.text} className="flex items-center gap-2.5">
                     <Icon className="h-4 w-4 text-primary shrink-0" />

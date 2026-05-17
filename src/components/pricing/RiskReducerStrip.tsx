@@ -1,19 +1,19 @@
 'use client';
 
-import { CalendarClock, ArrowRightLeft, ShieldCheck } from 'lucide-react';
+import { Users, ShieldCheck, CalendarCheck } from 'lucide-react';
 
 const ITEMS = [
   {
-    icon: CalendarClock,
-    text: 'Month-to-month. 30 days notice to cancel.',
-  },
-  {
-    icon: ArrowRightLeft,
-    text: 'We migrate your books from any platform during onboarding.',
+    icon: Users,
+    text: 'Dedicated Finance Team',
   },
   {
     icon: ShieldCheck,
-    text: 'If SARS queries something, we handle it with you.',
+    text: 'SARS & CIPC Compliance',
+  },
+  {
+    icon: CalendarCheck,
+    text: 'Year-round Advisory',
   },
 ];
 
