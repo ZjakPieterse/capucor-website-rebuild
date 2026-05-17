@@ -80,55 +80,39 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
 
   return (
     <div className="max-w-7xl mx-auto px-6 pb-24 lg:pb-0">
-      {/* Hero */}
-      <section className="relative pt-10 sm:pt-14 pb-8 text-center overflow-hidden">
+      {/* Entry block — premium frame around StepIndicator */}
+      <section
+        id="pricing-summary"
+        className="relative max-w-4xl mx-auto pt-10 sm:pt-14 pb-6 overflow-hidden"
+      >
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none"
+          className="absolute inset-0 -z-10 pointer-events-none"
         >
           <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 h-[400px] w-[500px] rounded-full bg-primary/8 blur-[100px]"
-            animate={{ scale: [1, 1.1, 1], opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute top-0 left-1/2 -translate-x-1/2 h-[320px] w-[420px] rounded-full bg-primary/8 blur-[90px]"
+            animate={{ scale: [1, 1.08, 1], opacity: [0.6, 0.85, 0.6] }}
+            transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.div
-            className="absolute top-1/4 right-[10%] h-[250px] w-[250px] rounded-full blur-[80px]"
-            style={{ background: 'color-mix(in oklch, var(--brand-cyan) 12%, transparent)' }}
-            animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.8, 0.5] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            className="absolute -top-6 right-[8%] h-[200px] w-[200px] rounded-full blur-[70px]"
+            style={{ background: 'color-mix(in oklch, var(--brand-cyan) 14%, transparent)' }}
+            animate={{ scale: [1, 1.12, 1], opacity: [0.4, 0.7, 0.4] }}
+            transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
           />
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 max-w-2xl mx-auto flex flex-wrap justify-center gap-x-[0.25em]">
-          {"Calculate your own price in just 2 minutes".split(' ').map((word, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 + i * 0.05, ease: 'easeOut' }}
-            >
-              {word}
-            </motion.span>
-          ))}
-        </h1>
-
-        <motion.p
-          className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-        >
-          In 3 simple steps you can see your investment, without any sales conversation.
-        </motion.p>
+        <div className="premium-glass rounded-2xl px-5 py-8 sm:px-10 sm:py-10">
+          <div className="premium-divider w-full h-px mb-6" />
+          <p className="text-xs font-medium uppercase tracking-widest text-primary mb-6 text-center">
+            3 steps to your monthly price
+          </p>
+          <StepIndicator currentStep={state.step} />
+        </div>
       </section>
 
-      {/* Calculator */}
-      <div
-        id="pricing-summary"
-        className="max-w-4xl mx-auto py-8 border-t border-border"
-      >
-        <StepIndicator currentStep={state.step} />
-
+      {/* Step content */}
+      <div className="max-w-4xl mx-auto px-1 sm:px-0 pb-8">
         <div className="relative min-h-[500px]">
           <AnimatePresence mode="wait">
             {state.step === 1 && (
