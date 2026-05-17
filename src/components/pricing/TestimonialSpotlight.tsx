@@ -12,7 +12,7 @@ export function TestimonialSpotlight({ testimonial: t }: TestimonialSpotlightPro
 
   return (
     <figure
-      className="relative rounded-xl border border-border bg-card p-6 sm:p-7 overflow-hidden"
+      className="relative rounded-xl premium-glass border p-6 sm:p-7 overflow-hidden"
       aria-label="Customer testimonial"
     >
       <div

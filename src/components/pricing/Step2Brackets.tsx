@@ -72,7 +72,7 @@ export function Step2Brackets({
 
       <div
         ref={containerRef}
-        className="cursor-glow rounded-xl border border-border bg-card/40 backdrop-blur-md divide-y divide-border overflow-hidden"
+        className="cursor-glow rounded-xl premium-glass border divide-y divide-border overflow-hidden"
       >
         {activeServices.map((svc) => {
           const Icon = SERVICE_ICONS[svc.slug] ?? BarChart2;
