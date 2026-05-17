@@ -106,7 +106,7 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
         {/* Merged entry + steps — eyebrow and StepIndicator sit at the top of the calculator section */}
         <section
           id="pricing-summary"
-          className="premium-section relative py-14 lg:py-20"
+          className="premium-section relative pt-14 lg:pt-20 pb-4 lg:pb-6"
         >
           <div className="max-w-4xl mx-auto px-6">
             <p className="text-xs font-medium uppercase tracking-widest text-primary mb-6 text-center">
@@ -205,7 +205,7 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
         </section>
 
         {/* Trust signals near commitment, not in the warm-up */}
-        <section className="premium-section relative pt-2 lg:pt-4 pb-14 lg:pb-20">
+        <section className="premium-section relative py-14 lg:py-20">
           <SectionDivider />
           <div className="max-w-4xl mx-auto px-6">
             <TrustBar />
