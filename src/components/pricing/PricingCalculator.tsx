@@ -2,9 +2,8 @@
 
 import { Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BadgeCheck, Users2, Shield, MessageSquare, ChevronDown, Clock } from 'lucide-react';
+import { BadgeCheck } from 'lucide-react';
 import { usePricingState } from '@/hooks/usePricingState';
-import { PACKAGE_COMMON_ITEMS } from '@/config/tiers';
 import { siteConfig } from '@/config/site';
 import { StepIndicator } from './StepIndicator';
 import { Step1Services } from './Step1Services';
@@ -28,63 +27,6 @@ const TRUST_ITEMS = [
   "Cancel with 30 Days’ Notice",
 ];
 
-const INCLUDED_ICONS: React.ElementType[] = [Users2, Shield, MessageSquare];
-
-const FAQ_GROUPS: { label: string; items: { q: string; a: string }[] }[] = [
-  {
-    label: 'Contract & flexibility',
-    items: [
-      {
-        q: 'Do you require a long-term contract?',
-        a: 'No lock-in. Our subscriptions run month-to-month and can be cancelled with 30 days’ written notice.',
-      },
-      {
-        q: 'Can I change my plan after signing up?',
-        a: 'Yes. You can upgrade or downgrade your tier, or add and remove services, at any time. Changes take effect from the start of the next billing month.',
-      },
-      {
-        q: 'What happens if my business grows?',
-        a: 'We adjust your bracket when your business grows. If you move into a higher size range mid-year, we’ll update your subscription at the next billing date. No penalty, no back-billing.',
-      },
-    ],
-  },
-  {
-    label: 'Pricing',
-    items: [
-      {
-        q: 'How is my monthly price calculated?',
-        a: 'Your price is based on the services you select and the size of your business. Each service has its own size brackets: number of employees for payroll, monthly transactions for bookkeeping, turnover for accounting. Pick your bracket in Step 2 and your price calculates immediately.',
-      },
-      {
-        q: 'Are prices inclusive of VAT?',
-        a: 'No. All prices shown on this calculator exclude VAT (15%). VAT is added to your monthly invoice.',
-      },
-      {
-        q: 'What is enterprise pricing?',
-        a: 'Enterprise pricing is for businesses outside our standard brackets: high transaction volumes, multiple entities, or unusual structures. We’ll put together a price that fits what you actually need.',
-      },
-    ],
-  },
-  {
-    label: 'What’s included',
-    items: [
-      {
-        q: 'What is the difference between accounting and bookkeeping?',
-        a: 'Bookkeeping keeps your records current: reconciling transactions, processing invoices, and maintaining your Xero ledger. Accounting uses those records to produce financial statements, file your taxes with SARS, and report on how the business is tracking. Most clients take both.',
-      },
-    ],
-  },
-  {
-    label: 'Getting started',
-    items: [
-      {
-        q: 'How do I get started after choosing a plan?',
-        a: 'Fill in the form at the end of Step 3. We’ll be in touch within one business day to confirm your services, answer any questions, and get you set up.',
-      },
-    ],
-  },
-];
-
 function TrustBar() {
   return (
     <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
@@ -95,122 +37,6 @@ function TrustBar() {
         </div>
       ))}
     </div>
-  );
-}
-
-function InHouseComparison() {
-  return (
-    <section className="py-12 border-t border-border">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-8">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-            For perspective
-          </p>
-          <h2 className="text-xl font-bold tracking-tight">
-            Why a subscription finance team can make sense before hiring in-house.
-          </h2>
-        </div>
-        <div className="grid sm:grid-cols-3 gap-3">
-          <div className="rounded-xl border border-border bg-card p-5">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-              Bookkeeper on staff
-            </p>
-            <p className="font-mono text-xl font-bold mt-1">R 15&ndash;25k</p>
-            <p className="text-xs text-muted-foreground mt-1 leading-snug">
-              per month plus benefits, software, leave cover
-            </p>
-          </div>
-          <div className="rounded-xl border border-border bg-card p-5">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-              Year-end accountant
-            </p>
-            <p className="font-mono text-xl font-bold mt-1">R 18&ndash;30k</p>
-            <p className="text-xs text-muted-foreground mt-1 leading-snug">
-              once-off for AFS and tax submissions
-            </p>
-          </div>
-          <div className="rounded-xl border-2 border-primary/40 bg-primary/[0.03] p-5">
-            <p className="text-[10px] uppercase tracking-wider text-primary font-semibold">
-              With Capucor
-            </p>
-            <p className="font-mono text-xl font-bold mt-1">From R 1,575</p>
-            <p className="text-xs text-muted-foreground mt-1 leading-snug">
-              per month, both included, Xero included
-            </p>
-          </div>
-        </div>
-        <p className="text-xs text-muted-foreground text-center mt-5 max-w-xl mx-auto leading-relaxed">
-          Hiring in-house can make sense later. Our role is to give you structure, reporting and compliance cover before that fixed overhead is justified.
-        </p>
-        <p className="text-[11px] text-muted-foreground/70 text-center mt-2 max-w-md mx-auto leading-relaxed">
-          Indicative South African market figures. Your actual hire costs vary by experience, sector, and benefits.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function IncludedInEveryPlan() {
-  return (
-    <section className="py-16 border-t border-border">
-      <div className="text-center mb-10">
-        <p className="text-xs font-medium uppercase tracking-widest text-primary mb-2">Every Plan</p>
-        <h2 className="text-2xl font-bold tracking-tight">What&rsquo;s included across all tiers</h2>
-        <p className="text-sm text-muted-foreground mt-2 max-w-xl mx-auto">
-          Every plan includes these three things, regardless of price.
-        </p>
-      </div>
-      <div className="grid sm:grid-cols-3 gap-6">
-        {PACKAGE_COMMON_ITEMS.map((item, i) => {
-          const Icon = INCLUDED_ICONS[i] ?? Shield;
-          return (
-            <div
-              key={item.text}
-              className="rounded-xl border border-border bg-card p-6 flex flex-col gap-3"
-            >
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                <Icon className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm">{item.text}</p>
-                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.tooltip}</p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function FAQSection() {
-  return (
-    <section className="py-16 border-t border-border">
-      <div className="text-center mb-10">
-        <p className="text-xs font-medium uppercase tracking-widest text-primary mb-2">FAQ</p>
-        <h2 className="text-2xl font-bold tracking-tight">Common questions</h2>
-      </div>
-      <div className="max-w-2xl mx-auto space-y-8">
-        {FAQ_GROUPS.map((group) => (
-          <div key={group.label}>
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 px-1">
-              {group.label}
-            </p>
-            <div className="divide-y divide-border rounded-xl border border-border bg-card/40">
-              {group.items.map(({ q, a }) => (
-                <details key={q} className="group p-4">
-                  <summary className="flex cursor-pointer items-center justify-between gap-4 list-none text-sm font-medium select-none">
-                    {q}
-                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
-                  </summary>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -273,20 +99,8 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
           />
         </div>
 
-        <motion.div
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 mb-5"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Clock className="h-3 w-3 text-primary" />
-          <span className="text-xs font-medium text-foreground">
-            About 2 minutes to a final price
-          </span>
-        </motion.div>
-
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 max-w-2xl mx-auto flex flex-wrap justify-center gap-x-[0.25em]">
-          {"Know your monthly finance cost before you sign anything.".split(' ').map((word, i) => (
+          {"Calculate your own price in just 2 minutes".split(' ').map((word, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 12 }}
@@ -304,7 +118,7 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          Pick your services, choose your business size and select the level of support you need. The calculator shows your monthly subscription immediately, before any sales conversation.
+          In 3 simple steps you can see your investment, without any sales conversation.
         </motion.p>
       </section>
 
@@ -410,10 +224,6 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
         <TrustBar />
       </section>
 
-      {/* Post-calculator sections */}
-      <InHouseComparison />
-      <IncludedInEveryPlan />
-      <FAQSection />
       <BottomCTA />
 
       <MobileTotalBar
