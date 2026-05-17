@@ -91,6 +91,17 @@ export function usePricingState() {
     setState((s) => ({ ...s, step }));
   }, []);
 
+  // Going Back clears selections made in later steps so each step is a fresh
+  // choice when re-entered from below. Step 1 selections (services) are kept.
+  const setStepBack = useCallback((step: CalculatorStep) => {
+    setState((s) => {
+      const next: PricingState = { ...s, step };
+      if (step <= 1) next.selectedBrackets = {};
+      if (step <= 2) next.selectedTier = null;
+      return next;
+    });
+  }, []);
+
   const toggleService = useCallback((slug: string) => {
     setState((s) => {
       const next = new Set(s.selectedServices);
@@ -127,6 +138,7 @@ export function usePricingState() {
   return {
     state,
     setStep,
+    setStepBack,
     toggleService,
     setBracket,
     setTier,

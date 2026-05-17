@@ -6,6 +6,7 @@ import { siteConfig } from "@/config/site";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { Button } from "@/components/ui/button";
 
 export function FinalCTA() {
   return (
@@ -36,15 +37,17 @@ export function FinalCTA() {
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4">
             <MagneticButton>
-              <Link
-                href="/pricing"
-                className="premium-button gradient-cta gradient-border-cta inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl px-6 text-sm font-semibold text-primary-foreground transition-all"
+              <Button
+                nativeButton={false}
+                render={<Link href="/pricing" />}
+                size="lg"
+                className="gradient-cta gradient-border-cta cta-cursor-glow gap-2 w-full sm:w-auto"
               >
                 <span className="relative z-[2] inline-flex items-center gap-2">
                   Build your subscription
                   <ArrowRight className="h-4 w-4" />
                 </span>
-              </Link>
+              </Button>
             </MagneticButton>
 
             <MagneticButton>

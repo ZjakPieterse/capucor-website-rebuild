@@ -71,6 +71,7 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
   const {
     state,
     setStep,
+    setStepBack,
     toggleService,
     setBracket,
     setTier,
@@ -79,8 +80,24 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
     canProceedStep3,
   } = usePricingState();
 
+  const scrollToTop = () => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  };
+
+  const goForward = (step: 2 | 3 | 4) => {
+    setStep(step);
+    scrollToTop();
+  };
+
+  const goBack = (step: 1 | 2 | 3) => {
+    setStepBack(step);
+    scrollToTop();
+  };
+
   const advanceToActivate = () => {
-    if (canProceedStep3) setStep(4);
+    if (canProceedStep3) goForward(4);
   };
 
   return (
@@ -111,7 +128,7 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
                       selected={state.selectedServices}
                       onToggle={toggleService}
                       onNext={() => {
-                        if (canProceedStep1) setStep(2);
+                        if (canProceedStep1) goForward(2);
                       }}
                     />
                   </motion.div>
@@ -131,9 +148,9 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
                       selectedServices={state.selectedServices}
                       selectedBrackets={state.selectedBrackets}
                       onBracketChange={setBracket}
-                      onBack={() => setStep(1)}
+                      onBack={() => goBack(1)}
                       onNext={() => {
-                        if (canProceedStep2) setStep(3);
+                        if (canProceedStep2) goForward(3);
                       }}
                       canProceed={canProceedStep2}
                     />
@@ -156,7 +173,7 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
                       selectedBrackets={state.selectedBrackets}
                       selectedTier={state.selectedTier}
                       onTierSelect={setTier}
-                      onBack={() => setStep(2)}
+                      onBack={() => goBack(2)}
                       onActivate={advanceToActivate}
                       testimonial={spotlightTestimonial}
                     />
@@ -178,7 +195,7 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
                       selectedServices={state.selectedServices}
                       selectedBrackets={state.selectedBrackets}
                       selectedTier={state.selectedTier}
-                      onBack={() => setStep(3)}
+                      onBack={() => goBack(3)}
                     />
                   </motion.div>
                 )}

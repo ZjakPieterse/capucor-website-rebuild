@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,13 @@ import { siteConfig } from "@/config/site";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  const handleHomeClick = (href: string) => {
+    if (href === "/" && pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/70 shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
@@ -23,6 +31,7 @@ export function Navbar() {
         {/* Logo */}
         <Link
           href="/"
+          onClick={() => handleHomeClick("/")}
           className="hover:opacity-80 transition-opacity flex items-center"
         >
           <Image
@@ -43,6 +52,7 @@ export function Navbar() {
             <li key={item.href}>
               <Link
                 href={item.href}
+                onClick={() => handleHomeClick(item.href)}
                 className="text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
                 {item.label}
@@ -87,7 +97,10 @@ export function Navbar() {
                     key={item.href}
                     href={item.href}
                     className="flex min-h-11 items-center text-base font-medium text-foreground/90 hover:text-primary transition-colors"
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      setOpen(false);
+                      handleHomeClick(item.href);
+                    }}
                   >
                     {item.label}
                   </Link>

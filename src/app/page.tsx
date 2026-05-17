@@ -13,6 +13,7 @@ import { TechStackShowcase } from '@/components/landing/TechStackShowcase';
 import { FaqAccordion } from '@/components/landing/FaqAccordion';
 import { FinalCTA } from '@/components/landing/FinalCTA';
 import { PageCursorGlow } from '@/components/landing/PageCursorGlow';
+import { ScrollToTopOnMount } from '@/components/landing/ScrollToTopOnMount';
 
 export function generateMetadata(): Metadata {
   return {
@@ -67,6 +68,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <ScrollToTopOnMount />
       {/* Structured data */}
       <script
         type="application/ld+json"
