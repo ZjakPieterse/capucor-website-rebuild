@@ -94,6 +94,7 @@ export function PortalNotifyForm() {
         <Input
           id="portal-name"
           placeholder="Jane Smith"
+          autoComplete="name"
           aria-invalid={!!errors.name}
           {...register('name')}
         />
@@ -105,6 +106,8 @@ export function PortalNotifyForm() {
         <Input
           id="portal-email"
           type="email"
+          autoComplete="email"
+          inputMode="email"
           placeholder="jane@company.co.za"
           aria-invalid={!!errors.email}
           {...register('email')}

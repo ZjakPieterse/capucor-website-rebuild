@@ -113,7 +113,7 @@ function PricingCalculatorInner({ data, testimonials = [] }: PricingCalculatorPr
               3 steps to your monthly price
             </p>
             <StepIndicator currentStep={state.step} />
-            <div className="relative min-h-[500px]">
+            <div className="relative min-h-[auto] sm:min-h-[400px] lg:min-h-[500px]">
               <AnimatePresence mode="wait">
                 {state.step === 1 && (
                   <motion.div

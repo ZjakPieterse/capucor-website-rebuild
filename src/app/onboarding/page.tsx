@@ -9,6 +9,8 @@ import {
   Clock3,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { PreviewLockedNotice } from '@/components/portal/PreviewLockedNotice';
+import { isPreviewAllowed } from '@/lib/preview-gate';
 import { siteConfig } from '@/config/site';
 
 /**
@@ -54,7 +56,21 @@ const NEXT_STEPS = [
   },
 ];
 
-export default function OnboardingPage() {
+interface OnboardingPageProps {
+  searchParams: Promise<{ preview?: string | string[] }>;
+}
+
+export default async function OnboardingPage({ searchParams }: OnboardingPageProps) {
+  const { preview } = await searchParams;
+  if (!isPreviewAllowed(preview)) {
+    return (
+      <PreviewLockedNotice
+        title="You're nearly in."
+        body="Paystack checkout isn't live yet, so this welcome flow is gated. Leave your email and we'll loop you in the moment subscriptions open."
+      />
+    );
+  }
+
   return (
     <div className="max-w-3xl mx-auto px-6 py-16 lg:py-24">
 

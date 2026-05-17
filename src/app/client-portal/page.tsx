@@ -12,6 +12,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { PortalNotifyForm } from '@/components/portal/PortalNotifyForm';
+import { PreviewLockedNotice } from '@/components/portal/PreviewLockedNotice';
+import { isPreviewAllowed } from '@/lib/preview-gate';
 import { formatZAR } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import type { SubscriptionSummary } from '@/types';
@@ -76,7 +78,21 @@ function formatLongDate(iso: string | null): string {
   });
 }
 
-export default function ClientPortalPage() {
+interface ClientPortalPageProps {
+  searchParams: Promise<{ preview?: string | string[] }>;
+}
+
+export default async function ClientPortalPage({ searchParams }: ClientPortalPageProps) {
+  const { preview } = await searchParams;
+  if (!isPreviewAllowed(preview)) {
+    return (
+      <PreviewLockedNotice
+        title="Client portal coming soon"
+        body="We're putting the finishing touches on it. Drop your email and we'll let you know the moment it's ready."
+      />
+    );
+  }
+
   const sub = MOCK_SUBSCRIPTION;
 
   return (

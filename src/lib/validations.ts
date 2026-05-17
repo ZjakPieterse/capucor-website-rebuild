@@ -1,5 +1,20 @@
 import { z } from 'zod';
 
+// Calculator state snapshot persisted with a lead. The shape mirrors what the
+// pricing calculator writes when a visitor submits a quote/signup/enterprise
+// request — tighten here means we reject anything that doesn't match.
+export const CalculatorConfigSchema = z.object({
+  services: z.array(z.string().min(1)).max(20),
+  brackets: z.record(
+    z.string(),
+    z.union([z.number().int().nonnegative(), z.literal('enterprise')])
+  ),
+  tier: z.string().min(1).max(50).optional().nullable(),
+  hasEnterprise: z.boolean().optional(),
+});
+
+export type CalculatorConfig = z.infer<typeof CalculatorConfigSchema>;
+
 export const LeadSchema = z.object({
   source: z.enum(['signup', 'quote', 'enterprise', 'contact', 'call']),
   name: z.string().min(1, 'Name is required').max(100),
@@ -7,7 +22,7 @@ export const LeadSchema = z.object({
   business: z.string().max(100).optional(),
   phone: z.string().max(20).optional(),
   message: z.string().max(2000).optional(),
-  config: z.record(z.string(), z.unknown()).optional(),
+  config: CalculatorConfigSchema.optional(),
   consent_given: z.literal(true, {
     message: 'You must consent before submitting.',
   }),

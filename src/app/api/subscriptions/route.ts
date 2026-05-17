@@ -23,6 +23,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SubscriptionRequestSchema } from '@/lib/validations';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { initSubscriptionTransaction, getOrCreateCustomer } from '@/lib/paystack';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { monthlyTotal } from '@/lib/pricing';
+import type { Bracket } from '@/types';
 
 const VAT_RATE = 0.15;
 
@@ -33,7 +36,7 @@ export async function POST(req: NextRequest) {
     req.headers.get('x-real-ip') ??
     'unknown';
 
-  const rl = checkRateLimit(ip);
+  const rl = await checkRateLimit(ip);
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Too many requests. Please try again in a few minutes.' },
@@ -71,11 +74,43 @@ export async function POST(req: NextRequest) {
 
   const input = parsed.data;
 
-  // 4. Pricing math — TODO when Paystack is wired:
-  //    Re-derive the monthly total from Supabase rows for `services × brackets × tier`
-  //    using the existing src/lib/pricing.ts helpers. NEVER trust an amount sent
-  //    by the client. For now, the stub does not need the figure.
-  const monthlyTotalZAR = 0; // computed server-side once wired
+  // 4. Pricing math — recompute server-side. The client payload is treated
+  //    as configuration only (services, brackets, tier). Prices come from
+  //    the live Supabase `brackets` table so the client cannot tamper.
+  let monthlyTotalZAR = 0;
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data: bracketRows, error } = await supabase
+      .from('brackets')
+      .select('service_slug, ordinal, basic_price, pro_price, premium_price')
+      .in('service_slug', input.services)
+      .returns<Pick<Bracket, 'service_slug' | 'ordinal' | 'basic_price' | 'pro_price' | 'premium_price'>[]>();
+
+    if (error || !bracketRows) {
+      throw error ?? new Error('Brackets fetch returned no rows');
+    }
+
+    monthlyTotalZAR = monthlyTotal(
+      input.services,
+      input.brackets,
+      input.tierSlug,
+      bracketRows
+    );
+  } catch (err) {
+    console.error('[SUBSCRIPTIONS] price recomputation failed:', err);
+    return NextResponse.json(
+      { error: 'Could not price your subscription. Please try again.' },
+      { status: 500 },
+    );
+  }
+
+  if (monthlyTotalZAR <= 0) {
+    return NextResponse.json(
+      { error: 'No priced services in your selection. Please pick at least one regular bracket.' },
+      { status: 422 },
+    );
+  }
+
   const vatZAR = Math.round(monthlyTotalZAR * VAT_RATE);
   const totalChargeZAR = monthlyTotalZAR + vatZAR;
 

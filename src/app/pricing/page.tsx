@@ -80,7 +80,8 @@ async function getPricingData(): Promise<{
       },
       testimonials,
     };
-  } catch {
+  } catch (err) {
+    console.error('[pricing] supabase fetch failed', err);
     return null;
   }
 }

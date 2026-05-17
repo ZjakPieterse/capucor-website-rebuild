@@ -113,63 +113,105 @@ export function TierComparison({
       </button>
 
       {open && (
-        <div id="tier-comparison-table" className="overflow-x-auto border-t border-border">
-          <table className="w-full text-sm min-w-[480px]">
-            <thead className="bg-muted/30">
-              <tr>
-                <th className="text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground px-5 py-3">
-                  Inclusion
-                </th>
-                {sortedTiers.map((t) => (
-                  <th
-                    key={t.slug}
-                    className="text-center text-xs font-semibold uppercase tracking-wider px-3 py-3 text-muted-foreground"
-                  >
-                    {t.name}
+        <div id="tier-comparison-table" className="border-t border-border">
+          {/* Mobile: card-per-tier stack (no horizontal scroll) */}
+          <div className="md:hidden divide-y divide-border">
+            {sortedTiers.map((t) => {
+              const { total } = tierTotals[t.slug] ?? { total: 0 };
+              return (
+                <div key={t.slug} className="px-5 py-4">
+                  <div className="flex items-baseline justify-between mb-3">
+                    <p className="text-sm font-semibold uppercase tracking-wider">{t.name}</p>
+                    {total > 0 ? (
+                      <AnimatedPrice amount={total} className="text-sm font-bold" />
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
+                  </div>
+                  <ul className="space-y-1.5">
+                    {rows.map((row) => (
+                      <li
+                        key={row.text}
+                        className={cn(
+                          'flex items-start gap-2 text-xs',
+                          isCovered(t.slug, row.lowestTier)
+                            ? 'text-foreground'
+                            : 'text-muted-foreground/60'
+                        )}
+                      >
+                        {isCovered(t.slug, row.lowestTier) ? (
+                          <Check className="h-3.5 w-3.5 shrink-0 mt-0.5 text-primary/80" />
+                        ) : (
+                          <Minus className="h-3 w-3 shrink-0 mt-1 text-muted-foreground/40" />
+                        )}
+                        <span>{row.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Tablet/desktop: comparison table */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/30">
+                <tr>
+                  <th className="text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground px-5 py-3">
+                    Inclusion
                   </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, idx) => (
-                <tr
-                  key={row.text}
-                  className={cn(
-                    'border-t border-border/60',
-                    idx % 2 === 0 ? 'bg-transparent' : 'bg-muted/15'
-                  )}
-                >
-                  <td className="px-5 py-2.5 text-xs sm:text-sm">{row.text}</td>
                   {sortedTiers.map((t) => (
-                    <td key={t.slug} className="px-3 py-2.5 text-center">
-                      {isCovered(t.slug, row.lowestTier) ? (
-                        <Check className="inline h-4 w-4 text-foreground/70" />
-                      ) : (
-                        <Minus className="inline h-3.5 w-3.5 text-muted-foreground/40" />
-                      )}
-                    </td>
+                    <th
+                      key={t.slug}
+                      className="text-center text-xs font-semibold uppercase tracking-wider px-3 py-3 text-muted-foreground"
+                    >
+                      {t.name}
+                    </th>
                   ))}
                 </tr>
-              ))}
-              <tr className="border-t-2 border-border bg-muted/30">
-                <td className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Monthly price
-                </td>
-                {sortedTiers.map((t) => {
-                  const { total } = tierTotals[t.slug] ?? { total: 0 };
-                  return (
-                    <td key={t.slug} className="px-3 py-3 text-center">
-                      {total > 0 ? (
-                        <AnimatedPrice amount={total} className="text-sm font-bold" />
-                      ) : (
-                        <span className="text-xs text-muted-foreground">—</span>
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {rows.map((row, idx) => (
+                  <tr
+                    key={row.text}
+                    className={cn(
+                      'border-t border-border/60',
+                      idx % 2 === 0 ? 'bg-transparent' : 'bg-muted/15'
+                    )}
+                  >
+                    <td className="px-5 py-2.5 text-xs sm:text-sm">{row.text}</td>
+                    {sortedTiers.map((t) => (
+                      <td key={t.slug} className="px-3 py-2.5 text-center">
+                        {isCovered(t.slug, row.lowestTier) ? (
+                          <Check className="inline h-4 w-4 text-foreground/70" />
+                        ) : (
+                          <Minus className="inline h-3.5 w-3.5 text-muted-foreground/40" />
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+                <tr className="border-t-2 border-border bg-muted/30">
+                  <td className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Monthly price
+                  </td>
+                  {sortedTiers.map((t) => {
+                    const { total } = tierTotals[t.slug] ?? { total: 0 };
+                    return (
+                      <td key={t.slug} className="px-3 py-3 text-center">
+                        {total > 0 ? (
+                          <AnimatedPrice amount={total} className="text-sm font-bold" />
+                        ) : (
+                          <span className="text-xs text-muted-foreground">—</span>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

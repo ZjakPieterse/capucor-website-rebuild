@@ -58,7 +58,8 @@ async function getLandingData(): Promise<{
       services: servicesRes.data ?? [],
       tiers: tiersRes.data ?? [],
     };
-  } catch {
+  } catch (err) {
+    console.error('[landing] supabase fetch failed', err);
     return { services: [], tiers: [] };
   }
 }
