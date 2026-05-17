@@ -49,10 +49,10 @@ export function Step2Brackets({
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-semibold mb-1">
-          Tell us more about your business and activities.
+          Tell us a bit about your business.
         </h2>
         <p className="text-sm text-muted-foreground">
-          Each service is priced by size brackets. Pick the range that fits your business best today.
+          Select your details below so we can customize our workflows perfectly to your current size and scale.
         </p>
       </div>
 

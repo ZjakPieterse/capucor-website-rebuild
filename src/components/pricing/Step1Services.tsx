@@ -49,9 +49,9 @@ export function Step1Services({ services, selected, onToggle, onNext }: Step1Ser
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Which services do you need help with?</h2>
+        <h2 className="text-xl font-semibold mb-1">What can we take off your plate?</h2>
         <p className="text-sm text-muted-foreground">
-          Click and select one or more items. We&rsquo;ll combine them into a single monthly subscription.
+          Click and select the financial services your business needs. We&rsquo;ll bundle them into a single, predictable monthly subscription.
         </p>
       </div>
 

@@ -45,9 +45,9 @@ export function Step3Tiers({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Choose the package that fits your needs best</h2>
+        <h2 className="text-xl font-semibold mb-1">Pick the perfect fit for your growth.</h2>
         <p className="text-sm text-muted-foreground">
-          Every plan includes your selected services, a dedicated finance team and SARS &amp; CIPC compliance. Higher tiers add more frequent processing, reporting depth and advisory involvement.
+          Choose the level of support that matches your business goals. Remember, there are no lock-in contracts, just pure support.
         </p>
       </div>
 
